@@ -1,0 +1,3 @@
+Options -Indexes
+RewriteEngine On
+RewriteRule ^(.*)$ public_html/admin-settings/$1 [L,QSA]

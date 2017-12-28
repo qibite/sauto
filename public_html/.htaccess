@@ -1,0 +1,11 @@
+RewriteEngine on
+# hide files git and composer
+RedirectMatch 404 /\.git
+RedirectMatch 404 /\.composer\.
+RedirectMatch 404 /.bowerrc
+
+RewriteBase /
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)\?*$ index.php/$1 [L,QSA]
+RewriteRule ^public_html$ public_html/index.php [L]

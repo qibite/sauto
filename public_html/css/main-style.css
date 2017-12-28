@@ -1,0 +1,568 @@
+@import 'font-awesome.min.css';
+#logo
+{
+    
+}
+h2.col-md-10
+{
+    text-align: center;
+    background-color: #969696;
+    padding: 0.6em 0;
+    color: #FFF;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+h3
+{
+    margin-bottom: 1.6em;
+}
+
+.table
+        {
+            width: 83.33333333%
+        }
+
+        .table-inverse th{
+            color: #eceeef;
+            background-color: #373a3c;
+            text-transform: uppercase;
+            font-size: 1.1em;
+        }
+
+        .table, .thead-inverse th
+        {
+            text-align: center;
+        }
+
+        .thead-inverse th
+        {
+            width: 14.28%;
+        }
+
+        tbody tr td:nth-child(even)
+        {
+            background-color: #f0f2f5;
+        }
+
+        td
+        {
+            display: table-cell;
+            cursor: pointer;
+            height: 10em;
+            vertical-align: middle;
+        }
+
+        td.day
+        {
+            position: relative;
+        }
+
+        td:hover, tbody tr td:nth-child(even):hover
+        {
+            background-color: #33a3dd;
+        }
+
+        .data
+        {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 2em;
+            font-size: 1.2em;
+            font-weight: bold;
+            padding: 5px;
+            background-color: #33a3dd;
+            color: #FFF;
+        }
+
+        .task
+        {
+            display: block;
+        }
+
+        ul.sto
+        {
+            padding: 0;
+        }
+
+        li
+        {
+            position: relative;
+            text-transform: uppercase;
+            font-size: 0.85em;
+            margin: 0 0 12px 0;
+            list-style: none;
+        }
+
+        li>a
+        {
+            position: relative;         
+            cursor: pointer;
+            letter-spacing: 0.5px;       
+        }
+
+        @keyframes anim_li {
+            0%
+            {
+                width: 0%;
+                left: 50%;
+            }
+            25%
+            {
+                width: 25%;
+                left: 37.5%;
+            }
+            50%
+            {
+                width: 50%;
+                left: 25%;
+            }
+            75%
+            {
+                width: 75%;
+                left: 12.5%;
+            }
+            100%
+            {
+                width: 100%;
+                left: 0%;
+            }
+            
+        }
+
+        li>a::after
+        {
+            content: '';
+            position: absolute;
+            display: inline-block;
+            width: 0%;
+            border-bottom: 1px solid #337ab7;
+            bottom: -2px;
+            left: 0;
+        }
+        li>a:hover
+        {
+            text-decoration: none;
+        }
+        li>a:hover::after
+        {
+            animation: anim_li .13s ease-in-out 1;
+            animation-fill-mode: forwards;
+        }
+
+        .podyomnik>img, .yama>img
+        {
+            width: 22px;
+            margin-right: 7px;
+        }
+
+
+/**************************************************                     СТИЛИ ДЛЯ ВСПЛЫВАЮЩИХ ОКОН                    ****************************************************/
+
+
+@keyframes popup_animate_fon {
+    0%
+    {
+        background-color: rgba(0, 0, 0, .1);
+    }
+    25%
+    {
+        background-color: rgba(0, 0, 0, .2);
+    }
+    50%
+    {
+        background-color: rgba(0, 0, 0, .3);
+    }
+    75%
+    {
+        background-color: rgba(0, 0, 0, .5);
+    }
+    100%
+    {
+        background-color: rgba(0, 0, 0, .7);
+    }
+    
+}
+
+@keyframes popup_animate_body {
+    0%
+    {
+        opacity: .0;
+    }
+    25%
+    {
+        opacity: .3;
+    }
+    50%
+    {
+        opacity: .5;
+    }
+    75%
+    {
+        opacity: .7;
+    }
+    100%
+    {
+        opacity: 1;
+    }
+    
+}
+
+
+.popup_zakaz
+{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    animation: popup_animate_fon .2s ease-in-out 1;
+    animation-fill-mode: forwards;
+}
+
+.popup_zakaz_body, .create_new_person, .create_new
+{
+    position: relative;
+    margin: 0 auto;
+    background-color: #FFF;
+    width: 50%;
+    min-height: 700px;
+    border-radius: 3px;
+    padding: 5px 20px;
+    margin-top: 5%;
+    opacity: .0;
+    animation: popup_animate_body .15s ease-in 1;
+    animation-fill-mode: forwards;
+    animation-delay: .415s;
+}
+
+.create_new, .create_new_person
+{
+    min-height: 400px;
+}
+
+.popup_close
+{
+    position: absolute;
+    right: 12px;
+    top: 4px;
+    font-size: 2em;
+    cursor: pointer;
+    font-size: 2em;
+}
+
+.popup_close:hover
+{
+    color: #f59898;
+}
+
+.popup_zakaz_timeH, .popup_zakaz_timeM
+{
+    border: none;
+    border-bottom: 1px solid #337ab7;
+    font-size: 1.6em;
+    text-align: center;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
+input[type='number'] {
+    -moz-appearance:textfield;
+}
+
+popup_zakaz_time
+{
+
+}
+
+.popup_zakaz_fio, .popup_zakaz_auto_firm
+{
+    z-index: 3;
+   /* overflow: hidden;
+    height: 1.6em;*/
+}
+.popup_zakaz_fio_spisok, .popup_zakaz_auto_firm_spisok
+{
+    cursor: pointer;
+}
+
+
+@keyframes anim_inp_txt
+{
+    from{border-bottom:1px solid rgba(51, 122, 183, 0.1)}
+    to{border-bottom:1px solid rgba(51, 122, 183, 1)}
+}
+@-moz-keyframes anim_inp_txt
+{
+    from{border-bottom:1px solid rgba(51, 122, 183, 0.1)}
+    to{border-bottom:1px solid rgba(51, 122, 183, 1)}
+}
+input.client_input_fio, .input[type="text"], input[type="number"], input.vidi_rabot
+{
+    border: none;    
+    outline: none;
+    border-bottom: 1px solid #CCC;
+    margin-bottom: 1em;
+    font-size: 1.1em;
+    font-weight: 200;
+}
+label>i.fa
+{
+    font-size: 1.6em;
+}
+input.client_input_fio:focus, input[type="text"]:focus, input[type="number"]:focus
+{
+    border: none;
+    animation: anim_inp_txt .8s ease-in-out 1;
+    animation-fill-mode: forwards;
+-moz-animation: anim_inp_txt .8s ease-in-out 1;
+-moz-animation-fill-mode: forwards;
+}
+input.mBottomInp[type="text"]
+{
+    margin-bottom: 1.8em;
+}
+.spisok_conteiner, .spisok_conteiner_auto
+{
+    overflow: hidden;
+    position: absolute;
+    top: 28px;
+    left: 12px;
+    background-color: #FFF;
+}
+.spisok_conteiner>span, .spisok_conteiner_auto>span
+{
+    display: none;
+    padding: 1px 0 1px 1em;
+}
+.spisok_conteiner>span:hover, .spisok_conteiner_auto>span:hover
+{
+    background-color: #E7E7E7;
+}
+
+.add_button
+{
+    position: absolute;
+    cursor: pointer;
+    text-align: center;
+    font-size: 1em;
+    padding: 3px 0;
+    top: 28px;
+    left: 70px;
+}
+.add_button > i
+{
+    font-size: 1.1em;
+}
+/**************************************************                     СТИЛИ ДЛЯ ВСПЛЫВАЮЩИХ ОКОН                    ****************************************************/
+
+
+/**************************************************                     СТИЛИ ДЛЯ ОКОН ЗАПОЛНЕНИЯ КАРТОЧЕК                    ****************************************************/
+.create_new_person
+{
+    
+}
+
+
+
+@keyframes popup_animate_body_hide {
+    0%
+    {
+        opacity: 1;
+    }
+    25%
+    {
+        opacity: .7;
+    }
+    50%
+    {
+        opacity: .5;
+    }
+    75%
+    {
+        opacity: .3;
+    }
+    100%
+    {
+        opacity: 0;
+    }
+}    
+
+
+.HIDE_ON_TIME
+{
+    animation: popup_animate_body_hide .25s ease-in 1;
+    animation-fill-mode: forwards;
+    display: none;
+}
+#reate_new_person_save
+{
+
+}
+.err
+{
+    position: absolute;
+    left: 25%;
+    bottom: 7%;
+}
+/**************************************************                     СТИЛИ ДЛЯ ОКОН ЗАПОЛНЕНИЯ КАРТОЧЕК                    ****************************************************/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ОБЩИЕ СТИЛИ ДЛЯ УНИВЕРСАЛЬНЫХ ЭЛЕМЕНТОВ */
+.info_window
+{
+    position: fixed;
+    top: 0;
+    right: 0;
+    padding: 1.8em;
+    background-color: #FFF;
+    font-size: 1.3em;
+    border-bottom-left-radius: 7px;
+    box-shadow: 10px -2px 27px 1px rgba(0,0,0,0.4);
+}
+.info_window>i.fa{font-size: 1.4em}
+.success_w
+{
+    background-color: #44944A;
+    color: #FFF;
+    animation: popup_animate_body .3s ease-in 1;
+    animation-fill-mode: forwards;
+}
+.success_w_out
+{
+    animation: popup_animate_body_hide .7s ease-in 1;
+    animation-fill-mode: forwards;
+}
+
+/* Часы и минуты */
+#setH, #setM
+{
+    position: absolute;
+    display: inline-block;
+    top: 3px;
+    left: 140px;
+    background-color: #323232;
+    border: 1px solid #323232;
+    padding: 3px 0;
+    color: #FFF;
+    font-family: monospace;
+    text-align: center;
+    z-index: 999;
+}
+
+#setH>i, #setM>i
+{
+    float: left;
+    border: 0.25px solid #FFF;
+    padding: 2.5px;
+    cursor: pointer;
+    font-size: 2em;
+}
+#setH>i:nth-child(5n), #setH>i:nth-child(9n), #setH>i:nth-child(13n)
+{
+    clear: left;
+}
+#setM>i:nth-child(5n), #setM>i:nth-child(9n)
+{
+    clear: left;
+}
+#setH>i:nth-child(10n),#setH>i:nth-child(15n),#setM>i:nth-child(10n){clear: right;}
+
+#setH>i:hover, #setM>i:hover
+{
+    background-color: #FFF;
+    color: #232323;
+}
+/* Часы и минуты */
+
+
+/* Вид работы */
+#list_rabot >span
+{
+    float: left;
+    margin: 3px 1em 0 0;
+}
+
+.add_this_work, .del_this_work
+{
+    position: relative;
+    font-size: 1.35em;
+    margin-right: 3px;
+    cursor: pointer;
+    top: 2px;
+}
+.add_this_work
+{
+
+    color: #ff9b2b;
+}
+.del_this_work
+{
+    color: red;
+}
+
+#list_rabot
+{
+    height: auto;
+    max-height: 150px;
+    margin-bottom: 2em;
+    overflow-y: auto;
+    border: 0.5px solid #cbcbcb;
+}
+
+.add_this_work:hover
+{
+    color: #8bcf38;
+}
+
+#viborka_rabot > span
+{
+    float: left;
+    clear: both;
+    margin-bottom: 0.4em;
+}
+/*
+#viborka_rabot span:nth-child(even)
+{
+    clear: right;
+    margin-left: 1em;
+}*/
+#list_rabot::-webkit-scrollbar-track
+{
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    border-radius: 25px;
+    background-color: #F5F5F5;
+}
+
+#list_rabot::-webkit-scrollbar
+{
+    width: 5px;
+    background-color: #F5F5F5;
+}
+
+#list_rabot::-webkit-scrollbar-thumb
+{
+    border-radius: 25px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+    background-color: #a3a3a3;
+}
