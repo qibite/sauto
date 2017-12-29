@@ -588,7 +588,7 @@ function click_on_day () {
 
 					let create_new_firm_auto_save = document.createElement('button');
 						create_new_firm_auto_save.classList = 'btn';
-						create_new_firm_auto_save.id = 'reate_new_person_save';						
+						create_new_firm_auto_save.id = 'create_new_auto_save';						
 							create_new_firm_auto_save.addEventListener('mouseover', function () {
 								if (create_new_firm_auto_name.value != '' && create_new_firm_auto_model.value != '') {
 									this.classList.add('btn-success')
@@ -676,10 +676,14 @@ function click_on_day () {
 				popup_zakaz_vidi_rabot_viborka.className = 'col-md-12';
 				popup_zakaz_vidi_rabot_viborka.style.backgroundColor = '#ССС';
 			let	popup_zakaz_vidi_rabot_viborka_head = document.createElement('thead');
-				popup_zakaz_vidi_rabot_viborka_head.innerHTML = '<tr class="vidi_rabot_th"><th style="width:50px">#</th><th>Наименование работ</th><th style="width:90px">Кол-во</th><th>Стоимость</th></tr>';
+				popup_zakaz_vidi_rabot_viborka_head.innerHTML = '<tr class="vidi_rabot_th"><th style="width:50px">#</th><th style="width:64%">Наименование работ</th><th style="width:90px">Кол-во</th><th>Стоимость</th></tr>';
 				popup_zakaz_vidi_rabot_viborka.appendChild(popup_zakaz_vidi_rabot_viborka_head);
 			let	popup_zakaz_vidi_rabot_viborka_body = document.createElement('tbody');
+			let conteiner_tbody = document.createElement('div');
+				conteiner_tbody.className = 'col-md-12 tablecontainer';
+				conteiner_tbody.id = 'tbodycontainer';
 				popup_zakaz_vidi_rabot_viborka.appendChild(popup_zakaz_vidi_rabot_viborka_body);
+				conteiner_tbody.appendChild(popup_zakaz_vidi_rabot_viborka);
 
 
 			let	list_of_works = document.querySelector('#works');
@@ -702,10 +706,14 @@ function click_on_day () {
 				                   			td_id_rabota.className = 'id_rabota';
 				                   			td_id_rabota.innerHTML = '<span>' + (popup_zakaz_vidi_rabot_viborka_body.children.length+1) + ' </span>'; //s.getAttribute('data-idwork');
 				                   			td_id_rabota.appendChild(del_rabota_icon.cloneNode(true)).addEventListener('click', function () {
-					                   			this.parentElement.parentElement.parentElement.removeChild(this.parentElement.parentElement)
-					                   			for (let i=0; i<popup_zakaz_vidi_rabot_viborka_body.children.length; i++) {
-					                   				popup_zakaz_vidi_rabot_viborka_body.children[i].firstChild.firstChild.innerText = i+1 + ' ';
-					                   			}
+				                   				this.parentElement.parentElement.style.backgroundColor = '#ff9999';
+				                   				this.parentElement.parentElement.style.color = '#ffffff';
+				                   				setTimeout(()=>{
+					                   				this.parentElement.parentElement.parentElement.removeChild(this.parentElement.parentElement)
+					                   				for (let i=0; i<popup_zakaz_vidi_rabot_viborka_body.children.length; i++) {
+						                   				popup_zakaz_vidi_rabot_viborka_body.children[i].firstChild.firstChild.innerText = i+1 + ' ';
+						                   			}
+				                   				}, 300)					                   			
 					                   			
 					                   		});
 				                   		let td_name_rabota = document.createElement('td');
@@ -734,6 +742,9 @@ function click_on_day () {
 
 			                   		popup_zakaz_vidi_rabot_viborka_body.appendChild(tr_rabota);
 			                   		this.parentElement.parentElement.removeChild(this.parentElement)
+			                   		if (tbodycontainer.offsetHeight > 200) {
+			                   			tbodycontainer.scrollTop = 1000;
+			                   		}
 			                   	})
 				            }
 			    	});
@@ -758,10 +769,14 @@ function click_on_day () {
 				                   			td_id_rabota.className = 'id_rabota';
 				                   			td_id_rabota.innerHTML = '<span>' + (popup_zakaz_vidi_rabot_viborka_body.children.length+1) + ' </span>'; //s.getAttribute('data-idwork');
 				                   			td_id_rabota.appendChild(del_rabota_icon.cloneNode(true)).addEventListener('click', function () {
-					                   			this.parentElement.parentElement.parentElement.removeChild(this.parentElement.parentElement)
-					                   			for (let i=0; i<popup_zakaz_vidi_rabot_viborka_body.children.length; i++) {
-					                   				popup_zakaz_vidi_rabot_viborka_body.children[i].firstChild.firstChild.innerText = i+1 + ' ';
-					                   			}
+				                   				this.parentElement.parentElement.style.backgroundColor = '#ff9999';
+				                   				this.parentElement.parentElement.style.color = '#ffffff';
+				                   				setTimeout(()=>{
+					                   				this.parentElement.parentElement.parentElement.removeChild(this.parentElement.parentElement)
+					                   				for (let i=0; i<popup_zakaz_vidi_rabot_viborka_body.children.length; i++) {
+						                   				popup_zakaz_vidi_rabot_viborka_body.children[i].firstChild.firstChild.innerText = i+1 + ' ';
+						                   			}
+				                   				}, 300);
 					                   			
 					                   		});
 				                   		let td_name_rabota = document.createElement('td');
@@ -790,6 +805,9 @@ function click_on_day () {
 
 			                   		popup_zakaz_vidi_rabot_viborka_body.appendChild(tr_rabota);
 			                   		this.parentElement.parentElement.removeChild(this.parentElement)
+			                   		if (tbodycontainer.offsetHeight > 200) {
+			                   			tbodycontainer.scrollTop = 1000;
+			                   		}
 			                   	})
 				            }
 			    	});
@@ -833,10 +851,14 @@ function click_on_day () {
 				                   			td_id_rabota.className = 'id_rabota';
 				                   			td_id_rabota.innerHTML = '<span>' + (popup_zakaz_vidi_rabot_viborka_body.children.length+1) + ' </span>'; //s.getAttribute('data-idwork');
 				                   			td_id_rabota.appendChild(del_rabota_icon.cloneNode(true)).addEventListener('click', function () {
-					                   			this.parentElement.parentElement.parentElement.removeChild(this.parentElement.parentElement)
-					                   			for (let i=0; i<popup_zakaz_vidi_rabot_viborka_body.children.length; i++) {
-					                   				popup_zakaz_vidi_rabot_viborka_body.children[i].firstChild.firstChild.innerText = i+1 + ' ';
-					                   			}
+				                   				this.parentElement.parentElement.style.backgroundColor = '#ff9999';
+				                   				this.parentElement.parentElement.style.color = '#ffffff';
+				                   				setTimeout(()=>{
+					                   				this.parentElement.parentElement.parentElement.removeChild(this.parentElement.parentElement)
+					                   				for (let i=0; i<popup_zakaz_vidi_rabot_viborka_body.children.length; i++) {
+						                   				popup_zakaz_vidi_rabot_viborka_body.children[i].firstChild.firstChild.innerText = i+1 + ' ';
+						                   			}
+				                   				}, 300)
 					                   			
 					                   		});
 				                   		let td_name_rabota = document.createElement('td');
@@ -865,6 +887,9 @@ function click_on_day () {
 
 			                   		popup_zakaz_vidi_rabot_viborka_body.appendChild(tr_rabota);
 			                   		this.parentElement.parentElement.removeChild(this.parentElement)
+			                   		if (tbodycontainer.offsetHeight > 200) {
+			                   			tbodycontainer.scrollTop = 1000;
+			                   		}
 			                    	})
 			                }
 			            }
@@ -932,13 +957,17 @@ function click_on_day () {
 
 				let create_new_work_save = document.createElement('button');
 					create_new_work_save.classList = 'btn';
-					create_new_work_save.id = 'reate_new_person_save';						
+					create_new_work_save.id = 'create_new_work_save';						
 					create_new_work_save.addEventListener('mouseover', function () {
 						if (create_new_work_name.value != '' && create_new_work_price.value != '') {
 							this.classList.add('btn-success')
 							this.style.cursor = 'pointer';
 							this.addEventListener('mouseout', function () {this.classList.remove('btn-success')})
 							this.addEventListener('click', function () {
+								let data_work = { name:create_new_work_name.value, code:create_new_work_code.value, raiting:100, price:create_new_work_price.value }
+			                   	$.get('sauto-main/save-work', data_work, function(data) {
+			                   		console.log(data)
+			                   	});
 								this.parentElement.remove();
 								sauto.success_window('Новая услуга, товар');
 								popup_zakaz_body.classList.remove('HIDE_ON_TIME');
@@ -950,10 +979,14 @@ function click_on_day () {
 				                   			td_id_rabota.className = 'id_rabota';
 				                   			td_id_rabota.innerHTML = '<span>' + (popup_zakaz_vidi_rabot_viborka_body.children.length+1) + ' </span>'; //s.getAttribute('data-idwork');
 				                   			td_id_rabota.appendChild(del_rabota_icon.cloneNode(true)).addEventListener('click', function () {
-					                   			this.parentElement.parentElement.parentElement.removeChild(this.parentElement.parentElement)
-					                   			for (let i=0; i<popup_zakaz_vidi_rabot_viborka_body.children.length; i++) {
-					                   				popup_zakaz_vidi_rabot_viborka_body.children[i].firstChild.firstChild.innerText = i+1 + ' ';
-					                   			}
+				                   				this.parentElement.parentElement.style.backgroundColor = '#ff9999';
+				                   				this.parentElement.parentElement.style.color = '#ffffff';
+				                   				setTimeout(()=>{
+					                   				this.parentElement.parentElement.parentElement.removeChild(this.parentElement.parentElement)
+					                   				for (let i=0; i<popup_zakaz_vidi_rabot_viborka_body.children.length; i++) {
+						                   				popup_zakaz_vidi_rabot_viborka_body.children[i].firstChild.firstChild.innerText = i+1 + ' ';
+						                   			}
+				                   				}, 300)
 					                   			
 					                   		});
 				                   		let td_name_rabota = document.createElement('td');
@@ -981,10 +1014,9 @@ function click_on_day () {
 				                   	tr_rabota.appendChild(td_price_rabota);
 
 			                   		popup_zakaz_vidi_rabot_viborka_body.appendChild(tr_rabota);
-			                   		let data_work = { name:create_new_work_name.value, code:create_new_work_code.value, raiting:100, price:create_new_work_price.value }
-			                   		$.get('sauto-main/save-work', data_work, function(data) {
-			                   			console.log(data)
-			                   		});
+			                   		if (tbodycontainer.offsetHeight > 200) {
+			                   			tbodycontainer.scrollTop = 1000;
+			                   		}
 								});
 							}
 							else {
@@ -1074,7 +1106,7 @@ function click_on_day () {
 		zag2.className = 'col-md-12';
 		zag2.innerText = 'Виды работ:';		
 		popup_zakaz_body.appendChild(zag2);*/
-		popup_zakaz_body.appendChild(popup_zakaz_vidi_rabot_viborka);
+		popup_zakaz_body.appendChild(conteiner_tbody);
 
 
 
@@ -1162,7 +1194,7 @@ var sauto = {
 	create_new_button: (identificator, class_name, type_button, text_on_btn)=>{
 		let create_new_button = document.createElement('button');
 			create_new_button.classList = 'btn';
-			create_new_button.id = 'reate_new_person_save';
+			create_new_button.id = identificator;
 			switch (type_button) {
 				case 'save':
 					create_new_button.innerHTML = '<i class="fa fa-floppy-o" aria-hidden="true"></i> '+text_on_btn;

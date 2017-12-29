@@ -227,19 +227,29 @@ h3
     margin: 0 auto;
     background-color: #FFF;
     width: 50%;
-    min-height: 700px;
+    min-height: 600px;
+    max-height: 700px;
     border-radius: 3px;
     padding: 5px 20px;
     margin-top: 5%;
     opacity: .0;
     animation: popup_animate_body .15s ease-in 1;
     animation-fill-mode: forwards;
-    animation-delay: .415s;
+    animation-delay: .415s;    
 }
+.popup_zakaz_body{min-height: 700px;}
 
 .create_new, .create_new_person
 {
     min-height: 400px;
+}
+
+.tablecontainer
+{
+    max-height: 230px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding: 12px 16px;
 }
 
 .popup_close
@@ -345,7 +355,7 @@ input.mBottomInp[type="text"]
 {
     overflow-x: auto;
     max-height: 100px;
-    box-shadow: 2px 2px 12px -0.5px rgba(30,30,30,.7);
+   /* box-shadow: 2px 2px 12px -0.5px rgba(30,30,30,.7);*/
     border-radius: 3px;
 }
 
@@ -363,9 +373,9 @@ input.mBottomInp[type="text"]
 
 #viborka_rabot tbody tr:hover
 {
-    background-color: #d7f7fa;
+    background-color:rgba(114, 229, 255, 0.29);
     cursor: pointer;
-    box-shadow:-9px 0px 20px -4px rgba(0, 0, 0, 0.29);
+    box-shadow:-15px 0px 20px -8px rgba(0, 0, 0, 0.29), 15px 0px 20px -8px rgba(0, 0, 0, 0.29);
 }
 
 #viborka_rabot tbody tr td input[type="number"]
@@ -629,24 +639,27 @@ input.mBottomInp[type="text"]
     clear: right;
     margin-left: 1em;
 }*/
-#list_rabot::-webkit-scrollbar-track, .list_auto_client::-webkit-scrollbar-track, .spisok_conteiner::-webkit-scrollbar-track, .spisok_conteiner_auto::-webkit-scrollbar-track, #viborka_rabot::-webkit-scrollbar-track
+#list_rabot::-webkit-scrollbar-track, .list_auto_client::-webkit-scrollbar-track, .spisok_conteiner::-webkit-scrollbar-track, .spisok_conteiner_auto::-webkit-scrollbar-track, #viborka_rabot::-webkit-scrollbar-track, .popup_zakaz_body::-webkit-scrollbar-track, .tablecontainer::-webkit-scrollbar-track
 {
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
     border-radius: 25px;
     background-color: #F5F5F5;
+    cursor: pointer;
 }
 
-#list_rabot::-webkit-scrollbar, .list_auto_client::-webkit-scrollbar, .spisok_conteiner::-webkit-scrollbar, .spisok_conteiner_auto::-webkit-scrollbar, #viborka_rabot::-webkit-scrollbar
+#list_rabot::-webkit-scrollbar, .list_auto_client::-webkit-scrollbar, .spisok_conteiner::-webkit-scrollbar, .spisok_conteiner_auto::-webkit-scrollbar, #viborka_rabot::-webkit-scrollbar, .popup_zakaz_body::-webkit-scrollbar, .tablecontainer::-webkit-scrollbar
 {
     width: 5px;
     background-color: #F5F5F5;
+    cursor: pointer;
 }
 
-#list_rabot::-webkit-scrollbar-thumb, .list_auto_client::-webkit-scrollbar-thumb, .spisok_conteiner::-webkit-scrollbar-thumb, .spisok_conteiner_auto::-webkit-scrollbar-thumb, #viborka_rabot::-webkit-scrollbar-thumb
+#list_rabot::-webkit-scrollbar-thumb, .list_auto_client::-webkit-scrollbar-thumb, .spisok_conteiner::-webkit-scrollbar-thumb, .spisok_conteiner_auto::-webkit-scrollbar-thumb, #viborka_rabot::-webkit-scrollbar-thumb, .popup_zakaz_body::-webkit-scrollbar-thumb, .tablecontainer::-webkit-scrollbar-thumb
 {
     border-radius: 25px;
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
     background-color: #a3a3a3;
+    cursor: pointer;
 }
 
 .vidi_rabot_th > th 
