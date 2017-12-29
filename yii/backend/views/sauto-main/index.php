@@ -181,12 +181,9 @@ $this->title = 'Расписание работы автосервиса | sauto
     </select>
 
     <select name="works" id="works" style="display:none">
-        <option value="1" data-price="150" data-idwork="1">Замена масла</option>
-        <option value="3" data-price="1250" data-idwork="2">Ремонт редуктора</option>
-        <option value="4" data-price="120" data-idwork="3">Притирка клапана</option>
-        <option value="5" data-price="900" data-idwork="4">Шлифовка ГБЦ</option>
-        <option value="6" data-price="750" data-idwork="5">Замена свечей</option>
-        <option value="7" data-price="800" data-idwork="6">Компьютерная диагностика</option>
+        <?php
+          foreach ($works as $work) {echo "<option value='" . $work->id . "' data-price='" . $work->price . "' data-idwork='" . $work->code . "'>" . $work->name .  "</option>";}
+        ?>
     </select>
 
 </div>

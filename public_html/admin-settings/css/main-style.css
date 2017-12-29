@@ -346,14 +346,35 @@ input.mBottomInp[type="text"]
     overflow-x: auto;
     max-height: 100px;
     box-shadow: 2px 2px 12px -0.5px rgba(30,30,30,.7);
+    border-radius: 3px;
 }
 
 #viborka_rabot td
 {
     text-align: center;
+    border-radius: 3px;
+    outline: 1px solid #eaeaea;
 }
 
-.count_work
+#viborka_rabot td input[type="number"]
+{
+    border: none;
+}
+
+#viborka_rabot tbody tr:hover
+{
+    background-color: #d7f7fa;
+    cursor: pointer;
+    box-shadow:-9px 0px 20px -4px rgba(0, 0, 0, 0.29);
+}
+
+#viborka_rabot tbody tr td input[type="number"]
+{
+    background-color: transparent;
+    margin: 10px;
+}
+
+.input_work
 {
     width: 90px;
     text-align: center;
@@ -632,4 +653,16 @@ input.mBottomInp[type="text"]
 {
     text-align: center;
     padding: .2em;
+    background-color: #33a3dd;
+    color: #FFF;
+}
+
+td.id_rabota > .del_this_work
+{
+    display: none;
+}
+
+td.id_rabota > .del_this_work:hover
+{
+    font-size: 1.15em;
 }

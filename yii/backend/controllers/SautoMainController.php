@@ -6,6 +6,7 @@ use Yii;
 use yii\web\Controller;
 use backend\models\Cars;
 use backend\models\NewClient;
+use backend\models\NewWork;
 /**
  * Site controller
  */
@@ -16,7 +17,8 @@ class SautoMainController extends Controller
     {
     	$car = Cars::find()->all();
     	$clients = NewClient::find()->all();
-        return $this->render('index', compact('car', 'clients'));
+        $works = NewWork::find()->all();
+        return $this->render('index', compact('car', 'clients', 'works'));
     }
 
     public function actionClient()
@@ -57,5 +59,16 @@ class SautoMainController extends Controller
     		);
     	}
     	return json_encode($allcars);
+    }
+
+    public function actionSaveWork()
+    {
+        $Work = new NewWork();
+        $Work->name = $_GET['name'];
+        $Work->code = $_GET['code'];
+        $Work->raiting = $_GET['raiting'];
+        $Work->price = $_GET['price'];
+        $Work->save();
+        return 'NewWork is save! Work add';
     }
 }

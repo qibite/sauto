@@ -651,8 +651,6 @@ function click_on_day () {
 										this.parentElement.remove();
 										sauto.success_window('Новая услуга, товар');
 										popup_zakaz_body.classList.remove('HIDE_ON_TIME');
-									//let buffer = create_new_work_name.value +' '+ create_new_work_model.value;
-										//popup_zakaz_vidi_rabot_search.value = create_new_work_name.value;
 										let s = document.createElement('span');			                    	
 					                    	s.innerText = create_new_work_name.value;
 					                    	s.insertBefore(del_rabota_icon.cloneNode(true), s.firstChild);

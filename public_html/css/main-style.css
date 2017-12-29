@@ -541,6 +541,19 @@ input.mBottomInp[type="text"]
     clear: both;
     margin-bottom: 0.4em;
 }
+
+
+#viborka_rabot tbody tr:hover
+{
+    background-color: #dbfad7;
+}
+
+#viborka_rabot tbody tr td input[type="number"]
+{
+    border: none;
+    margin: 10px;
+}
+
 /*
 #viborka_rabot span:nth-child(even)
 {
