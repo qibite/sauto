@@ -545,22 +545,24 @@ function click_on_day () {
 /************************************************************************************************************************
 *										ОКНО ДОБАВЛЕНИЯ НОВОГО АВТОМОБИЛЯ											*
 ************************************************************************************************************************/
-				function create_new_auto_firm (argument) {
-					if (toogle_window == 'new_client_window') {
-						document.querySelector('.create_new_person').classList.add('HIDE_ON_TIME');
-						toogle_window = 'new_client_car_window';
-					}
-					else if (toogle_window == 'incident_window') {
-						popup_zakaz_body.classList.add('HIDE_ON_TIME');
-						toogle_window = 'new_car_window';
-					}							
+				function create_new_auto_firm (argument) {					
+											
 					let create_new_firm_auto = document.createElement('div');
 						create_new_firm_auto.className = 'create_new';
 						//popup_zakaz_body.classList.add('HIDE_ON_TIME');
 						popup_zakaz.appendChild(create_new_firm_auto)
 						create_new_firm_auto.innerHTML = '<h3><i class="fa fa-info" aria-hidden="true"></i> Добавление фирмы производителя авто</h3>';						
 						sauto.insert_hr(create_new_firm_auto);
+					if (toogle_window == 'new_client_window') {
+						document.querySelector('.create_new_person').classList.add('HIDE_ON_TIME');
+						toogle_window = 'new_client_car_window';
+						sauto.create_close_button(create_new_firm_auto, 'third'); // Добавляем кнопочку закрыть
+					}
+					else if (toogle_window == 'incident_window') {
+						popup_zakaz_body.classList.add('HIDE_ON_TIME');
+						toogle_window = 'new_car_window';
 						sauto.create_close_button(create_new_firm_auto, 'second'); // Добавляем кнопочку закрыть
+					}
 
 						sauto.insert_clear_block(create_new_firm_auto);
 
@@ -1215,6 +1217,9 @@ function close_popup (wind)
 		}
 		function zakaz_close () {			
 			switch (wind) {
+				case 'third':
+					if (toogle_window == 'new_client_car_window') { document.querySelector('.create_new_person').classList.remove('HIDE_ON_TIME'); }
+					break;
 				case 'second':
 					this.parentElement.parentElement.removeChild(this.parentElement);
 					if (toogle_window == 'new_client_window' || toogle_window == 'new_car_window' || toogle_window == 'new_work_window'){toogle_window = 'incident_window';document.querySelector('.add_button').remove();document.querySelector('.popup_zakaz_body').classList.remove('HIDE_ON_TIME')}
