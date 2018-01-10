@@ -609,7 +609,7 @@ function click_on_day () {
 											let buffer = create_new_firm_auto_name.value +' '+ create_new_firm_auto_model.value;
 												document.querySelector('#new_client_new_car').remove();
 												document.querySelector('#person_auto').value = buffer;
-												document.querySelector('#person_auto').style.borderBottomColor = 'red';
+												document.querySelector('#person_auto').style.borderBottomColor = '#0fae31';
 												toogle_window = 'new_client_window'
 										}
 										else if (toogle_window == 'incident_window') {
@@ -715,8 +715,11 @@ function click_on_day () {
 					                   				for (let i=0; i<popup_zakaz_vidi_rabot_viborka_body.children.length; i++) {
 						                   				popup_zakaz_vidi_rabot_viborka_body.children[i].firstChild.firstChild.innerText = i+1 + ' ';
 						                   			}
-				                   				}, 300)					                   			
-					                   			
+							                   		summ_zakaz.innerText = 0;
+							                   		document.querySelectorAll('.price_rabota').forEach(function (el, i) {
+							                   			summ_zakaz.innerText = parseInt(summ_zakaz.innerText)+parseInt(el.innerText);
+							                   		})
+				                   				}, 300)
 					                   		});
 				                   		let td_name_rabota = document.createElement('td');
 				                   			td_name_rabota.className = 'name_rabota';
@@ -734,9 +737,6 @@ function click_on_day () {
 				                   			td_price_rabota.className = 'price_rabota';
 				                   			td_price_rabota.innerText = s.getAttribute('data-price') + ' руб';
 				                   			td_price_rabota.setAttribute('data-price', s.getAttribute('data-price'));
-				                   			function math_work (argument) {
-				                   				td_price_rabota.innerText = parseInt(td_price_rabota.getAttribute('data-price')) * this.value + ' руб';
-				                   			}
 				                   	tr_rabota.appendChild(td_id_rabota);
 				                   	tr_rabota.appendChild(td_name_rabota);
 				                   	tr_rabota.appendChild(td_count_rabota);
@@ -747,6 +747,11 @@ function click_on_day () {
 			                   		if (tbodycontainer.offsetHeight > 200) {
 			                   			tbodycontainer.scrollTop = 1000;
 			                   		}
+			                   		summ_zakaz.innerText = 0;
+			                   		document.querySelectorAll('.price_rabota').forEach(function (el, i) {
+			                   			summ_zakaz.innerText = parseInt(summ_zakaz.innerText)+parseInt(el.innerText);
+			                   		})
+			                   		//document.querySelector
 			                   	})
 				            }
 			    	});
@@ -778,8 +783,11 @@ function click_on_day () {
 					                   				for (let i=0; i<popup_zakaz_vidi_rabot_viborka_body.children.length; i++) {
 						                   				popup_zakaz_vidi_rabot_viborka_body.children[i].firstChild.firstChild.innerText = i+1 + ' ';
 						                   			}
+							                   		summ_zakaz.innerText = 0;
+							                   		document.querySelectorAll('.price_rabota').forEach(function (el, i) {
+							                   			summ_zakaz.innerText = parseInt(summ_zakaz.innerText)+parseInt(el.innerText);
+							                   		})
 				                   				}, 300);
-					                   			
 					                   		});
 				                   		let td_name_rabota = document.createElement('td');
 				                   			td_name_rabota.className = 'name_rabota';
@@ -797,9 +805,6 @@ function click_on_day () {
 				                   			td_price_rabota.className = 'price_rabota';
 				                   			td_price_rabota.innerText = s.getAttribute('data-price') + ' руб';
 				                   			td_price_rabota.setAttribute('data-price', s.getAttribute('data-price'));
-				                   			function math_work (argument) {
-				                   				td_price_rabota.innerText = parseInt(td_price_rabota.getAttribute('data-price')) * this.value + ' руб';
-				                   			}
 				                   	tr_rabota.appendChild(td_id_rabota);
 				                   	tr_rabota.appendChild(td_name_rabota);
 				                   	tr_rabota.appendChild(td_count_rabota);
@@ -810,6 +815,11 @@ function click_on_day () {
 			                   		if (tbodycontainer.offsetHeight > 200) {
 			                   			tbodycontainer.scrollTop = 1000;
 			                   		}
+			                   		summ_zakaz.innerText = 0;
+			                   		document.querySelectorAll('.price_rabota').forEach(function (el, i) {
+			                   			summ_zakaz.innerText = parseInt(summ_zakaz.innerText)+parseInt(el.innerText);
+			                   		})
+			                   		
 			                   	})
 				            }
 			    	});
@@ -860,8 +870,11 @@ function click_on_day () {
 					                   				for (let i=0; i<popup_zakaz_vidi_rabot_viborka_body.children.length; i++) {
 						                   				popup_zakaz_vidi_rabot_viborka_body.children[i].firstChild.firstChild.innerText = i+1 + ' ';
 						                   			}
-				                   				}, 300)
-					                   			
+							                   		summ_zakaz.innerText = 0;
+							                   		document.querySelectorAll('.price_rabota').forEach(function (el, i) {
+							                   			summ_zakaz.innerText = parseInt(summ_zakaz.innerText)+parseInt(el.innerText);
+							                   		})
+				                   				}, 300)		                   			
 					                   		});
 				                   		let td_name_rabota = document.createElement('td');
 				                   			td_name_rabota.className = 'name_rabota';
@@ -879,19 +892,20 @@ function click_on_day () {
 				                   			td_price_rabota.className = 'price_rabota';
 				                   			td_price_rabota.innerText = s.getAttribute('data-price') + ' руб';
 				                   			td_price_rabota.setAttribute('data-price', s.getAttribute('data-price'));
-				                   			function math_work (argument) {
-				                   				td_price_rabota.innerText = parseInt(td_price_rabota.getAttribute('data-price')) * this.value + ' руб';
-				                   			}
-				                   	tr_rabota.appendChild(td_id_rabota);
-				                   	tr_rabota.appendChild(td_name_rabota);
-				                   	tr_rabota.appendChild(td_count_rabota);
-				                   	tr_rabota.appendChild(td_price_rabota);
+					                   	tr_rabota.appendChild(td_id_rabota);
+					                   	tr_rabota.appendChild(td_name_rabota);
+					                   	tr_rabota.appendChild(td_count_rabota);
+					                   	tr_rabota.appendChild(td_price_rabota);
 
-			                   		popup_zakaz_vidi_rabot_viborka_body.appendChild(tr_rabota);
-			                   		this.parentElement.parentElement.removeChild(this.parentElement)
-			                   		if (tbodycontainer.offsetHeight > 200) {
-			                   			tbodycontainer.scrollTop = 1000;
-			                   		}
+				                   		popup_zakaz_vidi_rabot_viborka_body.appendChild(tr_rabota);
+				                   		this.parentElement.parentElement.removeChild(this.parentElement)
+				                   		if (tbodycontainer.offsetHeight > 200) {
+				                   			tbodycontainer.scrollTop = 1000;
+				                   		}
+				                   		summ_zakaz.innerText = 0;
+				                   		document.querySelectorAll('.price_rabota').forEach(function (el, i) {
+				                   			summ_zakaz.innerText = parseInt(summ_zakaz.innerText)+parseInt(el.innerText);
+				                   		})
 			                    	})
 			                }
 			            }
@@ -967,8 +981,9 @@ function click_on_day () {
 							this.addEventListener('mouseout', function () {this.classList.remove('btn-success')})
 							this.addEventListener('click', function () {
 								let data_work = { name:create_new_work_name.value, code:create_new_work_code.value, raiting:100, price:create_new_work_price.value }
-			                   	$.get('sauto-main/save-work', data_work, function(data) {
+			                   	$.get('save-work', data_work, function(data) {
 			                   		console.log(data)
+			                   		document.querySelector('.add_button').remove()
 			                   	});
 								this.parentElement.remove();
 								sauto.success_window('Новая услуга, товар');
@@ -988,8 +1003,11 @@ function click_on_day () {
 					                   				for (let i=0; i<popup_zakaz_vidi_rabot_viborka_body.children.length; i++) {
 						                   				popup_zakaz_vidi_rabot_viborka_body.children[i].firstChild.firstChild.innerText = i+1 + ' ';
 						                   			}
-				                   				}, 300)
-					                   			
+							                   		summ_zakaz.innerText = 0;
+							                   		document.querySelectorAll('.price_rabota').forEach(function (el, i) {
+							                   			summ_zakaz.innerText = parseInt(summ_zakaz.innerText)+parseInt(el.innerText);
+							                   		})
+				                   				}, 300)                   			
 					                   		});
 				                   		let td_name_rabota = document.createElement('td');
 				                   			td_name_rabota.className = 'name_rabota';
@@ -1007,9 +1025,7 @@ function click_on_day () {
 				                   			td_price_rabota.className = 'price_rabota';
 				                   			td_price_rabota.innerText = create_new_work_price.value + ' руб';
 				                   			td_price_rabota.setAttribute('data-price', create_new_work_price.value);
-				                   			function math_work (argument) {
-				                   				td_price_rabota.innerText = parseInt(td_price_rabota.getAttribute('data-price')) * this.value + ' руб';
-				                   			}
+
 				                   	tr_rabota.appendChild(td_id_rabota);
 				                   	tr_rabota.appendChild(td_name_rabota);
 				                   	tr_rabota.appendChild(td_count_rabota);
@@ -1019,6 +1035,10 @@ function click_on_day () {
 			                   		if (tbodycontainer.offsetHeight > 200) {
 			                   			tbodycontainer.scrollTop = 1000;
 			                   		}
+			                   		summ_zakaz.innerText = 0;
+			                   		document.querySelectorAll('.price_rabota').forEach(function (el, i) {
+			                   			summ_zakaz.innerText = parseInt(summ_zakaz.innerText)+parseInt(el.innerText);
+			                   		})
 								});
 							}
 							else {
@@ -1048,13 +1068,38 @@ function click_on_day () {
 					this.children[0].children[0].style.display = 'inline-block';
 				}
 
+				function math_work (argument) {
+					this.parentElement.nextElementSibling.innerText = parseInt(this.parentElement.nextElementSibling.getAttribute('data-price')) * this.value + ' руб';
+				    summ_zakaz.innerText = 0;
+					document.querySelectorAll('.price_rabota').forEach(function (el, i) {
+						summ_zakaz.innerText = parseInt(summ_zakaz.innerText)+parseInt(el.innerText);
+					})
+				}
 
 
+/************************************************************************************************************************
+*										Выбор мастера для выполнения работ												*
+************************************************************************************************************************/
+	let popup_zakaz_master = document.createElement('div');
+		popup_zakaz_master.className = 'col-md-6 popup_zakaz_master';
+		popup_zakaz_master.style = 'margin-top:1em';
+	let popup_zakaz_master_label = document.createElement('label');
+		popup_zakaz_master_label.classList.add('col-md-12');
+		popup_zakaz_master_label.innerHTML = '<i class="fa fa-users col-md-2" aria-hidden="true"></i>';
+		popup_zakaz_master_label.children[0].style.cursor = 'pointer';
+	let popup_zakaz_master_search = sauto.create_input('text', 'master', 'master', 'col-md-10 master', 'Выбор мастера');
+		//popup_zakaz_master_search.addEventListener('input', search_master)
 
+		popup_zakaz_master_label.appendChild(popup_zakaz_master_search);
+		popup_zakaz_master.appendChild(popup_zakaz_master_label);
 
-
-
-
+/************************************************************************************************************************
+*														Общая сумма														*
+************************************************************************************************************************/
+	let popup_zakaz_cash = document.createElement('div');
+		popup_zakaz_cash.className = 'col-md-6 popup_zakaz_cash';
+		popup_zakaz_cash.style = 'margin-top:1em;text-align:right';
+		popup_zakaz_cash.innerHTML = 'Стоимость заказа - <span id="summ_zakaz">0</span> руб.';
 
 
 
@@ -1109,6 +1154,8 @@ function click_on_day () {
 		zag2.innerText = 'Виды работ:';		
 		popup_zakaz_body.appendChild(zag2);*/
 		popup_zakaz_body.appendChild(conteiner_tbody);
+		popup_zakaz_body.appendChild(popup_zakaz_master);
+		popup_zakaz_body.appendChild(popup_zakaz_cash);
 
 
 

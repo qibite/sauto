@@ -15,7 +15,7 @@ class SautoMainController extends Controller
 	public $layout = 'sauto_main';
     public function actionIndex()
     {
-    	$car = Cars::find()->all();
+    	$car = Cars::find()->orderBy('firm DESC')->all();
     	$clients = NewClient::find()->all();
         $works = NewWork::find()->all();
         return $this->render('index', compact('car', 'clients', 'works'));
