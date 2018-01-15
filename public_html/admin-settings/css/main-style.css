@@ -395,9 +395,10 @@ input.mBottomInp[type="text"]
     display: none;
     padding: 1px 0 1px 1em;
 }
-.spisok_conteiner>span:hover, .spisok_conteiner_auto>span:hover
+.spisok_conteiner>span:hover, .spisok_conteiner_auto>span:hover, #list_masters>span:hover
 {
     background-color: #E7E7E7;
+    cursor: pointer;
 }
 
 .add_button

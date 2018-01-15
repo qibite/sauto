@@ -166,7 +166,7 @@ function click_on_day () {
 		let popup_zakaz_fio_inp = document.createElement('input'); // ПОЛЕ ВВОДА ФИО КЛИЕНТА С ФУНКЦИЕЙ ПОИСКА
 			popup_zakaz_fio_inp.className = 'col-md-10 client_input_fio';
 			popup_zakaz_fio_inp.type = 'text';
-			popup_zakaz_fio_inp.placeholder = 'Начните ввод ФИО - Ивано..'
+			popup_zakaz_fio_inp.placeholder = 'Клиент'
 			//popup_zakaz_fio.insertBefore(popup_zakaz_fio_inp, popup_zakaz_fio.firstChild);
 				/*
 				*
@@ -387,18 +387,8 @@ function click_on_day () {
 							if (create_new_person_family.value != '' && create_new_person_name.value != '' && create_new_person_phone.value != '' && create_new_person_auto.value != '' && create_new_person_year.value != '' && create_new_person_auto_gosno.value != '' && create_new_person_auto_sor.value != '') {
 								this.classList.add('btn-success')
 								this.style.cursor = 'pointer';
-								this.addEventListener('mouseout', function () {this.classList.remove('btn-success')})
-								this.addEventListener('click', function () {
-									save_new_client_cart();
-									this.parentElement.remove();
-									sauto.success_window('Новый пользователь');
-									popup_zakaz_body.classList.remove('HIDE_ON_TIME');									
-									let buffer = create_new_person_family.value +' '+ create_new_person_name.value+' '+ create_new_person_otchestvo.value;
-										popup_zakaz_fio_inp.value = buffer;
-										popup_zakaz_auto_firm_inp.value = create_new_person_auto.value;
-										document.getElementById('year_car').value = create_new_person_year.value;
-										document.querySelector('#select_client > .add_button').remove();
-								})											
+								this.addEventListener('mouseout', function () {this.classList.remove('btn-success');this.removeEventListener('click', save_new_client_cart_finish)	})
+								this.addEventListener('click', save_new_client_cart_finish)											
 							}
 							else {
 									this.classList.add('btn-warning');
@@ -444,6 +434,18 @@ function click_on_day () {
 								document.querySelector('.add_button').remove();
 							});
 						}
+
+						function save_new_client_cart_finish () {
+							save_new_client_cart();
+							this.parentElement.remove();
+							sauto.success_window('Новый пользователь');
+							popup_zakaz_body.classList.remove('HIDE_ON_TIME');									
+							let buffer = create_new_person_family.value +' '+ create_new_person_name.value+' '+ create_new_person_otchestvo.value;
+								popup_zakaz_fio_inp.value = buffer;
+								popup_zakaz_auto_firm_inp.value = create_new_person_auto.value;
+								document.getElementById('year_car').value = create_new_person_year.value;
+								document.querySelector('#select_client > .add_button').remove();
+						}
 							
 						create_new_person_save.innerHTML = '<i class="fa fa-floppy-o" aria-hidden="true"></i> Сохранить';
 						create_new_person.appendChild(create_new_person_save);
@@ -483,15 +485,19 @@ function click_on_day () {
 			}
 
 		let popup_zakaz_auto_firm_inp = document.createElement('input'); // ПОЛЕ ВВОДА ФИО КЛИЕНТА С ФУНКЦИЕЙ ПОИСКА
-			popup_zakaz_auto_firm_inp.className = 'col-md-10 client_input_fio';
+			popup_zakaz_auto_firm_inp.className = 'col-md-5 client_input_fio';
 			popup_zakaz_auto_firm_inp.type = 'text';
-			popup_zakaz_auto_firm_inp.placeholder = 'Начните ввод фирмы авто - Toyo..'
+			popup_zakaz_auto_firm_inp.placeholder = 'Автомобиль'
 			//popup_zakaz_auto_firm.insertBefore(popup_zakaz_auto_firm_inp, popup_zakaz_auto_firm.firstChild);
 				/*
 				*
 				* ДОБАВИМ ИКОНКУ
 				*
-				**/		
+				**/	
+		let popup_zakaz_year_car = sauto.create_input('text', 'year_car', 'year_car', 'col-md-3 col-md-offset-1 year_car', 'Год');
+			popup_zakaz_year_car.style.textAlign = 'center';
+			
+
 			popup_zakaz_auto_firm_inp.addEventListener('focus', focus_popup_zakaz_auto_firm_inp); // ПРИ ПОЛУЧЕНИИ ФОКУСА НА ПОЛЕ ВВОДА АВТО 
 				function focus_popup_zakaz_auto_firm_inp (argument) {
 					let spiski = document.querySelectorAll('.popup_zakaz_auto_firm_spisok');
@@ -539,7 +545,8 @@ function click_on_day () {
 			let label_af = document.createElement('label');
 				label_af.classList.add('col-md-12');
 				label_af.innerHTML = '<i class="fa fa-car col-md-2" aria-hidden="true"></i>';
-				label_af.appendChild(popup_zakaz_auto_firm_inp)
+				label_af.appendChild(popup_zakaz_auto_firm_inp);
+				label_af.appendChild(popup_zakaz_year_car);
 				popup_zakaz_auto_firm.insertBefore(label_af, popup_zakaz_auto_firm.firstChild);
 
 /************************************************************************************************************************
@@ -628,7 +635,7 @@ function click_on_day () {
 									let err = document.createElement('span');
 										err.classList = 'err';
 										err.innerHTML = '<strong style="color:red">Заполните поле:</strong>';
-										create_new_firm_auto_name.value == '' ? err.children[0].innerText = err.innerText + ' -производителя-' : false;										
+										create_new_firm_auto_name.value == '' ? err.children[0].innerText = err.innerText + ' -производителя-' : false;
 										create_new_firm_auto_model.value == '' ? err.children[0].innerText = err.innerText + ' -модели- ' : false;
 										create_new_firm_auto.appendChild(err);
 										this.addEventListener('mouseout', function () {err.remove();this.classList.remove('btn-warning');this.classList.remove('disabled')})
@@ -660,7 +667,7 @@ function click_on_day () {
 			let popup_zakaz_vidi_rabot_list = document.createElement('div');
 				popup_zakaz_vidi_rabot_list.id = 'list_rabot';
 				popup_zakaz_vidi_rabot_list.style.clear = 'both';
-				popup_zakaz_vidi_rabot_list.className = 'col-md-12';
+				popup_zakaz_vidi_rabot_list.className = 'col-md-6';
 				popup_zakaz_vidi_rabot_list.style.backgroundColor = '#ССС';
 
 
@@ -1093,6 +1100,36 @@ function click_on_day () {
 		popup_zakaz_master_label.appendChild(popup_zakaz_master_search);
 		popup_zakaz_master.appendChild(popup_zakaz_master_label);
 
+	let popup_zakaz_master_cont = document.createElement('div');
+		popup_zakaz_master_cont.id = 'list_masters';
+		popup_zakaz_master_cont.className = 'col-md-10 col-md-offset-2 popup_zakaz_master';
+		popup_zakaz_master.appendChild(popup_zakaz_master_cont);
+
+		let data_work = { code_work:100 }
+		popup_zakaz_master_search.addEventListener('click', function(){
+			popup_zakaz_master_cont.style.display = 'block';
+			if (popup_zakaz_master_cont.children.length == 0) {
+				$.get('get-personal', data_work, function(data) {
+					let list = JSON.parse(data);
+					list.forEach( function(el, i) {
+						let spisok = document.createElement('span'); // ГЕНЕРАЦИЯ СПИСКА КЛИЕНТСКОЙ БАЗЫ ДЛЯ ВЫВОДА
+						spisok.className = 'col-md-12 popup_zakaz_master_cont_spisok';
+						spisok.setAttribute('data-idmaster', el.id)
+						spisok.innerText = el.master;
+						spisok.addEventListener('click', open_list_masters);
+						popup_zakaz_master_cont.appendChild(spisok);
+					});
+				});
+			}			
+		})
+
+		function open_list_masters (argument) {
+			this.parentElement.previousSibling.lastChild.value = this.innerText;
+			this.parentElement.style.display = 'none';
+			/*document.querySelectorAll('.popup_zakaz_master_cont_spisok').forEach( function(element, index) {
+				element.remove();
+			});*/
+		}
 /************************************************************************************************************************
 *														Общая сумма														*
 ************************************************************************************************************************/
@@ -1131,17 +1168,13 @@ function click_on_day () {
 		popup_zakaz_year.style.marginTop = '1em'
 		popup_zakaz_body.appendChild(popup_zakaz_year);
 
-	let label_year = document.createElement('label');
+	/*let label_year = document.createElement('label');
 		label_year.classList.add('col-md-12');
-		label_year.innerHTML = '<i class="fa fa-calendar col-md-2" aria-hidden="true"></i>';
-
-	let popup_zakaz_year_car = sauto.create_input('text', 'year_car', 'year_car', 'col-md-9 year_car', 'Год выпуска авто');
-		label_year.appendChild(popup_zakaz_year_car);
-		popup_zakaz_year.appendChild(label_year);
+		label_year.innerHTML = '<i class="fa fa-calendar col-md-2" aria-hidden="true"></i>';*/
 
 	let zag = document.createElement('h4');
 		zag.style.marginTop = '-.7em';
-		zag.className = 'col-md-12';
+		zag.className = 'col-md-6';
 		sauto.insert_clear_block(popup_zakaz_body);
 		zag.innerText = 'Популярные виды работ:';
 		popup_zakaz_body.appendChild(zag);

@@ -7,6 +7,7 @@ use yii\web\Controller;
 use backend\models\Cars;
 use backend\models\NewClient;
 use backend\models\NewWork;
+use backend\models\Personal;
 /**
  * Site controller
  */
@@ -17,7 +18,7 @@ class SautoMainController extends Controller
     {
     	$car = Cars::find()->orderBy('firm DESC')->all();
     	$clients = NewClient::find()->all();
-        $works = NewWork::find()->all();
+        $works = NewWork::find()->orderBy('raiting DESC')->all();
         return $this->render('index', compact('car', 'clients', 'works'));
     }
 
@@ -70,5 +71,15 @@ class SautoMainController extends Controller
         $Work->price = $_GET['price'];
         $Work->save();
         return 'NewWork is save! Work add';
+    }
+
+    public function actionGetPersonal()
+    {
+        $masters = Personal::find()->where('busy = 0')->all();
+        $obj_masters =[];
+        foreach ($masters as $master) {            
+            array_push( $obj_masters, array( 'id' => $master->id, 'master' => $master->fio ) );
+        }
+        return json_encode($obj_masters);
     }
 }
