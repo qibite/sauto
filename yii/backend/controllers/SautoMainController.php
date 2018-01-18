@@ -8,6 +8,7 @@ use backend\models\Cars;
 use backend\models\NewClient;
 use backend\models\NewWork;
 use backend\models\Personal;
+use backend\models\Parts;
 /**
  * Site controller
  */
@@ -19,7 +20,8 @@ class SautoMainController extends Controller
     	$car = Cars::find()->orderBy('firm DESC')->all();
     	$clients = NewClient::find()->all();
         $works = NewWork::find()->orderBy('raiting DESC')->all();
-        return $this->render('index', compact('car', 'clients', 'works'));
+        $parts = Parts::find()->all();
+        return $this->render('index', compact('car', 'clients', 'works', 'parts'));
     }
 
     public function actionClient()

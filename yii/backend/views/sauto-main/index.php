@@ -170,7 +170,7 @@ $this->title = 'Расписание работы автосервиса | sauto
 
     <select name="clients" id="clients" style="display:none">
         <?php
-            foreach ($clients as $man) {echo "<option data-idman='$man->id' data-idcar-idman='$man->avto_id' data-idcar-idman-year='$man->year'>$man->family $man->name $man->surname</option>";}
+            foreach ($clients as $man) {echo "<option data-idman='$man->id' data-phoneman='$man->phone' data-idcar-idman='$man->avto_id' data-idcar-idman-year='$man->year'>$man->family $man->name $man->surname</option>";}
         ?>
     </select>
 
@@ -183,6 +183,12 @@ $this->title = 'Расписание работы автосервиса | sauto
     <select name="works" id="works" style="display:none">
         <?php
           foreach ($works as $work) {echo "<option value='" . $work->id . "' data-price='" . $work->price . "' data-idwork='" . $work->code . "'>" . $work->name .  "</option>";}
+        ?>
+    </select>
+
+    <select name="works" id="zapchasti" style="display:none">
+        <?php
+          foreach ($parts as $part) {echo "<option value='" . $part->id . "' data-price='" . $part->price . "' data-idcarpart='" . $part->car . "' data-idpart='" . $part->code . "'>" . $part->name .  "</option>";}
         ?>
     </select>
 
