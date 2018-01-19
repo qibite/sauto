@@ -376,7 +376,7 @@ function click_on_day () {
 
 					let create_new_person_phone = sauto.create_input('text', 'person_phone','phone_new_person', 'col-md-5 input mBottomInp', 'тел: +7 999 999-99-99 *'); //ДОБАВЛЯЕМ ПОЛЕ ВВОДА ОТЧЕСТВА
 						create_new_person_inpblock.appendChild(create_new_person_phone)
-						//create_new_person_phone.addEventListener('blur', succ_input);
+						$('#person_phone').mask("+7 (999) 999-99-99");
 
 					let create_new_person_email =sauto.create_input('text', 'person_email','email_new_person', 'col-md-5 col-md-offset-2 input mBottomInp', 'E-mail'); //ДОБАВЛЯЕМ ПОЛЕ ВВОДА ОТЧЕСТВА
 						create_new_person_inpblock.appendChild(create_new_person_email)
@@ -700,76 +700,27 @@ function click_on_day () {
 				popup_zakaz_vidi_rabot_viborka.appendChild(popup_zakaz_vidi_rabot_viborka_body);
 				conteiner_tbody.appendChild(popup_zakaz_vidi_rabot_viborka);
 
+			//var s;
+
 
 			let	list_of_works = document.querySelector('#works');
-				list_of_works.childNodes.forEach(function (element, index) {
-				        if (element.nodeName == '#text') {
-				            return;
-				        } else {				        	
-				            let s = document.createElement('span');
-			                 	s.innerText = element.innerText;
-			                 	s.setAttribute('data-price', element.getAttribute('data-price'));
-			                 	s.setAttribute('data-idwork', element.getAttribute('data-idwork'));
-			                   	s.insertBefore(add_rabota_icon.cloneNode(true), s.firstChild);
-			                popup_zakaz_vidi_rabot_list.appendChild(s);
-			                   	
-			                   	s.firstChild.addEventListener('click', function () {
-			                   		let tr_rabota = document.createElement('tr');
-			                   			tr_rabota.addEventListener('mouseover', show_del_td);
-			                   			tr_rabota.addEventListener('mouseout', hide_del_td);
-				                   		let td_id_rabota = document.createElement('td');
-				                   			td_id_rabota.className = 'id';
-				                   			td_id_rabota.innerHTML = '<span>' + (popup_zakaz_vidi_rabot_viborka_body.children.length+1) + ' </span>'; //s.getAttribute('data-idwork');
-				                   			td_id_rabota.appendChild(del_rabota_icon.cloneNode(true)).addEventListener('click', function () {
-				                   				if (tbodycontainer.offsetHeight < 200) {
-			                   						tbodycontainer.style.overflow = 'hidden';
-			                   					}
-				                   				this.parentElement.parentElement.style.backgroundColor = '#ff9999';
-				                   				this.parentElement.parentElement.style.color = '#ffffff';
-				                   				setTimeout(()=>{
-				                   					summ_zakaz.innerText -= parseInt(this.parentElement.nextSibling.nextSibling.nextSibling.innerText);							                   		
-					                   				this.parentElement.parentElement.parentElement.removeChild(this.parentElement.parentElement)
-					                   				for (let i=0; i<popup_zakaz_vidi_rabot_viborka_body.children.length; i++) {
-						                   				popup_zakaz_vidi_rabot_viborka_body.children[i].firstChild.firstChild.innerText = i+1 + ' ';
-						                   			}
-				                   				}, 300)
-					                   		});
-				                   		let td_name_rabota = document.createElement('td');
-				                   			td_name_rabota.className = 'name_s';
-				                   			td_name_rabota.innerText = s.innerText;
-				                   		let td_count_rabota = document.createElement('td');
-				                   			td_count_rabota.className = 'td_count';
-				                   		let td_input_rabota = document.createElement('input');
-				                   			td_input_rabota.type = 'number';
-				                   			td_input_rabota.className = 'input_work';
-				                   			td_input_rabota.value = 1;
-				                   			td_input_rabota.setAttribute('min', '1');
-				                   			td_input_rabota.addEventListener('input', math_work)
-				                   			td_count_rabota.appendChild(td_input_rabota);
-				                   		let td_price_rabota = document.createElement('td');
-				                   			td_price_rabota.className = 'price_rabota';
-				                   			td_price_rabota.innerText = s.getAttribute('data-price') + ' руб';
-				                   			td_price_rabota.setAttribute('data-price', s.getAttribute('data-price'));
-				                   	tr_rabota.appendChild(td_id_rabota);
-				                   	tr_rabota.appendChild(td_name_rabota);
-				                   	tr_rabota.appendChild(td_count_rabota);
-				                   	tr_rabota.appendChild(td_price_rabota);
-
-			                   		popup_zakaz_vidi_rabot_viborka_body.appendChild(tr_rabota);
-			                   		this.parentElement.parentElement.removeChild(this.parentElement)
-			                   		if (tbodycontainer.offsetHeight > 240) {
-			                   			tbodycontainer.style.overflowY = 'auto';
-			                   			tbodycontainer.scrollTop = 1000;
-			                   		}
-			                   		let bufer = 0;
-			                   		document.querySelectorAll('.price_rabota, .price_zapchast').forEach(function (el, i) {
-			                   			bufer += parseInt(el.innerText);
-			                   		})
-			                   		summ_zakaz.innerText = bufer;
-			                   		//document.querySelector
-			                   	})
-				            }
-			    	});
+				list_of_works.childNodes.forEach(function (element, index) 
+				{
+					if (element.nodeName == '#text') {
+				        return;
+				    } 
+				    else 
+				    {
+				    	s = document.createElement('span');
+				    	s.innerText = element.innerText;			            
+			            s.setAttribute('data-price', element.getAttribute('data-price'));
+			            s.setAttribute('data-idwork', element.getAttribute('data-idwork'));
+			            s.insertBefore(add_rabota_icon.cloneNode(true), s.firstChild);
+			            popup_zakaz_vidi_rabot_list.appendChild(s);
+			            s.firstChild.addEventListener('click', add_work_in_tab)
+			            //return s;
+			        }
+			    });
 
 				popup_zakaz_vidi_rabot_label.children[0].addEventListener('click', function () {
 					if (popup_zakaz_vidi_rabot_list.innerHTML != '') {return}
@@ -783,154 +734,41 @@ function click_on_day () {
 			                 	s.setAttribute('data-idwork', element.getAttribute('data-idwork'));
 			                   	s.insertBefore(add_rabota_icon.cloneNode(true), s.firstChild);
 			                popup_zakaz_vidi_rabot_list.appendChild(s);
-			                   	s.firstChild.addEventListener('click', function () {
-			                   		let tr_rabota = document.createElement('tr');
-			                   			tr_rabota.addEventListener('mouseover', show_del_td);
-			                   			tr_rabota.addEventListener('mouseout', hide_del_td);
-				                   		let td_id_rabota = document.createElement('td');
-				                   			td_id_rabota.className = 'id';
-				                   			td_id_rabota.innerHTML = '<span>' + (popup_zakaz_vidi_rabot_viborka_body.children.length+1) + ' </span>'; //s.getAttribute('data-idwork');
-				                   			td_id_rabota.appendChild(del_rabota_icon.cloneNode(true)).addEventListener('click', function () {
-				                   				if (tbodycontainer.offsetHeight < 200) {
-			                   						tbodycontainer.style.overflow = 'hidden';
-			                   					}
-				                   				this.parentElement.parentElement.style.backgroundColor = '#ff9999';
-				                   				this.parentElement.parentElement.style.color = '#ffffff';
-				                   				setTimeout(()=>{
-				                   					summ_zakaz.innerText -= parseInt(this.parentElement.nextSibling.nextSibling.nextSibling.innerText);
-					                   				this.parentElement.parentElement.parentElement.removeChild(this.parentElement.parentElement)
-					                   				for (let i=0; i<popup_zakaz_vidi_rabot_viborka_body.children.length; i++) {
-						                   				popup_zakaz_vidi_rabot_viborka_body.children[i].firstChild.firstChild.innerText = i+1 + ' ';
-						                   			}
-				                   				}, 300);
-					                   		});
-				                   		let td_name_rabota = document.createElement('td');
-				                   			td_name_rabota.className = 'name_s';
-				                   			td_name_rabota.innerText = s.innerText;
-				                   		let td_count_rabota = document.createElement('td');
-				                   			td_count_rabota.className = 'td_count';
-				                   		let td_input_rabota = document.createElement('input');
-				                   			td_input_rabota.type = 'number';
-				                   			td_input_rabota.className = 'input_work';
-				                   			td_input_rabota.value = 1;
-				                   			td_input_rabota.setAttribute('min', '1');
-				                   			td_input_rabota.addEventListener('input', math_work)
-				                   			td_count_rabota.appendChild(td_input_rabota);
-				                   		let td_price_rabota = document.createElement('td');
-				                   			td_price_rabota.className = 'price_';
-				                   			td_price_rabota.innerText = s.getAttribute('data-price') + ' руб';
-				                   			td_price_rabota.setAttribute('data-price', s.getAttribute('data-price'));
-				                   	tr_rabota.appendChild(td_id_rabota);
-				                   	tr_rabota.appendChild(td_name_rabota);
-				                   	tr_rabota.appendChild(td_count_rabota);
-				                   	tr_rabota.appendChild(td_price_rabota);
-
-			                   		popup_zakaz_vidi_rabot_viborka_body.appendChild(tr_rabota);
-			                   		this.parentElement.parentElement.removeChild(this.parentElement)
-			                   		if (tbodycontainer.offsetHeight > 240) {
-			                   			tbodycontainer.style.overflowY = 'auto';
-			                   			tbodycontainer.scrollTop = 1000;
-			                   		}
-			                   		let bufer = 0;
-			                   		document.querySelectorAll('.price_rabota, .price_zapchast').forEach(function (el, i) {
-			                   			bufer += parseInt(el.innerText);
-			                   		})
-			                   		summ_zakaz.innerText = bufer;
-			                   	})
+			                   	s.firstChild.addEventListener('click', add_work_in_tab)
 				            }
 			    	});
 				})
 				
 
 			function search_vidi_rabot() {
-			    /*if (this.value.length < 1) {
-			        popup_zakaz_vidi_rabot_list.innerHTML = '';
-			    }*/
+				if (this.value.search(/[а-яА-ЯёЁ]||[\s]/) != -1) {
+					let del = document.querySelector('.add_button');
+					if (del) { del.remove() }
 
-
-			    if (this.value.search(/[а-яА-ЯёЁ]||[\s]/) != -1) {
-
-			        let del = document.querySelector('.add_button');
-			        if (del) { del.remove() }
-
-
-			        if (this.value != '') {
-			            var for_search_list_work_REGEXP = new RegExp(this.value, 'gi');
-			            popup_zakaz_vidi_rabot_list.innerHTML = '';
-			        } else { return }
-
-			        list_of_works.childNodes.forEach(function(element, index) {
-			            if (element.nodeName == '#text') {
-			                return;
-			            } else {
-			                let patt = element.innerText;
+					if (this.value != '') {
+					 	var for_search_list_work_REGEXP = new RegExp(this.value, 'gi');
+					 	popup_zakaz_vidi_rabot_list.innerHTML = '';
+					}
+					else { return }
+					list_of_works.childNodes.forEach(function(element, index) {
+						if (element.nodeName == '#text') {
+							return;
+			            }
+			            else {
+			            	let patt = element.innerText;
 			                if (patt.search(for_search_list_work_REGEXP) != -1) {
-			                    let s = document.createElement('span');
+			                	let s = document.createElement('span');
 			                 	s.innerText = element.innerText;
 			                 	s.setAttribute('data-price', element.getAttribute('data-price'));
 			                 	s.setAttribute('data-idwork', element.getAttribute('data-idwork'));
 			                   	s.insertBefore(add_rabota_icon.cloneNode(true), s.firstChild);
 			                    popup_zakaz_vidi_rabot_list.appendChild(s);
-			                    	s.firstChild.addEventListener('click', function () {
-			                    		let tr_rabota = document.createElement('tr');
-			                   			tr_rabota.addEventListener('mouseover', show_del_td);
-			                   			tr_rabota.addEventListener('mouseout', hide_del_td);
-				                   		let td_id_rabota = document.createElement('td');
-				                   			td_id_rabota.className = 'id';
-				                   			td_id_rabota.innerHTML = '<span>' + (popup_zakaz_vidi_rabot_viborka_body.children.length+1) + ' </span>'; //s.getAttribute('data-idwork');
-				                   			td_id_rabota.appendChild(del_rabota_icon.cloneNode(true)).addEventListener('click', function () {
-				                   				if (tbodycontainer.offsetHeight < 200) {
-			                   						tbodycontainer.style.overflow = 'hidden';
-			                   					}
-				                   				this.parentElement.parentElement.style.backgroundColor = '#ff9999';
-				                   				this.parentElement.parentElement.style.color = '#ffffff';
-				                   				setTimeout(()=>{
-				                   					summ_zakaz.innerText -= parseInt(this.parentElement.nextSibling.nextSibling.nextSibling.innerText);
-					                   				this.parentElement.parentElement.parentElement.removeChild(this.parentElement.parentElement)
-					                   				for (let i=0; i<popup_zakaz_vidi_rabot_viborka_body.children.length; i++) {
-						                   				popup_zakaz_vidi_rabot_viborka_body.children[i].firstChild.firstChild.innerText = i+1 + ' ';
-						                   			}
-				                   				}, 300)		                   			
-					                   		});
-				                   		let td_name_rabota = document.createElement('td');
-				                   			td_name_rabota.className = 'name_s';
-				                   			td_name_rabota.innerText = s.innerText;
-				                   		let td_count_rabota = document.createElement('td');
-				                   			td_count_rabota.className = 'td_count';
-				                   		let td_input_rabota = document.createElement('input');
-				                   			td_input_rabota.type = 'number';
-				                   			td_input_rabota.className = 'input_work';
-				                   			td_input_rabota.value = 1;
-				                   			td_input_rabota.setAttribute('min', '1');
-				                   			td_input_rabota.addEventListener('input', math_work)
-				                   			td_count_rabota.appendChild(td_input_rabota);
-				                   		let td_price_rabota = document.createElement('td');
-				                   			td_price_rabota.className = 'price_rabota';
-				                   			td_price_rabota.innerText = s.getAttribute('data-price') + ' руб';
-				                   			td_price_rabota.setAttribute('data-price', s.getAttribute('data-price'));
-					                   	tr_rabota.appendChild(td_id_rabota);
-					                   	tr_rabota.appendChild(td_name_rabota);
-					                   	tr_rabota.appendChild(td_count_rabota);
-					                   	tr_rabota.appendChild(td_price_rabota);
-
-				                   		popup_zakaz_vidi_rabot_viborka_body.appendChild(tr_rabota);
-				                   		this.parentElement.parentElement.removeChild(this.parentElement)
-				                   		if (tbodycontainer.offsetHeight > 240) {
-			                   			tbodycontainer.style.overflowY = 'auto';
-				                   			tbodycontainer.scrollTop = 1000;
-				                   		}
-				                   		let bufer = 0;
-				                   		document.querySelectorAll('.price_rabota, .price_zapchast').forEach(function (el, i) {
-				                   			bufer += parseInt(el.innerText);
-				                   		})
-				                   		summ_zakaz.innerText = bufer;
-			                    	})
+			                   s.firstChild.addEventListener('click', add_work_in_tab)
 			                }
 			            }
 			        });
 			    }
 			    if (this.value != '') {
-
 			    	for (let i=0; i<list_of_works.length; i++)
 			    	{
 			    		if (popup_zakaz_vidi_rabot_list.innerHTML != '') {
@@ -939,37 +777,103 @@ function click_on_day () {
 			    		}
 			    		else {
 			    			let new_work_add = document.createElement('span');
-								new_work_add.className = 'btn-success add_button col-md-6 col-md-offset-2';
-								new_work_add.innerHTML = 'Добавить услугу <i class="fa fa-plus-circle" aria-hidden="true"></i>';
-								popup_zakaz_vidi_rabot.appendChild(new_work_add);
-								new_work_add.addEventListener('click', create_new_work)
+							new_work_add.className = 'btn-success add_button col-md-6 col-md-offset-2';
+							new_work_add.innerHTML = 'Добавить услугу <i class="fa fa-plus-circle" aria-hidden="true"></i>';
+							popup_zakaz_vidi_rabot.appendChild(new_work_add);
+							new_work_add.addEventListener('click', create_new_work)
 			    			return;
 			    		}
 			    	}
 			    }
 			}
 
+			function add_work_in_tab () {
+				let tr_rabota = document.createElement('tr');
+				tr_rabota.addEventListener('mouseover', show_del_td);
+				tr_rabota.addEventListener('mouseout', hide_del_td);
+				let td_id_rabota = document.createElement('td');
+				td_id_rabota.className = 'id';
+				td_id_rabota.innerHTML = '<span>' + (popup_zakaz_vidi_rabot_viborka_body.children.length+1) + ' </span>';
+
+				td_id_rabota.appendChild(del_rabota_icon.cloneNode(true)).addEventListener('click', function () {
+					if (tbodycontainer.offsetHeight < 200) {
+						tbodycontainer.style.overflow = 'hidden';
+					}
+					this.parentElement.parentElement.style.backgroundColor = '#ff9999';
+					this.parentElement.parentElement.style.color = '#ffffff';
+					setTimeout(()=>{
+						summ_zakaz.innerText -= parseInt(this.parentElement.nextSibling.nextSibling.nextSibling.innerText);
+						this.parentElement.parentElement.parentElement.removeChild(this.parentElement.parentElement)
+						for (let i=0; i<popup_zakaz_vidi_rabot_viborka_body.children.length; i++) {
+							popup_zakaz_vidi_rabot_viborka_body.children[i].firstChild.firstChild.innerText = i+1 + ' ';
+						}
+					}, 300)
+				});
+
+				let td_name_rabota = document.createElement('td');
+				td_name_rabota.className = 'name_s';
+				td_name_rabota.innerText = this.parentElement.innerText;
+
+				let td_count_rabota = document.createElement('td');
+				td_count_rabota.className = 'td_count';
+
+				let td_input_rabota = document.createElement('input');
+				td_input_rabota.type = 'number';
+				td_input_rabota.className = 'input_work';
+				td_input_rabota.value = 1;
+				td_input_rabota.setAttribute('min', '1');
+				td_input_rabota.addEventListener('input', math_work)
+				td_count_rabota.appendChild(td_input_rabota);
+
+				let td_price_rabota = document.createElement('td');
+				td_price_rabota.className = 'price_rabota';
+				td_price_rabota.innerText = this.parentElement.getAttribute('data-price') + ' руб';
+				td_price_rabota.setAttribute('data-price', this.parentElement.getAttribute('data-price'));
+				tr_rabota.appendChild(td_id_rabota);
+				tr_rabota.appendChild(td_name_rabota);
+				tr_rabota.appendChild(td_count_rabota);
+				tr_rabota.appendChild(td_price_rabota);
+
+				popup_zakaz_vidi_rabot_viborka_body.appendChild(tr_rabota);
+
+				this.parentElement.remove()
+
+				if (tbodycontainer.offsetHeight > 240) {
+					tbodycontainer.style.overflowY = 'auto';
+					tbodycontainer.scrollTop = 1000;
+				}
+
+				let bufer = 0;
+				document.querySelectorAll('.price_rabota, .price_zapchast').forEach(function (el, i) {
+					bufer += parseInt(el.innerText);
+				});
+				summ_zakaz.innerText = bufer;
+			}
+
 			function create_new_work (argument) {
 				toogle_window = 'new_work_window';
+
 				let create_new_work = document.createElement('div');
-					create_new_work.className = 'create_new';
-					popup_zakaz_body.classList.add('HIDE_ON_TIME');
-					popup_zakaz.appendChild(create_new_work)
-					create_new_work.innerHTML = '<h3><i class="fa fa-info" aria-hidden="true"></i> Добавление услуги, вида работ или товара</h3>';						
-					sauto.insert_hr(create_new_work);
-					sauto.create_close_button(create_new_work, 'second'); // Добавляем кнопочку закрыть
-			
-					sauto.insert_clear_block(create_new_work);
+				create_new_work.className = 'create_new';
+				popup_zakaz_body.classList.add('HIDE_ON_TIME');
+				popup_zakaz.appendChild(create_new_work)
+				create_new_work.innerHTML = '<h3><i class="fa fa-info" aria-hidden="true"></i> Добавление услуги, вида работ или товара</h3>';
+
+				sauto.insert_hr(create_new_work);
+
+				sauto.create_close_button(create_new_work, 'second'); // Добавляем кнопочку закрыть
+
+				sauto.insert_clear_block(create_new_work);
 				
 				let icon_new_work = document.createElement('div');
-					icon_new_work.className = 'col-md-2';
-					icon_new_work.style.fontSize = '6em';
-					icon_new_work.innerHTML = '<i class="fa fa-cogs" aria-hidden="true"></i>';
-					create_new_work.appendChild(icon_new_work);
+				icon_new_work.className = 'col-md-2';
+				icon_new_work.style.fontSize = '6em';
+				icon_new_work.innerHTML = '<i class="fa fa-cogs" aria-hidden="true"></i>';
+				create_new_work.appendChild(icon_new_work);
 				
 				let create_new_work_name_inpblock = document.createElement('div');
-					create_new_work_name_inpblock.className = 'col-md-8';
-					create_new_work.appendChild(create_new_work_name_inpblock);
+				create_new_work_name_inpblock.className = 'col-md-8';
+				create_new_work.appendChild(create_new_work_name_inpblock);
 				
 				let create_new_work_name = sauto.create_input('text', 'work_name','new_work_name', 'col-md-12 input mBottomInp', 'Введите наименование')
 				
@@ -978,106 +882,117 @@ function click_on_day () {
 
 				let create_new_work_code = sauto.create_input('number', 'auto_code','new_work_code', 'col-md-3 col-md-offset-9 input mBottomInp', 'Код')
 
-					create_new_work_name_inpblock.appendChild(create_new_work_name)
-					create_new_work_name_inpblock.appendChild(create_new_work_price)
-					create_new_work_name_inpblock.appendChild(create_new_work_code)
+				create_new_work_name_inpblock.appendChild(create_new_work_name)
+				create_new_work_name_inpblock.appendChild(create_new_work_price)
+				create_new_work_name_inpblock.appendChild(create_new_work_code)
 
 
 
-					sauto.insert_clear_block(create_new_work);
-					sauto.insert_hr(create_new_work);
+				sauto.insert_clear_block(create_new_work);
+				
+				sauto.insert_hr(create_new_work);
 
-					sauto.insert_clear_block(create_new_work);
+				sauto.insert_clear_block(create_new_work);
 
 				let create_new_work_save = document.createElement('button');
-					create_new_work_save.classList = 'btn';
-					create_new_work_save.id = 'create_new_work_save';						
-					create_new_work_save.addEventListener('mouseover', function () {
-						if (create_new_work_name.value != '' && create_new_work_price.value != '') {
-							this.classList.add('btn-success')
-							this.style.cursor = 'pointer';
-							this.addEventListener('mouseout', function () {this.classList.remove('btn-success')})
-							this.addEventListener('click', function () {
-								let data_work = { name:create_new_work_name.value, code:create_new_work_code.value, raiting:100, price:create_new_work_price.value }
-			                   	$.get('save-work', data_work, function(data) {
-			                   		console.log(data);
-			                   		document.querySelector('.add_button').remove();
-			                   	});
-								this.parentElement.remove();
-								sauto.success_window('Новая услуга, товар');
-								popup_zakaz_body.classList.remove('HIDE_ON_TIME');
-					               toogle_window = 'incident_window';
-								let tr_rabota = document.createElement('tr');
-			                   			tr_rabota.addEventListener('mouseover', show_del_td);
-			                   			tr_rabota.addEventListener('mouseout', hide_del_td);
-				                   		let td_id_rabota = document.createElement('td');
-				                   			td_id_rabota.className = 'id';
-				                   			td_id_rabota.innerHTML = '<span>' + (popup_zakaz_vidi_rabot_viborka_body.children.length+1) + ' </span>'; //s.getAttribute('data-idwork');
-				                   			td_id_rabota.appendChild(del_rabota_icon.cloneNode(true)).addEventListener('click', function () {
-				                   				if (tbodycontainer.offsetHeight < 200) {
-			                   						tbodycontainer.style.overflow = 'hidden';
-			                   					}
-				                   				this.parentElement.parentElement.style.backgroundColor = '#ff9999';
-				                   				this.parentElement.parentElement.style.color = '#ffffff';
-				                   				setTimeout(()=>{
-				                   					summ_zakaz.innerText -= parseInt(this.parentElement.nextSibling.nextSibling.nextSibling.innerText);
-					                   				this.parentElement.parentElement.parentElement.removeChild(this.parentElement.parentElement)
-					                   				for (let i=0; i<popup_zakaz_vidi_rabot_viborka_body.children.length; i++) {
-						                   				popup_zakaz_vidi_rabot_viborka_body.children[i].firstChild.firstChild.innerText = i+1 + ' ';
-						                   			}
-				                   				}, 300)                   			
-					                   		});
-				                   		let td_name_rabota = document.createElement('td');
-				                   			td_name_rabota.className = 'name_s';
-				                   			td_name_rabota.innerText = create_new_work_name.value;
-				                   		let td_count_rabota = document.createElement('td');
-				                   			td_count_rabota.className = 'td_count';
-				                   		let td_input_rabota = document.createElement('input');
-				                   			td_input_rabota.type = 'number';
-				                   			td_input_rabota.className = 'input_work';
-				                   			td_input_rabota.value = 1;
-				                   			td_input_rabota.setAttribute('min', '1');
-				                   			td_input_rabota.addEventListener('input', math_work)
-				                   			td_count_rabota.appendChild(td_input_rabota);
-				                   		let td_price_rabota = document.createElement('td');
-				                   			td_price_rabota.className = 'price_rabota';
-				                   			td_price_rabota.innerText = create_new_work_price.value + ' руб';
-				                   			td_price_rabota.setAttribute('data-price', create_new_work_price.value);
-
-				                   	tr_rabota.appendChild(td_id_rabota);
-				                   	tr_rabota.appendChild(td_name_rabota);
-				                   	tr_rabota.appendChild(td_count_rabota);
-				                   	tr_rabota.appendChild(td_price_rabota);
-
-			                   		popup_zakaz_vidi_rabot_viborka_body.appendChild(tr_rabota);
-			                   		if (tbodycontainer.offsetHeight > 240) {
-			                   			tbodycontainer.style.overflowY = 'auto';
-			                   			tbodycontainer.scrollTop = 1000;
-			                   		}			                   		
-			                   		let bufer = 0;
-			                   		document.querySelectorAll('.price_rabota, .price_zapchast').forEach(function (el, i) {
-			                   			bufer += parseInt(el.innerText);
-			                   		})
-			                   		summ_zakaz.innerText = bufer;
-								});
-							}
-							else {
-								this.classList.add('btn-warning')
-								this.classList.add('disabled')
-								this.style.cursor = 'no-drop';
-								let err = document.createElement('span');
-									err.classList = 'err';
-									err.innerHTML = '<strong style="color:red">Заполните поле:</strong>';
-									create_new_work_name.value == '' ? err.children[0].innerText = err.innerText + ' -наименование-' : false;										
-									create_new_work_price.value == '' ? err.children[0].innerText = err.innerText + ' -стоимость- ' : false;
-									create_new_work.appendChild(err);
-									this.addEventListener('mouseout', function () {err.remove();this.classList.remove('btn-warning');this.classList.remove('disabled')})
-							}
-						})
+				create_new_work_save.classList = 'btn';
+				create_new_work_save.id = 'create_new_work_save';				
+				create_new_work_save.addEventListener('mouseover', function () {
+					if (create_new_work_name.value != '' && create_new_work_price.value != '') {
+						this.classList.add('btn-success')
+						this.style.cursor = 'pointer';
+						this.addEventListener('mouseout', function () {this.classList.remove('btn-success');this.removeEventListener('click', save_new_WORK);})
+						this.addEventListener('click', save_new_WORK);
+					}
+					else {
+						this.classList.add('btn-warning')
+						this.classList.add('disabled')
+						this.style.cursor = 'no-drop';
+						let err = document.createElement('span');
+						err.classList = 'err';
+						err.innerHTML = '<strong style="color:red">Заполните поле:</strong>';
+						create_new_work_name.value == '' ? err.children[0].innerText = err.innerText + ' -наименование-' : false;										
+						create_new_work_price.value == '' ? err.children[0].innerText = err.innerText + ' -стоимость- ' : false;
+						create_new_work.appendChild(err);
+						this.addEventListener('mouseout', function () {err.remove();this.classList.remove('btn-warning');this.classList.remove('disabled')})
+					}
+				})
 							
-					create_new_work_save.innerHTML = '<i class="fa fa-floppy-o" aria-hidden="true"></i> Сохранить';
-					create_new_work.appendChild(create_new_work_save)
+				create_new_work_save.innerHTML = '<i class="fa fa-floppy-o" aria-hidden="true"></i> Сохранить';
+				create_new_work.appendChild(create_new_work_save)
+
+				function save_new_WORK () {
+					let data_work = { name:create_new_work_name.value, code:create_new_work_code.value, raiting:100, price:create_new_work_price.value }
+					$.get('save-work', data_work, function(data) {
+						document.querySelector('.add_button').remove();
+					});
+
+					this.parentElement.remove();
+					sauto.success_window('Новая услуга, товар');
+					popup_zakaz_body.classList.remove('HIDE_ON_TIME');
+					toogle_window = 'incident_window';
+
+					let tr_rabota = document.createElement('tr');
+					tr_rabota.addEventListener('mouseover', show_del_td);
+					tr_rabota.addEventListener('mouseout', hide_del_td);
+
+					let td_id_rabota = document.createElement('td');
+					td_id_rabota.className = 'id';
+					td_id_rabota.innerHTML = '<span>' + (popup_zakaz_vidi_rabot_viborka_body.children.length+1) + ' </span>';
+					td_id_rabota.appendChild(del_rabota_icon.cloneNode(true)).addEventListener('click', function () {
+						if (tbodycontainer.offsetHeight < 200) {
+							tbodycontainer.style.overflow = 'hidden';
+						}
+						this.parentElement.parentElement.style.backgroundColor = '#ff9999';
+						this.parentElement.parentElement.style.color = '#ffffff';
+						setTimeout(()=>{
+							summ_zakaz.innerText -= parseInt(this.parentElement.nextSibling.nextSibling.nextSibling.innerText);
+							this.parentElement.parentElement.parentElement.removeChild(this.parentElement.parentElement)
+							for (let i=0; i<popup_zakaz_vidi_rabot_viborka_body.children.length; i++) {
+								popup_zakaz_vidi_rabot_viborka_body.children[i].firstChild.firstChild.innerText = i+1 + ' ';
+							}
+						}, 300)
+					});
+
+					let td_name_rabota = document.createElement('td');
+					td_name_rabota.className = 'name_s';
+					td_name_rabota.innerText = create_new_work_name.value;
+
+					let td_count_rabota = document.createElement('td');
+					td_count_rabota.className = 'td_count';
+
+					let td_input_rabota = document.createElement('input');
+					td_input_rabota.type = 'number';
+					td_input_rabota.className = 'input_work';
+					td_input_rabota.value = 1;
+					td_input_rabota.setAttribute('min', '1');
+					td_input_rabota.addEventListener('input', math_work)
+					td_count_rabota.appendChild(td_input_rabota);
+
+					let td_price_rabota = document.createElement('td');
+					td_price_rabota.className = 'price_rabota';
+					td_price_rabota.innerText = create_new_work_price.value + ' руб';
+					td_price_rabota.setAttribute('data-price', create_new_work_price.value);
+
+					tr_rabota.appendChild(td_id_rabota);
+					tr_rabota.appendChild(td_name_rabota);
+					tr_rabota.appendChild(td_count_rabota);
+					tr_rabota.appendChild(td_price_rabota);
+
+					popup_zakaz_vidi_rabot_viborka_body.appendChild(tr_rabota);
+					if (tbodycontainer.offsetHeight > 240) {
+						tbodycontainer.style.overflowY = 'auto';
+						tbodycontainer.scrollTop = 1000;
+					}
+					let bufer = 0;
+					document.querySelectorAll('.price_rabota, .price_zapchast').forEach(function (el, i) {
+						bufer += parseInt(el.innerText);
+					});
+					summ_zakaz.innerText = bufer;
 				}
+			}
+
+
 
 				function show_del_td (argument) {
 					this.children[0].children[1].style.display = 'inline-block';
@@ -1154,235 +1069,70 @@ function click_on_day () {
 
 			let	list_of_works_zapchast = document.querySelector('#zapchasti');
 				list_of_works_zapchast.childNodes.forEach(function (element, index) {
-				        if (element.nodeName == '#text') {
-				            return;
-				        } else {				        	
-				            let s = document.createElement('span');
-			                 	s.innerText = element.innerText;
-			                 	s.setAttribute('data-price', element.getAttribute('data-price'));
-			                 	s.setAttribute('data-idcarpart', element.getAttribute('data-idcarpart'));
-			                   	s.insertBefore(add_zapchast_icon.cloneNode(true), s.firstChild);
-			                popup_zakaz_zapchasti_list.appendChild(s);
-			                   	
-			                   	s.firstChild.addEventListener('click', function () {
-			                   		let tr_zapchast = document.createElement('tr');
-			                   			tr_zapchast.addEventListener('mouseover', show_del_td);
-			                   			tr_zapchast.addEventListener('mouseout', hide_del_td);
-				                   		let td_id_zapchast = document.createElement('td');
-				                   			td_id_zapchast.className = 'id';
-				                   			td_id_zapchast.innerHTML = '<span>' + (popup_zakaz_zapchasti_viborka_body.children.length+1) + ' </span>'; //s.getAttribute('data-idcarpart');
-				                   			td_id_zapchast.appendChild(del_zapchast_icon.cloneNode(true)).addEventListener('click', function () {
-				                   				if (popup_zakaz_zapchasti_viborka.offsetHeight < 200) {
-			                   						tbodyzapchastcontainer.style.overflow = 'hidden';
-			                   					}
-				                   				this.parentElement.parentElement.style.backgroundColor = '#ff9999';
-				                   				this.parentElement.parentElement.style.color = '#ffffff';
-				                   				setTimeout(()=>{
-				                   					summ_zakaz.innerText -= parseInt(this.parentElement.nextSibling.nextSibling.nextSibling.innerText);
-					                   				this.parentElement.parentElement.parentElement.removeChild(this.parentElement.parentElement)
-					                   				for (let i=0; i<popup_zakaz_zapchasti_viborka_body.children.length; i++) {
-						                   				popup_zakaz_zapchasti_viborka_body.children[i].firstChild.firstChild.innerText = i+1 + ' ';
-						                   			}
-				                   				}, 300)
-					                   		});
-				                   		let td_name_zapchast = document.createElement('td');
-				                   			td_name_zapchast.className = 'name_zapchast';
-				                   			td_name_zapchast.innerText = s.innerText;
-				                   		let td_count_zapchast = document.createElement('td');
-				                   			td_count_zapchast.className = 'td_count';
-				                   		let td_input_zapchast = document.createElement('input');
-				                   			td_input_zapchast.type = 'number';
-				                   			td_input_zapchast.className = 'input_work';
-				                   			td_input_zapchast.value = 1;
-				                   			td_input_zapchast.setAttribute('min', '1');
-				                   			td_input_zapchast.addEventListener('input', math_work)
-				                   			td_count_zapchast.appendChild(td_input_zapchast);
-				                   		let td_price_zapchast = document.createElement('td');
-				                   			td_price_zapchast.className = 'price_zapchast';
-				                   			td_price_zapchast.innerText = s.getAttribute('data-price') + ' руб';
-				                   			td_price_zapchast.setAttribute('data-price', s.getAttribute('data-price'));
-				                   	tr_zapchast.appendChild(td_id_zapchast);
-				                   	tr_zapchast.appendChild(td_name_zapchast);
-				                   	tr_zapchast.appendChild(td_count_zapchast);
-				                   	tr_zapchast.appendChild(td_price_zapchast);
+					if (element.nodeName == '#text') { return }
 
-			                   		popup_zakaz_zapchasti_viborka_body.appendChild(tr_zapchast);
-			                   		this.parentElement.parentElement.removeChild(this.parentElement)
-			                   		
-			                   		if (tbodyzapchastcontainer.offsetHeight > 240) {
-			                   			tbodyzapchastcontainer.style.overflowY = 'auto';
-			                   			tbodyzapchastcontainer.scrollTop = 1000;
-			                   		}
-			                   		let bufer = 0;
-			                   		document.querySelectorAll('.price_rabota, .price_zapchast').forEach(function (el, i) {
-			                   			bufer += parseInt(el.innerText);
-			                   		})
-			                   		summ_zakaz.innerText = bufer;
-			                   		//document.querySelector
-			                   	})
-				            }
-			    	});
+					else {
+						let s = document.createElement('span');
+						s.innerText = element.innerText;
+				       	s.setAttribute('data-price', element.getAttribute('data-price'));
+				       	s.setAttribute('data-idcarpart', element.getAttribute('data-idcarpart'));
+				       	s.insertBefore(add_zapchast_icon.cloneNode(true), s.firstChild);
+				       	popup_zakaz_zapchasti_list.appendChild(s);
+				       	s.firstChild.addEventListener( 'click', add_part_in_tab )
+				    }
+			    });
 
 				popup_zakaz_zapchasti_label.children[0].addEventListener('click', function () {
 					if (popup_zakaz_zapchasti_list.innerHTML != '') {return}
-					list_of_works_zapchast.childNodes.forEach(function (element, index) {
-				        if (element.nodeName == '#text') {
-				            return;
-				        } else {
-				             let s = document.createElement('span');
-			                 	s.innerText = element.innerText;
-			                 	s.setAttribute('data-price', element.getAttribute('data-price'));
-			                 	s.setAttribute('data-idcarpart', element.getAttribute('data-idcarpart'));
-			                   	s.insertBefore(add_zapchast_icon.cloneNode(true), s.firstChild);
-			                popup_zakaz_zapchasti_list.appendChild(s);
-			                   	s.firstChild.addEventListener('click', function () {
-			                   		let tr_zapchast = document.createElement('tr');
-			                   			tr_zapchast.addEventListener('mouseover', show_del_td);
-			                   			tr_zapchast.addEventListener('mouseout', hide_del_td);
-				                   		let td_id_zapchast = document.createElement('td');
-				                   			td_id_zapchast.className = 'id';
-				                   			td_id_zapchast.innerHTML = '<span>' + (popup_zakaz_zapchasti_viborka_body.children.length+1) + ' </span>'; //s.getAttribute('data-idcarpart');
-				                   			td_id_zapchast.appendChild(del_zapchast_icon.cloneNode(true)).addEventListener('click', function () {
-				                   				if (popup_zakaz_zapchasti_viborka.offsetHeight < 200) {
-			                   						tbodyzapchastcontainer.style.overflow = 'hidden';
-			                   					}
-				                   				this.parentElement.parentElement.style.backgroundColor = '#ff9999';
-				                   				this.parentElement.parentElement.style.color = '#ffffff';
-				                   				setTimeout(()=>{
-				                   					summ_zakaz.innerText -= parseInt(this.parentElement.nextSibling.nextSibling.nextSibling.innerText);
-					                   				this.parentElement.parentElement.parentElement.removeChild(this.parentElement.parentElement)
-					                   				for (let i=0; i<popup_zakaz_zapchasti_viborka_body.children.length; i++) {
-						                   				popup_zakaz_zapchasti_viborka_body.children[i].firstChild.firstChild.innerText = i+1 + ' ';
-						                   			}
-				                   				}, 300);
-					                   		});
-				                   		let td_name_zapchast = document.createElement('td');
-				                   			td_name_zapchast.className = 'name_zapchast';
-				                   			td_name_zapchast.innerText = s.innerText;
-				                   		let td_count_zapchast = document.createElement('td');
-				                   			td_count_zapchast.className = 'td_count';
-				                   		let td_input_zapchast = document.createElement('input');
-				                   			td_input_zapchast.type = 'number';
-				                   			td_input_zapchast.className = 'input_work';
-				                   			td_input_zapchast.value = 1;
-				                   			td_input_zapchast.setAttribute('min', '1');
-				                   			td_input_zapchast.addEventListener('input', math_work)
-				                   			td_count_zapchast.appendChild(td_input_zapchast);
-				                   		let td_price_zapchast = document.createElement('td');
-				                   			td_price_zapchast.className = 'price_zapchast';
-				                   			td_price_zapchast.innerText = s.getAttribute('data-price') + ' руб';
-				                   			td_price_zapchast.setAttribute('data-price', s.getAttribute('data-price'));
-				                   	tr_zapchast.appendChild(td_id_zapchast);
-				                   	tr_zapchast.appendChild(td_name_zapchast);
-				                   	tr_zapchast.appendChild(td_count_zapchast);
-				                   	tr_zapchast.appendChild(td_price_zapchast);
 
-			                   		popup_zakaz_zapchasti_viborka_body.appendChild(tr_zapchast);
-			                   		this.parentElement.parentElement.removeChild(this.parentElement)			                   		
-			                   		if (tbodyzapchastcontainer.offsetHeight > 240) {
-			                   			tbodyzapchastcontainer.style.overflowY = 'auto';
-			                   			tbodyzapchastcontainer.scrollTop = 1000;
-			                   		}
-			                   		let bufer = 0;
-			                   		document.querySelectorAll('.price_rabota, .price_zapchast').forEach(function (el, i) {
-			                   			bufer += parseInt(el.innerText);
-			                   		})
-			                   		summ_zakaz.innerText = bufer;			                   		
-			                   	})
-				            }
-			    	});
+					list_of_works_zapchast.childNodes.forEach(function (element, index) {
+				        if (element.nodeName == '#text') { return }
+
+				        else {
+				        	let s = document.createElement('span');
+				        	s.innerText = element.innerText;
+				        	s.setAttribute('data-price', element.getAttribute('data-price'));
+				        	s.setAttribute('data-idcarpart', element.getAttribute('data-idcarpart'));
+				        	s.insertBefore(add_zapchast_icon.cloneNode(true), s.firstChild);
+			                popup_zakaz_zapchasti_list.appendChild(s);
+			                s.firstChild.addEventListener('click', add_part_in_tab )
+			            }
+			        });
 				})
 				
 
 			function search_zapchasti() {
-			    /*if (this.value.length < 1) {
-			        popup_zakaz_zapchasti_list.innerHTML = '';
-			    }*/
+				if (this.value.search(/[а-яА-ЯёЁ]||[\s]/) != -1) {
+					let del = document.querySelector('.add_button');
 
+					if (del) { del.remove() }
 
-			    if (this.value.search(/[а-яА-ЯёЁ]||[\s]/) != -1) {
+					if (this.value != '') {
+						var for_search_list_work_REGEXP = new RegExp(this.value, 'gi');
+						popup_zakaz_zapchasti_list.innerHTML = '';
+					}
 
-			        let del = document.querySelector('.add_button');
-			        if (del) { del.remove() }
-
-
-			        if (this.value != '') {
-			            var for_search_list_work_REGEXP = new RegExp(this.value, 'gi');
-			            popup_zakaz_zapchasti_list.innerHTML = '';
-			        } else { return }
+					else { return }
 
 			        list_of_works_zapchast.childNodes.forEach(function(element, index) {
-			            if (element.nodeName == '#text') {
-			                return;
-			            } else {
-			                let patt = element.innerText;
-			                if (patt.search(for_search_list_work_REGEXP) != -1) {
-			                    let s = document.createElement('span');
+			        	if (element.nodeName == '#text') { return }
+
+			        	else {
+			        		let patt = element.innerText;
+
+			        		if (patt.search(for_search_list_work_REGEXP) != -1) {
+			        			let s = document.createElement('span');
 			                 	s.innerText = element.innerText;
 			                 	s.setAttribute('data-price', element.getAttribute('data-price'));
 			                 	s.setAttribute('data-idcarpart', element.getAttribute('data-idcarpart'));
 			                   	s.insertBefore(add_zapchast_icon.cloneNode(true), s.firstChild);
 			                    popup_zakaz_zapchasti_list.appendChild(s);
-			                    	s.firstChild.addEventListener('click', function () {
-			                    		let tr_zapchast = document.createElement('tr');
-			                   			tr_zapchast.addEventListener('mouseover', show_del_td);
-			                   			tr_zapchast.addEventListener('mouseout', hide_del_td);
-				                   		let td_id_zapchast = document.createElement('td');
-				                   			td_id_zapchast.className = 'id';
-				                   			td_id_zapchast.innerHTML = '<span>' + (popup_zakaz_zapchasti_viborka_body.children.length+1) + ' </span>'; //s.getAttribute('data-idcarpart');
-				                   			td_id_zapchast.appendChild(del_zapchast_icon.cloneNode(true)).addEventListener('click', function () {
-				                   				if (popup_zakaz_zapchasti_viborka.offsetHeight < 200) {
-			                   						tbodyzapchastcontainer.style.overflow = 'hidden';
-			                   					}
-				                   				this.parentElement.parentElement.style.backgroundColor = '#ff9999';
-				                   				this.parentElement.parentElement.style.color = '#ffffff';
-				                   				setTimeout(()=>{
-				                   					summ_zakaz.innerText -= parseInt(this.parentElement.nextSibling.nextSibling.nextSibling.innerText);
-					                   				this.parentElement.parentElement.parentElement.removeChild(this.parentElement.parentElement)
-					                   				for (let i=0; i<popup_zakaz_zapchasti_viborka_body.children.length; i++) {
-						                   				popup_zakaz_zapchasti_viborka_body.children[i].firstChild.firstChild.innerText = i+1 + ' ';
-						                   			}
-				                   				}, 300)		                   			
-					                   		});
-				                   		let td_name_zapchast = document.createElement('td');
-				                   			td_name_zapchast.className = 'name_zapchast';
-				                   			td_name_zapchast.innerText = s.innerText;
-				                   		let td_count_zapchast = document.createElement('td');
-				                   			td_count_zapchast.className = 'td_count';
-				                   		let td_input_zapchast = document.createElement('input');
-				                   			td_input_zapchast.type = 'number';
-				                   			td_input_zapchast.className = 'input_work';
-				                   			td_input_zapchast.value = 1;
-				                   			td_input_zapchast.setAttribute('min', '1');
-				                   			td_input_zapchast.addEventListener('input', math_work)
-				                   			td_count_zapchast.appendChild(td_input_zapchast);
-				                   		let td_price_zapchast = document.createElement('td');
-				                   			td_price_zapchast.className = 'price_zapchast';
-				                   			td_price_zapchast.innerText = s.getAttribute('data-price') + ' руб';
-				                   			td_price_zapchast.setAttribute('data-price', s.getAttribute('data-price'));
-					                   	tr_zapchast.appendChild(td_id_zapchast);
-					                   	tr_zapchast.appendChild(td_name_zapchast);
-					                   	tr_zapchast.appendChild(td_count_zapchast);
-					                   	tr_zapchast.appendChild(td_price_zapchast);
-
-				                   		popup_zakaz_zapchasti_viborka_body.appendChild(tr_zapchast);
-				                   		this.parentElement.parentElement.removeChild(this.parentElement)				                   		
-				                   		if (tbodyzapchastcontainer.offsetHeight > 240) {
-				                   			tbodyzapchastcontainer.style.overflowY = 'auto';
-				                   			tbodyzapchastcontainer.scrollTop = 1000;
-				                   		}
-				                   		let bufer = 0;
-				                   		document.querySelectorAll('.price_rabota, .price_zapchast').forEach(function (el, i) {
-				                   			bufer += parseInt(el.innerText);
-				                   		})
-				                   		summ_zakaz.innerText = bufer;
-			                    	})
+			                    s.firstChild.addEventListener('click', add_part_in_tab )
 			                }
 			            }
 			        });
 			    }
 			    if (this.value != '') {
-
 			    	for (let i=0; i<list_of_works_zapchast.length; i++)
 			    	{
 			    		if (popup_zakaz_zapchasti_list.innerHTML != '') {
@@ -1391,146 +1141,223 @@ function click_on_day () {
 			    		}
 			    		else {
 			    			let new_work_add = document.createElement('span');
-								new_work_add.className = 'btn-success add_button col-md-6 col-md-offset-2';
-								new_work_add.innerHTML = 'Добавить услугу <i class="fa fa-plus-circle" aria-hidden="true"></i>';
-								popup_zakaz_zapchasti.appendChild(new_work_add);
-								new_work_add.addEventListener('click', create_new_zapchast)
+							new_work_add.className = 'btn-success add_button col-md-6 col-md-offset-2';
+							new_work_add.innerHTML = 'Добавить услугу <i class="fa fa-plus-circle" aria-hidden="true"></i>';
+							popup_zakaz_zapchasti.appendChild(new_work_add);
+							new_work_add.addEventListener('click', create_new_zapchast)
 			    			return;
 			    		}
 			    	}
 			    }
 			}
 
+			function add_part_in_tab () {
+				let tr_zapchast = document.createElement('tr');
+				tr_zapchast.addEventListener('mouseover', show_del_td);
+				tr_zapchast.addEventListener('mouseout', hide_del_td);
+
+				let td_id_zapchast = document.createElement('td');
+				td_id_zapchast.className = 'id';
+				td_id_zapchast.innerHTML = '<span>' + (popup_zakaz_zapchasti_viborka_body.children.length+1) + ' </span>';
+				td_id_zapchast.appendChild(del_zapchast_icon.cloneNode(true)).addEventListener('click', function () {
+					if (popup_zakaz_zapchasti_viborka.offsetHeight < 200) {
+						tbodyzapchastcontainer.style.overflow = 'hidden';
+					}
+					this.parentElement.parentElement.style.backgroundColor = '#ff9999';
+					this.parentElement.parentElement.style.color = '#ffffff';
+					setTimeout(()=>{
+						summ_zakaz.innerText -= parseInt(this.parentElement.nextSibling.nextSibling.nextSibling.innerText);
+						this.parentElement.parentElement.parentElement.removeChild(this.parentElement.parentElement)
+						for (let i=0; i<popup_zakaz_zapchasti_viborka_body.children.length; i++) {
+							popup_zakaz_zapchasti_viborka_body.children[i].firstChild.firstChild.innerText = i+1 + ' ';
+						}
+					}, 300);
+				});
+
+				let td_name_zapchast = document.createElement('td');
+				td_name_zapchast.className = 'name_zapchast';
+				td_name_zapchast.innerText = this.parentElement.innerText;
+
+				let td_count_zapchast = document.createElement('td');
+				td_count_zapchast.className = 'td_count';
+
+				let td_input_zapchast = document.createElement('input');
+				td_input_zapchast.type = 'number';
+				td_input_zapchast.className = 'input_work';
+				td_input_zapchast.value = 1;
+				td_input_zapchast.setAttribute('min', '1');
+				td_input_zapchast.addEventListener('input', math_work)
+				td_count_zapchast.appendChild(td_input_zapchast);
+
+				let td_price_zapchast = document.createElement('td');
+				td_price_zapchast.className = 'price_zapchast';
+				td_price_zapchast.innerText = this.parentElement.getAttribute('data-price') + ' руб';
+				td_price_zapchast.setAttribute('data-price', this.parentElement.getAttribute('data-price'));
+				tr_zapchast.appendChild(td_id_zapchast);
+				tr_zapchast.appendChild(td_name_zapchast);
+				tr_zapchast.appendChild(td_count_zapchast);
+				tr_zapchast.appendChild(td_price_zapchast);
+
+				popup_zakaz_zapchasti_viborka_body.appendChild(tr_zapchast);
+
+				this.parentElement.parentElement.removeChild(this.parentElement)
+				if (tbodyzapchastcontainer.offsetHeight > 240) {
+					tbodyzapchastcontainer.style.overflowY = 'auto';
+					tbodyzapchastcontainer.scrollTop = 1000;
+				}
+				let bufer = 0;
+				document.querySelectorAll('.price_rabota, .price_zapchast').forEach(function (el, i) {
+					bufer += parseInt(el.innerText);
+				})
+				summ_zakaz.innerText = bufer;
+			}
+
 			function create_new_zapchast (argument) {
 				toogle_window = 'new_zapchast_window';
+
 				let create_new_zapchast = document.createElement('div');
-					create_new_zapchast.className = 'create_new';
-					popup_zakaz_body.classList.add('HIDE_ON_TIME');
-					popup_zakaz.appendChild(create_new_zapchast)
-					create_new_zapchast.innerHTML = '<h3><i class="fa fa-info" aria-hidden="true"></i> Добавление услуги, вида работ или товара</h3>';						
-					sauto.insert_hr(create_new_zapchast);
-					sauto.create_close_button(create_new_zapchast, 'second'); // Добавляем кнопочку закрыть
+				create_new_zapchast.className = 'create_new';
+				popup_zakaz_body.classList.add('HIDE_ON_TIME');
+				popup_zakaz.appendChild(create_new_zapchast)
+				create_new_zapchast.innerHTML = '<h3><i class="fa fa-info" aria-hidden="true"></i> Добавление услуги, вида работ или товара</h3>';						
+				
+				sauto.insert_hr(create_new_zapchast);
+				
+				sauto.create_close_button(create_new_zapchast, 'second'); // Добавляем кнопочку закрыть
 			
-					sauto.insert_clear_block(create_new_zapchast);
+				sauto.insert_clear_block(create_new_zapchast);
 				
 				let icon_new_zapchast = document.createElement('div');
-					icon_new_zapchast.className = 'col-md-2';
-					icon_new_zapchast.style.fontSize = '6em';
-					icon_new_zapchast.innerHTML = '<i class="fa fa-cogs" aria-hidden="true"></i>';
-					create_new_zapchast.appendChild(icon_new_zapchast);
+				icon_new_zapchast.className = 'col-md-2';
+				icon_new_zapchast.style.fontSize = '6em';
+				icon_new_zapchast.innerHTML = '<i class="fa fa-cogs" aria-hidden="true"></i>';
+				create_new_zapchast.appendChild(icon_new_zapchast);
 				
 				let create_new_zapchast_name_inpblock = document.createElement('div');
-					create_new_zapchast_name_inpblock.className = 'col-md-8';
-					create_new_zapchast.appendChild(create_new_zapchast_name_inpblock);
+				create_new_zapchast_name_inpblock.className = 'col-md-8';
+				create_new_zapchast.appendChild(create_new_zapchast_name_inpblock);
 				
 				let create_new_zapchast_name = sauto.create_input('text', 'work_name','new_zapchast_name', 'col-md-12 input mBottomInp', 'Введите наименование')
 				
 				let create_new_zapchast_price = sauto.create_input('text', 'auto_model','new_zapchast_model', 'col-md-12 input mBottomInp', 'Стоимость без пробелов')
-					create_new_zapchast_name.value = popup_zakaz_zapchasti_search.value;
+				create_new_zapchast_name.value = popup_zakaz_zapchasti_search.value;
 
 				let create_new_zapchast_code = sauto.create_input('number', 'auto_code','new_zapchast_code', 'col-md-3 col-md-offset-9 input mBottomInp', 'Код')
 
-					create_new_zapchast_name_inpblock.appendChild(create_new_zapchast_name)
-					create_new_zapchast_name_inpblock.appendChild(create_new_zapchast_price)
-					create_new_zapchast_name_inpblock.appendChild(create_new_zapchast_code)
+				create_new_zapchast_name_inpblock.appendChild(create_new_zapchast_name)
+				
+				create_new_zapchast_name_inpblock.appendChild(create_new_zapchast_price)
+				
+				create_new_zapchast_name_inpblock.appendChild(create_new_zapchast_code)
+				
+				sauto.insert_clear_block(create_new_zapchast);
+				
+				sauto.insert_hr(create_new_zapchast);
 
-
-
-					sauto.insert_clear_block(create_new_zapchast);
-					sauto.insert_hr(create_new_zapchast);
-
-					sauto.insert_clear_block(create_new_zapchast);
+				sauto.insert_clear_block(create_new_zapchast);
 
 				let create_new_zapchast_save = document.createElement('button');
-					create_new_zapchast_save.classList = 'btn';
-					create_new_zapchast_save.id = 'create_new_zapchast_save';						
-					create_new_zapchast_save.addEventListener('mouseover', function () {
-						if (create_new_zapchast_name.value != '' && create_new_zapchast_price.value != '') {
-							this.classList.add('btn-success')
-							this.style.cursor = 'pointer';
-							this.addEventListener('mouseout', function () {this.classList.remove('btn-success')})
-							this.addEventListener('click', function () {
-								let data_work = { name:create_new_zapchast_name.value, code:create_new_zapchast_code.value, raiting:100, price:create_new_zapchast_price.value }
-			                   	$.get('save-work', data_work, function(data) {
-			                   		console.log(data);
-			                   		document.querySelector('.add_button').remove();
-			                   	});
-								this.parentElement.remove();
-								sauto.success_window('Новая услуга, товар');
-								popup_zakaz_body.classList.remove('HIDE_ON_TIME');
-					               toogle_window = 'incident_window';
-								let tr_zapchast = document.createElement('tr');
-			                   			tr_zapchast.addEventListener('mouseover', show_del_td);
-			                   			tr_zapchast.addEventListener('mouseout', hide_del_td);
-				                   		let td_id_zapchast = document.createElement('td');
-				                   			td_id_zapchast.className = 'id';
-				                   			td_id_zapchast.innerHTML = '<span>' + (popup_zakaz_zapchasti_viborka_body.children.length+1) + ' </span>'; //s.getAttribute('data-idcarpart');
-				                   			td_id_zapchast.appendChild(del_zapchast_icon.cloneNode(true)).addEventListener('click', function () {
-				                   				if (popup_zakaz_zapchasti_viborka.offsetHeight < 200) {
-			                   						tbodyzapchastcontainer.style.overflow = 'hidden';
-			                   					}
-				                   				this.parentElement.parentElement.style.backgroundColor = '#ff9999';
-				                   				this.parentElement.parentElement.style.color = '#ffffff';
-				                   				setTimeout(()=>{
-				                   					summ_zakaz.innerText -= parseInt(this.parentElement.nextSibling.nextSibling.nextSibling.innerText);
-					                   				this.parentElement.parentElement.parentElement.removeChild(this.parentElement.parentElement)
-					                   				for (let i=0; i<popup_zakaz_zapchasti_viborka_body.children.length; i++) {
-						                   				popup_zakaz_zapchasti_viborka_body.children[i].firstChild.firstChild.innerText = i+1 + ' ';
-						                   			}
-				                   				}, 300)                   			
-					                   		});
-				                   		let td_name_zapchast = document.createElement('td');
-				                   			td_name_zapchast.className = 'name_zapchast';
-				                   			td_name_zapchast.innerText = create_new_zapchast_name.value;
-				                   		let td_count_zapchast = document.createElement('td');
-				                   			td_count_zapchast.className = 'td_count';
-				                   		let td_input_zapchast = document.createElement('input');
-				                   			td_input_zapchast.type = 'number';
-				                   			td_input_zapchast.className = 'input_work';
-				                   			td_input_zapchast.value = 1;
-				                   			td_input_zapchast.setAttribute('min', '1');
-				                   			td_input_zapchast.addEventListener('input', math_work)
-				                   			td_count_zapchast.appendChild(td_input_zapchast);
-				                   		let td_price_zapchast = document.createElement('td');
-				                   			td_price_zapchast.className = 'price_zapchast';
-				                   			td_price_zapchast.innerText = create_new_zapchast_price.value + ' руб';
-				                   			td_price_zapchast.setAttribute('data-price', create_new_zapchast_price.value);
+				create_new_zapchast_save.classList = 'btn';
+				create_new_zapchast_save.id = 'create_new_zapchast_save';
+				create_new_zapchast_save.addEventListener('mouseover', function () {
+					if (create_new_zapchast_name.value != '' && create_new_zapchast_price.value != '') {
+						this.classList.add('btn-success')
+						this.style.cursor = 'pointer';
+						this.addEventListener('mouseout', function () {this.classList.remove('btn-success');this.removeEventListener( 'click', save_new_PART )})
+						this.addEventListener( 'click', save_new_PART );
+					}
+					else {
+						this.classList.add('btn-warning')
+						this.classList.add('disabled')
+						this.style.cursor = 'no-drop';
 
-				                   	tr_zapchast.appendChild(td_id_zapchast);
-				                   	tr_zapchast.appendChild(td_name_zapchast);
-				                   	tr_zapchast.appendChild(td_count_zapchast);
-				                   	tr_zapchast.appendChild(td_price_zapchast);
-
-			                   		popup_zakaz_zapchasti_viborka_body.appendChild(tr_zapchast);
-			                   		
-			                   		if (tbodyzapchastcontainer.offsetHeight > 240) {
-			                   			tbodyzapchastcontainer.style.overflowY = 'auto';
-			                   			tbodyzapchastcontainer.scrollTop = 1000;
-			                   		}
-			                   		let bufer = 0;
-			                   		document.querySelectorAll('.price_rabota, .price_zapchast').forEach(function (el, i) {
-			                   			bufer += parseInt(el.innerText);
-			                   		})
-			                   		summ_zakaz.innerText = bufer;
-								});
-							}
-							else {
-								this.classList.add('btn-warning')
-								this.classList.add('disabled')
-								this.style.cursor = 'no-drop';
-								let err = document.createElement('span');
-									err.classList = 'err';
-									err.innerHTML = '<strong style="color:red">Заполните поле:</strong>';
-									create_new_zapchast_name.value == '' ? err.children[0].innerText = err.innerText + ' -наименование-' : false;										
-									create_new_zapchast_price.value == '' ? err.children[0].innerText = err.innerText + ' -стоимость- ' : false;
-									create_new_zapchast.appendChild(err);
-									this.addEventListener('mouseout', function () {err.remove();this.classList.remove('btn-warning');this.classList.remove('disabled')})
-							}
-						})
+						let err = document.createElement('span');
+						err.classList = 'err';
+						err.innerHTML = '<strong style="color:red">Заполните поле:</strong>';
+						create_new_zapchast_name.value == '' ? err.children[0].innerText = err.innerText + ' -наименование-' : false;
+						create_new_zapchast_price.value == '' ? err.children[0].innerText = err.innerText + ' -стоимость- ' : false;
+						create_new_zapchast.appendChild(err);
+						this.addEventListener('mouseout', function () {err.remove();this.classList.remove('btn-warning');this.classList.remove('disabled')})
+					}
+				})
 							
-					create_new_zapchast_save.innerHTML = '<i class="fa fa-floppy-o" aria-hidden="true"></i> Сохранить';
-					create_new_zapchast.appendChild(create_new_zapchast_save)
+				create_new_zapchast_save.innerHTML = '<i class="fa fa-floppy-o" aria-hidden="true"></i> Сохранить';
+				create_new_zapchast.appendChild(create_new_zapchast_save)
+
+				function save_new_PART () {
+					let data_work = { name:create_new_zapchast_name.value, code:create_new_zapchast_code.value, raiting:100, price:create_new_zapchast_price.value }
+					$.get('save-work', data_work, function(data) {
+						document.querySelector('.add_button').remove();
+					});
+
+					this.parentElement.remove();
+					sauto.success_window('Новая услуга, товар');
+					popup_zakaz_body.classList.remove('HIDE_ON_TIME');
+					toogle_window = 'incident_window';
+
+					let tr_zapchast = document.createElement('tr');
+					tr_zapchast.addEventListener('mouseover', show_del_td);
+					tr_zapchast.addEventListener('mouseout', hide_del_td);
+
+					let td_id_zapchast = document.createElement('td');
+					td_id_zapchast.className = 'id';
+					td_id_zapchast.innerHTML = '<span>' + (popup_zakaz_zapchasti_viborka_body.children.length+1) + ' </span>';
+					td_id_zapchast.appendChild(del_zapchast_icon.cloneNode(true)).addEventListener('click', function () {
+						if (popup_zakaz_zapchasti_viborka.offsetHeight < 200) {
+							tbodyzapchastcontainer.style.overflow = 'hidden';
+						}
+
+						this.parentElement.parentElement.style.backgroundColor = '#ff9999';
+						this.parentElement.parentElement.style.color = '#ffffff';
+
+						setTimeout(()=>{
+							summ_zakaz.innerText -= parseInt(this.parentElement.nextSibling.nextSibling.nextSibling.innerText);
+							this.parentElement.parentElement.parentElement.removeChild(this.parentElement.parentElement)
+							for (let i=0; i<popup_zakaz_zapchasti_viborka_body.children.length; i++) {
+								popup_zakaz_zapchasti_viborka_body.children[i].firstChild.firstChild.innerText = i+1 + ' ';
+							}
+						}, 300);
+					});
+
+					let td_name_zapchast = document.createElement('td');
+					td_name_zapchast.className = 'name_zapchast';
+					td_name_zapchast.innerText = create_new_zapchast_name.value;
+
+					let td_count_zapchast = document.createElement('td');
+					td_count_zapchast.className = 'td_count';
+
+					let td_input_zapchast = document.createElement('input');
+					td_input_zapchast.type = 'number';
+					td_input_zapchast.className = 'input_work';
+					td_input_zapchast.value = 1;
+					td_input_zapchast.setAttribute('min', '1');
+					td_input_zapchast.addEventListener('input', math_work)
+					td_count_zapchast.appendChild(td_input_zapchast);
+
+					let td_price_zapchast = document.createElement('td');
+					td_price_zapchast.className = 'price_zapchast';
+					td_price_zapchast.innerText = create_new_zapchast_price.value + ' руб';
+					td_price_zapchast.setAttribute('data-price', create_new_zapchast_price.value);
+
+					tr_zapchast.appendChild(td_id_zapchast);
+					tr_zapchast.appendChild(td_name_zapchast);
+					tr_zapchast.appendChild(td_count_zapchast);
+					tr_zapchast.appendChild(td_price_zapchast);
+
+					popup_zakaz_zapchasti_viborka_body.appendChild(tr_zapchast);
+
+					if (tbodyzapchastcontainer.offsetHeight > 240) {
+						tbodyzapchastcontainer.style.overflowY = 'auto';
+						tbodyzapchastcontainer.scrollTop = 1000;
+					}
+
+					let bufer = 0;
+					document.querySelectorAll('.price_rabota, .price_zapchast').forEach(function (el, i) {
+						bufer += parseInt(el.innerText);
+					})
+					summ_zakaz.innerText = bufer;
 				}
+			}
 
 				/*function show_del_td (argument) {
 					this.children[0].children[1].style.display = 'inline-block';
@@ -1730,7 +1557,6 @@ function click_on_day () {
 
 	document.body.appendChild(popup_zakaz);
 	close_popup();
-	$("body #phone_new_person").mask("+7 (999) 999-99-99");
 	$("body #phone_client").mask("+7 (999) 999-99-99");
 }
 
