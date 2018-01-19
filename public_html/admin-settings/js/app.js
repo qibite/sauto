@@ -132,6 +132,7 @@ function click_on_day () {
 				//console.log('Родитель')
 				document.querySelector('#setH')?document.querySelector('#setH').remove():0;
 				document.querySelector('#setM')?document.querySelector('#setM').remove():0;
+				list_masters.style.display = 'none';
 				//popup_zakaz_vidi_rabot_list.innerHTML = '';
 			}
 		})
@@ -163,6 +164,7 @@ function click_on_day () {
 				popup_zakaz_auto_firm_inp.value = zayavka.car = document.querySelector('.spisok_conteiner_auto span[data-idcar="'+this.getAttribute('data-idcar-idman')+'"]').innerText;
 				document.getElementById('year_car').value = zayavka.yearcar = this.getAttribute('data-idcar-idman-year');
 				document.getElementById('phone_client').value = zayavka.phone = this.getAttribute('data-phoneman');
+				zayavka.carid = this.getAttribute('data-idcar-idman');
 			}
 
 		let popup_zakaz_fio_inp = document.createElement('input'); // ПОЛЕ ВВОДА ФИО КЛИЕНТА С ФУНКЦИЕЙ ПОИСКА
@@ -431,6 +433,7 @@ function click_on_day () {
 								sor: create_new_person_auto_sor.value,
 								year: create_new_person_year.value
 							}
+							zayavka.carid = data_client.avto_id;
 							$.get('client', data_client, function(data) {
 								console.log('Ok!')
 								document.querySelector('.add_button').remove();
@@ -484,6 +487,7 @@ function click_on_day () {
 			}
 			function open_list_auto_firm (argument) {		
 				popup_zakaz_auto_firm_inp.value = zayavka.car = this.innerText;
+				zayavka.carid = this.getAttribute('data-idcar')
 				this.parentElement.style.display = 'none';
 			}
 
@@ -822,7 +826,7 @@ function click_on_day () {
 				td_input_rabota.className = 'input_work';
 				td_input_rabota.value = 1;
 				td_input_rabota.setAttribute('min', '1');
-				td_input_rabota.addEventListener('input', math_work)
+				td_input_rabota.addEventListener('input', mathPRICE)
 				td_count_rabota.appendChild(td_input_rabota);
 
 				let td_price_rabota = document.createElement('td');
@@ -857,7 +861,7 @@ function click_on_day () {
 				create_new_work.className = 'create_new';
 				popup_zakaz_body.classList.add('HIDE_ON_TIME');
 				popup_zakaz.appendChild(create_new_work)
-				create_new_work.innerHTML = '<h3><i class="fa fa-info" aria-hidden="true"></i> Добавление услуги, вида работ или товара</h3>';
+				create_new_work.innerHTML = '<h3><i class="fa fa-info" aria-hidden="true"></i> Добавление услуги, вида работ</h3>';
 
 				sauto.insert_hr(create_new_work);
 
@@ -966,7 +970,7 @@ function click_on_day () {
 					td_input_rabota.className = 'input_work';
 					td_input_rabota.value = 1;
 					td_input_rabota.setAttribute('min', '1');
-					td_input_rabota.addEventListener('input', math_work)
+					td_input_rabota.addEventListener('input', mathPRICE)
 					td_count_rabota.appendChild(td_input_rabota);
 
 					let td_price_rabota = document.createElement('td');
@@ -991,63 +995,32 @@ function click_on_day () {
 					summ_zakaz.innerText = bufer;
 				}
 			}
-
-
-
-				function show_del_td (argument) {
-					this.children[0].children[1].style.display = 'inline-block';
-					this.children[0].children[0].style.display = 'none';
-				}
-				function hide_del_td (argument) {
-					this.children[0].children[1].style.display = 'none';
-					this.children[0].children[0].style.display = 'inline-block';
-				}
-
-				function math_work (argument) {
-					this.parentElement.nextElementSibling.innerText = parseInt(this.parentElement.nextElementSibling.getAttribute('data-price')) * this.value + ' руб';
-				    let bufer = 0;
-				    document.querySelectorAll('.price_rabota, .price_zapchast').forEach(function (el, i) {
-				    	bufer += parseInt(el.innerText);
-				    })
-				    summ_zakaz.innerText = bufer;
-				}
-
-
-
-
-
-
-
-
 /************************************************************************************************************************
-*										Запчасти												*
+*														Запчасти														*
 ************************************************************************************************************************/
+			let popup_zakaz_zapchasti = document.createElement('div');
+				popup_zakaz_zapchasti.className = 'col-md-4 popup_zakaz_zapchasti';
+				popup_zakaz_zapchasti.style = 'margin-top:1em';
+			let popup_zakaz_zapchasti_label = document.createElement('label');
+				popup_zakaz_zapchasti_label.classList.add('col-md-12');
+				popup_zakaz_zapchasti_label.innerHTML = '<i class="fa fa-cogs col-md-2" aria-hidden="true"></i>';
+				popup_zakaz_zapchasti_label.children[0].style.cursor = 'pointer';
+			let popup_zakaz_zapchasti_search = sauto.create_input('text', 'zapchasti', 'zapchasti', 'col-md-10 zapchasti', 'Наименование запчасти');
+				popup_zakaz_zapchasti_search.addEventListener('input', search_zapchasti)
 
-	let popup_zakaz_zapchasti = document.createElement('div');
-		popup_zakaz_zapchasti.className = 'col-md-4 popup_zakaz_zapchasti';
-		popup_zakaz_zapchasti.style = 'margin-top:1em';
-	let popup_zakaz_zapchasti_label = document.createElement('label');
-		popup_zakaz_zapchasti_label.classList.add('col-md-12');
-		popup_zakaz_zapchasti_label.innerHTML = '<i class="fa fa-cogs col-md-2" aria-hidden="true"></i>';
-		popup_zakaz_zapchasti_label.children[0].style.cursor = 'pointer';
-	let popup_zakaz_zapchasti_search = sauto.create_input('text', 'zapchasti', 'zapchasti', 'col-md-10 zapchasti', 'Наименование запчасти');
-		popup_zakaz_zapchasti_search.addEventListener('input', search_zapchasti)
+				popup_zakaz_zapchasti_label.appendChild(popup_zakaz_zapchasti_search);
+				popup_zakaz_zapchasti.appendChild(popup_zakaz_zapchasti_label);
 
-		popup_zakaz_zapchasti_label.appendChild(popup_zakaz_zapchasti_search);
-		popup_zakaz_zapchasti.appendChild(popup_zakaz_zapchasti_label);
+			let popup_zakaz_zapchasti_list = document.createElement('div');
+				popup_zakaz_zapchasti_list.id = 'list_parts';
+				popup_zakaz_zapchasti_list.className = 'col-md-6';
+				popup_zakaz_zapchasti_list.style.backgroundColor = '#ССС';
 
-	let popup_zakaz_zapchasti_list = document.createElement('div');
-		popup_zakaz_zapchasti_list.id = 'list_parts';
-		//popup_zakaz_zapchasti_list.style.margin = '0 0 0 10px'
-		//popup_zakaz_zapchasti_list.style.clear = 'both';
-		popup_zakaz_zapchasti_list.className = 'col-md-6';
-		popup_zakaz_zapchasti_list.style.backgroundColor = '#ССС';
+			let add_zapchast_icon = document.createElement('i');
+				add_zapchast_icon.className = 'fa fa-plus-circle add_this_work';
+				add_zapchast_icon.setAttribute('aria-hidden', 'true');
 
-	let add_zapchast_icon = document.createElement('i');
-		add_zapchast_icon.className = 'fa fa-plus-circle add_this_work';
-		add_zapchast_icon.setAttribute('aria-hidden', 'true');
-
-	let del_zapchast_icon = document.createElement('i');
+			let del_zapchast_icon = document.createElement('i');
 				del_zapchast_icon.className = 'fa fa-trash-o del_this_hr';
 				del_zapchast_icon.setAttribute('aria-hidden', 'true');
 
@@ -1056,9 +1029,6 @@ function click_on_day () {
 				popup_zakaz_zapchasti_viborka.id = 'viborka_zapchastei';
 				popup_zakaz_zapchasti_viborka.className = 'col-md-12';
 				popup_zakaz_zapchasti_viborka.style.backgroundColor = '#ССС';
-			/*let	popup_zakaz_zapchasti_viborka_head = document.createElement('thead');
-				popup_zakaz_zapchasti_viborka_head.innerHTML = '<tr class="zapchasti_th"><th style="width:50px">#</th><th style="width:64%">Наименование запчасти</th><th style="width:90px">Кол-во</th><th>Стоимость</th></tr>';
-				popup_zakaz_zapchasti_viborka.appendChild(popup_zakaz_zapchasti_viborka_head);*/
 			let	popup_zakaz_zapchasti_viborka_body = document.createElement('tbody');
 			let conteiner_tbodyzapchast = document.createElement('div');
 				conteiner_tbodyzapchast.className = 'col-md-6 tablecontainer';
@@ -1186,7 +1156,7 @@ function click_on_day () {
 				td_input_zapchast.className = 'input_work';
 				td_input_zapchast.value = 1;
 				td_input_zapchast.setAttribute('min', '1');
-				td_input_zapchast.addEventListener('input', math_work)
+				td_input_zapchast.addEventListener('input', mathPRICE)
 				td_count_zapchast.appendChild(td_input_zapchast);
 
 				let td_price_zapchast = document.createElement('td');
@@ -1219,7 +1189,7 @@ function click_on_day () {
 				create_new_zapchast.className = 'create_new';
 				popup_zakaz_body.classList.add('HIDE_ON_TIME');
 				popup_zakaz.appendChild(create_new_zapchast)
-				create_new_zapchast.innerHTML = '<h3><i class="fa fa-info" aria-hidden="true"></i> Добавление услуги, вида работ или товара</h3>';						
+				create_new_zapchast.innerHTML = '<h3><i class="fa fa-info" aria-hidden="true"></i> Добавление товара, запчасти</h3>';						
 				
 				sauto.insert_hr(create_new_zapchast);
 				
@@ -1285,8 +1255,9 @@ function click_on_day () {
 				create_new_zapchast.appendChild(create_new_zapchast_save)
 
 				function save_new_PART () {
-					let data_work = { name:create_new_zapchast_name.value, code:create_new_zapchast_code.value, raiting:100, price:create_new_zapchast_price.value }
-					$.get('save-work', data_work, function(data) {
+					if (zayavka.carid == '') { return alert( 'Укажите автомобиль в окне заявки!' )}
+					let data_part = { name:create_new_zapchast_name.value, code:create_new_zapchast_code.value, carid: zayavka.carid, price:create_new_zapchast_price.value }
+					$.get('save-part', data_part, function(data) {
 						document.querySelector('.add_button').remove();
 					});
 
@@ -1331,7 +1302,7 @@ function click_on_day () {
 					td_input_zapchast.className = 'input_work';
 					td_input_zapchast.value = 1;
 					td_input_zapchast.setAttribute('min', '1');
-					td_input_zapchast.addEventListener('input', math_work)
+					td_input_zapchast.addEventListener('input', mathPRICE)
 					td_count_zapchast.appendChild(td_input_zapchast);
 
 					let td_price_zapchast = document.createElement('td');
@@ -1358,25 +1329,27 @@ function click_on_day () {
 					summ_zakaz.innerText = bufer;
 				}
 			}
+/************************************************************************************************************************
+*									Функции для работы с таблицами услуг и запчастей									*
+************************************************************************************************************************/
+			function show_del_td (argument) {
+				this.children[0].children[1].style.display = 'inline-block';
+				this.children[0].children[0].style.display = 'none';
+			}
 
-				/*function show_del_td (argument) {
-					this.children[0].children[1].style.display = 'inline-block';
-					this.children[0].children[0].style.display = 'none';
-				}
-				function hide_del_td (argument) {
-					this.children[0].children[1].style.display = 'none';
-					this.children[0].children[0].style.display = 'inline-block';
-				}
+			function hide_del_td (argument) {
+				this.children[0].children[1].style.display = 'none';
+				this.children[0].children[0].style.display = 'inline-block';
+			}
 
-				function math_work (argument) {
-					this.parentElement.nextElementSibling.innerText = parseInt(this.parentElement.nextElementSibling.getAttribute('data-price')) * this.value + ' руб';
-				    
-					document.querySelectorAll('.price_zapchast').forEach(function (el, i) {
-						summ_zakaz.innerText = parseInt(summ_zakaz.innerText) + parseInt(this.parentElement.parentElement.nextSibling.nextSibling.nextSibling.innerText);
-					})
-				}*/
-
-
+			function mathPRICE (argument) {
+				this.parentElement.nextElementSibling.innerText = parseInt(this.parentElement.nextElementSibling.getAttribute('data-price')) * this.value + ' руб';
+			    let bufer = 0;
+			    document.querySelectorAll('.price_rabota, .price_zapchast').forEach(function (el, i) {
+			    	bufer += parseInt(el.innerText);
+			    })
+			    summ_zakaz.innerText = bufer;
+			}
 /************************************************************************************************************************
 *										Выбор мастера для выполнения работ												*
 ************************************************************************************************************************/
@@ -1419,16 +1392,12 @@ function click_on_day () {
 		function open_list_masters (argument) {
 			this.parentElement.previousSibling.lastChild.value = this.innerText;
 			this.parentElement.style.display = 'none';
-			/*document.querySelectorAll('.popup_zakaz_master_cont_spisok').forEach( function(element, index) {
-				element.remove();
-			});*/
 		}
 /************************************************************************************************************************
 *														Общая сумма														*
 ************************************************************************************************************************/
 	let popup_zakaz_cash = document.createElement('div');
 		popup_zakaz_cash.className = 'col-md-12 popup_zakaz_cash';
-		popup_zakaz_cash.style = 'margin-top:1em;text-align:right';
 		popup_zakaz_cash.innerHTML = 'Стоимость заказа - <span id="summ_zakaz">0</span> руб.';
 
 
@@ -1492,7 +1461,7 @@ function click_on_day () {
 		container_tab_h_uslugi.style.padding = '0'
 	let popup_zakaz_vidi_rabot_tab = document.createElement('table');
 		popup_zakaz_vidi_rabot_tab.style.width = '99.4%';
-		popup_zakaz_vidi_rabot_tab.innerHTML = '<thead><tr class="vidi_rabot_th"><th style="width:31px">#</th><th style="width:52.7%">Наименование работ</th><th style="width:60px">Кол-во</th><th style="width:70px">Стоимость</th></tr></thead>';
+		popup_zakaz_vidi_rabot_tab.innerHTML = '<thead><tr class="vidi_rabot_th"><th style="width:31px">#</th><th style="width:52.7%">Услуга</th><th style="width:60px">Кол-во</th><th style="width:70px">Стоимость</th></tr></thead>';
 		container_tab_h_uslugi.appendChild(popup_zakaz_vidi_rabot_tab);
 
 
@@ -1501,7 +1470,7 @@ function click_on_day () {
 		container_tab_h_zapchasti.style.padding = '0'
 	let popup_zakaz_zapchasti_tab = document.createElement('table');
 		popup_zakaz_zapchasti_tab.style.width = '99.4%';
-		popup_zakaz_zapchasti_tab.innerHTML = '<thead><tr class="zapchasti_th"><th style="width:31px">#</th><th style="width:52.7%">Наименование запчасти</th><th style="width:60px">Кол-во</th><th style="width:70px">Стоимость</th></tr></thead>';
+		popup_zakaz_zapchasti_tab.innerHTML = '<thead><tr class="zapchasti_th"><th style="width:31px">#</th><th style="width:52.7%">Запчасть</th><th style="width:60px">Кол-во</th><th style="width:70px">Стоимость</th></tr></thead>';
 		container_tab_h_zapchasti.appendChild(popup_zakaz_zapchasti_tab);
 		
 		popup_zakaz_body.appendChild(popup_zakaz_vidi_rabot_list);
@@ -1526,6 +1495,20 @@ function click_on_day () {
 
 		
 		popup_zakaz_body.appendChild(popup_zakaz_cash);
+
+		let save_zayavka_button = document.createElement('button');
+		save_zayavka_button.id = 'save_zayavka';
+		save_zayavka_button.classList.add('btn');
+		save_zayavka_button.innerHTML = '<i class="fa fa-floppy-o" aria-hidden="true"></i> Сохранить';
+
+		save_zayavka_button.addEventListener('click', save_incident)
+		function save_incident (argument) {
+			console.log('Save form incident')
+		}
+
+		popup_zakaz_body.appendChild(save_zayavka_button);
+
+
 
 
 
@@ -1637,11 +1620,11 @@ function close_popup (wind)
 		function zakaz_close () {			
 			switch (wind) {
 				case 'third':
-					if (toogle_window == 'new_client_car_window') { document.querySelector('.create_new_person').classList.remove('HIDE_ON_TIME'); }
+					if (toogle_window == 'new_client_car_window') { document.querySelector('.create_new_person').classList.remove('HIDE_ON_TIME');toogle_window = 'new_client_window';document.querySelector('.create_new_person ').nextSibling.remove() }
 					break;
 				case 'second':
 					this.parentElement.parentElement.removeChild(this.parentElement);
-					if (toogle_window == 'new_client_window' || toogle_window == 'new_car_window' || toogle_window == 'new_work_window'){toogle_window = 'incident_window';document.querySelector('.add_button').remove();document.querySelector('.popup_zakaz_body').classList.remove('HIDE_ON_TIME')}
+					if (toogle_window == 'new_client_window' || toogle_window == 'new_car_window' || toogle_window == 'new_work_window' || toogle_window == 'new_zapchast_window'){toogle_window = 'incident_window';document.querySelector('.add_button').remove();document.querySelector('.popup_zakaz_body').classList.remove('HIDE_ON_TIME')}
 					//if (toogle_window == 'incident_window') {toogle_window = 'main';document.querySelector('.popup_zakaz_body').classList.remove('HIDE_ON_TIME')}
 					break;
 				case 'main':
@@ -1681,6 +1664,7 @@ var zayavka =
 	client:'',
 	phone:'',
 	car:'',
+	carid:'',
 	yearcar:'',
 	worklist:[],
 	partslist:[],
@@ -1690,3 +1674,22 @@ var zayavka =
 
 
 	
+/*
+
+в инцидент пишем:
+ид заказа
+ид человека
+ид машины
+состав ид вида работ
+состав ид запчастей
+ид мастера
+ид места (подъемника)
+время начала работ
+время завершения работ планируемое
+время завершения работ фактическое
+статус заказа
+стоимость заказа
+
+
+
+*/

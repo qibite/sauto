@@ -267,6 +267,14 @@ h3
     margin-top: 3px;
 }
 
+.popup_zakaz_cash
+{
+    margin-top: 1em;
+    text-align: right;
+    font-size: 1.1em;
+    font-weight: bold;
+}
+
 .tablecontainer .id
 {
     width: 50px;
@@ -275,7 +283,7 @@ h3
 {
     width: 80px;
 }
-.tablecontainer .price_rabota
+.tablecontainer .price_rabota, .tablecontainer .price_zapchast
 {
     width: 140px;
 }
@@ -706,4 +714,13 @@ td.id > .del_this_hr
 td.id > .del_this_hr:hover
 {
     font-size: 1.15em;
+}
+
+
+#save_zayavka
+{
+    position: absolute;
+    top: 30px;
+    right: 80px;
+    cursor: no-drop;
 }

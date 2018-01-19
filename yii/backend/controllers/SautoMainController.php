@@ -75,6 +75,17 @@ class SautoMainController extends Controller
         return 'NewWork is save! Work add';
     }
 
+    public function actionSavePart()
+    {
+        $part = new Parts();
+        $part->name = $_GET['name'];
+        $part->code = $_GET['code'];
+        $part->car = $_GET['carid'];
+        $part->price = $_GET['price'];
+        $part->save();
+        return 'Part is save! New part add';
+    }
+
     public function actionGetPersonal()
     {
         $masters = Personal::find()->where('busy = 0')->all();
