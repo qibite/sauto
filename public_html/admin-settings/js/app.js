@@ -150,6 +150,7 @@ function click_on_day () {
 			for (var i = clients_base_list.length - 1; i >= 0; i--) {
 				let spisok = document.createElement('span'); // ГЕНЕРАЦИЯ СПИСКА КЛИЕНТСКОЙ БАЗЫ ДЛЯ ВЫВОДА
 					spisok.className = 'col-md-12 popup_zakaz_fio_spisok';
+					spisok.setAttribute('data-idman', clients_base_list.children[i].getAttribute('data-idman'))
 					spisok.setAttribute('data-idcar-idman', clients_base_list.children[i].getAttribute('data-idcar-idman'))
 					spisok.setAttribute('data-phoneman', clients_base_list.children[i].getAttribute('data-phoneman'))
 					spisok.setAttribute('data-idcar-idman-year', clients_base_list.children[i].getAttribute('data-idcar-idman-year'))
@@ -158,13 +159,14 @@ function click_on_day () {
 					popup_zakaz_fio.appendChild(spisok_conteiner);
 					spisok_conteiner.appendChild(spisok);
 			}
-			function open_list_clients (argument) {		
-				popup_zakaz_fio_inp.value = zayavka.client = this.innerText;
+			function open_list_clients (argument) {
+				zayavka.client = this.getAttribute('data-idman');
+				zayavka.car = this.getAttribute('data-idcar-idman');
+				popup_zakaz_fio_inp.value = this.innerText;
 				this.parentElement.style.display = 'none';
-				popup_zakaz_auto_firm_inp.value = zayavka.car = document.querySelector('.spisok_conteiner_auto span[data-idcar="'+this.getAttribute('data-idcar-idman')+'"]').innerText;
+				popup_zakaz_auto_firm_inp.value = document.querySelector('.spisok_conteiner_auto span[data-idcar="'+this.getAttribute('data-idcar-idman')+'"]').innerText;
 				document.getElementById('year_car').value = zayavka.yearcar = this.getAttribute('data-idcar-idman-year');
-				document.getElementById('phone_client').value = zayavka.phone = this.getAttribute('data-phoneman');
-				zayavka.carid = this.getAttribute('data-idcar-idman');
+				document.getElementById('phone_client').value = /*zayavka.phone = */this.getAttribute('data-phoneman');
 			}
 
 		let popup_zakaz_fio_inp = document.createElement('input'); // ПОЛЕ ВВОДА ФИО КЛИЕНТА С ФУНКЦИЕЙ ПОИСКА
@@ -433,7 +435,7 @@ function click_on_day () {
 								sor: create_new_person_auto_sor.value,
 								year: create_new_person_year.value
 							}
-							zayavka.carid = data_client.avto_id;
+							zayavka.car = data_client.avto_id;
 							$.get('client', data_client, function(data) {
 								console.log('Ok!')
 								document.querySelector('.add_button').remove();
@@ -446,10 +448,10 @@ function click_on_day () {
 							sauto.success_window('Новый пользователь');
 							popup_zakaz_body.classList.remove('HIDE_ON_TIME');									
 							let buffer = create_new_person_family.value +' '+ create_new_person_name.value+' '+ create_new_person_otchestvo.value;
-								popup_zakaz_fio_inp.value = zayavka.client = buffer;
-								popup_zakaz_auto_firm_inp.value = zayavka.car = create_new_person_auto.value;
+								popup_zakaz_fio_inp.value = buffer;
+								popup_zakaz_auto_firm_inp.value = create_new_person_auto.value;
 								document.getElementById('year_car').value = zayavka.yearcar = create_new_person_year.value;
-								document.getElementById('phone_client').value = zayavka.phone = create_new_person_phone.value;
+								document.getElementById('phone_client').value = /*zayavka.phone = */create_new_person_phone.value;
 								document.querySelector('#select_client > .add_button').remove();
 						}
 							
@@ -486,8 +488,8 @@ function click_on_day () {
 					spisok_conteiner_auto.appendChild(spisok);
 			}
 			function open_list_auto_firm (argument) {		
-				popup_zakaz_auto_firm_inp.value = zayavka.car = this.innerText;
-				zayavka.carid = this.getAttribute('data-idcar')
+				popup_zakaz_auto_firm_inp.value = this.innerText;
+				zayavka.car = this.getAttribute('data-idcar')
 				this.parentElement.style.display = 'none';
 			}
 
@@ -648,7 +650,7 @@ function click_on_day () {
 								else if (toogle_window == 'incident_window') {
 										popup_zakaz_body.classList.remove('HIDE_ON_TIME');
 									let buffer = create_new_firm_auto_name.value +' '+ create_new_firm_auto_model.value;
-										popup_zakaz_auto_firm_inp.value = zayavka.car = buffer;
+										popup_zakaz_auto_firm_inp.value = buffer;
 								}
 							}
 							
@@ -719,6 +721,7 @@ function click_on_day () {
 				    	s.innerText = element.innerText;			            
 			            s.setAttribute('data-price', element.getAttribute('data-price'));
 			            s.setAttribute('data-idwork', element.getAttribute('data-idwork'));
+			            s.setAttribute('data-timeplane', element.getAttribute('data-timeplane'));
 			            s.insertBefore(add_rabota_icon.cloneNode(true), s.firstChild);
 			            popup_zakaz_vidi_rabot_list.appendChild(s);
 			            s.firstChild.addEventListener('click', add_work_in_tab)
@@ -736,6 +739,7 @@ function click_on_day () {
 			                 	s.innerText = element.innerText;
 			                 	s.setAttribute('data-price', element.getAttribute('data-price'));
 			                 	s.setAttribute('data-idwork', element.getAttribute('data-idwork'));
+			            		s.setAttribute('data-timeplane', element.getAttribute('data-timeplane'));
 			                   	s.insertBefore(add_rabota_icon.cloneNode(true), s.firstChild);
 			                popup_zakaz_vidi_rabot_list.appendChild(s);
 			                   	s.firstChild.addEventListener('click', add_work_in_tab)
@@ -765,6 +769,7 @@ function click_on_day () {
 				                 	s.innerText = element.innerText;
 				                 	s.setAttribute('data-price', element.getAttribute('data-price'));
 				                 	s.setAttribute('data-idwork', element.getAttribute('data-idwork'));
+				                 	s.setAttribute('data-timeplane', element.getAttribute('data-timeplane'));
 				                   	s.insertBefore(add_rabota_icon.cloneNode(true), s.firstChild);
 				                    popup_zakaz_vidi_rabot_list.appendChild(s);
 				                   s.firstChild.addEventListener('click', add_work_in_tab)
@@ -784,6 +789,7 @@ function click_on_day () {
 			                 	s.innerText = element.innerText;
 			                 	s.setAttribute('data-price', element.getAttribute('data-price'));
 			                 	s.setAttribute('data-idwork', element.getAttribute('data-idwork'));
+			                 	s.setAttribute('data-timeplane', element.getAttribute('data-timeplane'));
 			                   	s.insertBefore(add_rabota_icon.cloneNode(true), s.firstChild);
 			                    popup_zakaz_vidi_rabot_list.appendChild(s);
 			                   s.firstChild.addEventListener('click', add_work_in_tab)
@@ -825,7 +831,8 @@ function click_on_day () {
 					this.parentElement.parentElement.style.backgroundColor = '#ff9999';
 					this.parentElement.parentElement.style.color = '#ffffff';
 					setTimeout(()=>{
-						summ_zakaz.innerText -= parseInt(this.parentElement.nextSibling.nextSibling.nextSibling.innerText);
+						zayavka.minets -= parseInt(this.parentElement.nextSibling.nextSibling.nextSibling.getAttribute('data-timeplane'));
+						summ_zakaz.innerText = zayavka.summ -= parseInt(this.parentElement.nextSibling.nextSibling.nextSibling.innerText);
 						this.parentElement.parentElement.parentElement.removeChild(this.parentElement.parentElement)
 						for (let i=0; i<popup_zakaz_vidi_rabot_viborka_body.children.length; i++) {
 							popup_zakaz_vidi_rabot_viborka_body.children[i].firstChild.firstChild.innerText = i+1 + ' ';
@@ -852,10 +859,13 @@ function click_on_day () {
 				td_price_rabota.className = 'price_rabota';
 				td_price_rabota.innerText = this.parentElement.getAttribute('data-price') + ' руб';
 				td_price_rabota.setAttribute('data-price', this.parentElement.getAttribute('data-price'));
+				td_price_rabota.setAttribute('data-timeplane', this.parentElement.getAttribute('data-timeplane'));
 				tr_rabota.appendChild(td_id_rabota);
 				tr_rabota.appendChild(td_name_rabota);
 				tr_rabota.appendChild(td_count_rabota);
 				tr_rabota.appendChild(td_price_rabota);
+
+				zayavka.minets += parseInt(this.parentElement.getAttribute('data-timeplane'));
 
 				popup_zakaz_vidi_rabot_viborka_body.appendChild(tr_rabota);
 
@@ -870,7 +880,8 @@ function click_on_day () {
 				document.querySelectorAll('.price_rabota, .price_zapchast').forEach(function (el, i) {
 					bufer += parseInt(el.innerText);
 				});
-				summ_zakaz.innerText = bufer;
+				summ_zakaz.innerText = zayavka.summ = bufer;
+				zayavka.worklist.push(this.parentElement.getAttribute('data-idwork'));
 			}
 
 			function create_new_work (argument) {
@@ -969,7 +980,7 @@ function click_on_day () {
 						this.parentElement.parentElement.style.backgroundColor = '#ff9999';
 						this.parentElement.parentElement.style.color = '#ffffff';
 						setTimeout(()=>{
-							summ_zakaz.innerText -= parseInt(this.parentElement.nextSibling.nextSibling.nextSibling.innerText);
+							summ_zakaz.innerText = zayavka.summ -= parseInt(this.parentElement.nextSibling.nextSibling.nextSibling.innerText);
 							this.parentElement.parentElement.parentElement.removeChild(this.parentElement.parentElement)
 							for (let i=0; i<popup_zakaz_vidi_rabot_viborka_body.children.length; i++) {
 								popup_zakaz_vidi_rabot_viborka_body.children[i].firstChild.firstChild.innerText = i+1 + ' ';
@@ -1011,7 +1022,7 @@ function click_on_day () {
 					document.querySelectorAll('.price_rabota, .price_zapchast').forEach(function (el, i) {
 						bufer += parseInt(el.innerText);
 					});
-					summ_zakaz.innerText = bufer;
+					summ_zakaz.innerText = zayavka.summ = bufer;
 				}
 			}
 /************************************************************************************************************************
@@ -1065,6 +1076,7 @@ function click_on_day () {
 						s.innerText = element.innerText;
 				       	s.setAttribute('data-price', element.getAttribute('data-price'));
 				       	s.setAttribute('data-idcarpart', element.getAttribute('data-idcarpart'));
+				       	s.setAttribute('data-idpart', element.getAttribute('data-idpart'));
 				       	s.insertBefore(add_zapchast_icon.cloneNode(true), s.firstChild);
 				       	popup_zakaz_zapchasti_list.appendChild(s);
 				       	s.firstChild.addEventListener( 'click', add_part_in_tab )
@@ -1082,6 +1094,7 @@ function click_on_day () {
 				        	s.innerText = element.innerText;
 				        	s.setAttribute('data-price', element.getAttribute('data-price'));
 				        	s.setAttribute('data-idcarpart', element.getAttribute('data-idcarpart'));
+				        	s.setAttribute('data-idpart', element.getAttribute('data-idpart'));
 				        	s.insertBefore(add_zapchast_icon.cloneNode(true), s.firstChild);
 			                popup_zakaz_zapchasti_list.appendChild(s);
 			                s.firstChild.addEventListener('click', add_part_in_tab )
@@ -1112,6 +1125,7 @@ function click_on_day () {
 			                 	s.innerText = element.innerText;
 			                 	s.setAttribute('data-price', element.getAttribute('data-price'));
 			                 	s.setAttribute('data-idcarpart', element.getAttribute('data-idcarpart'));
+			                 	s.setAttribute('data-idpart', element.getAttribute('data-idpart'));
 			                   	s.insertBefore(add_zapchast_icon.cloneNode(true), s.firstChild);
 			                    popup_zakaz_zapchasti_list.appendChild(s);
 			                    s.firstChild.addEventListener('click', add_part_in_tab )
@@ -1132,6 +1146,7 @@ function click_on_day () {
 			                 	s.innerText = element.innerText;
 			                 	s.setAttribute('data-price', element.getAttribute('data-price'));
 			                 	s.setAttribute('data-idcarpart', element.getAttribute('data-idcarpart'));
+			                 	s.setAttribute('data-idpart', element.getAttribute('data-idpart'));
 			                   	s.insertBefore(add_zapchast_icon.cloneNode(true), s.firstChild);
 			                    popup_zakaz_zapchasti_list.appendChild(s);
 			                    s.firstChild.addEventListener('click', add_part_in_tab )
@@ -1173,7 +1188,7 @@ function click_on_day () {
 					this.parentElement.parentElement.style.backgroundColor = '#ff9999';
 					this.parentElement.parentElement.style.color = '#ffffff';
 					setTimeout(()=>{
-						summ_zakaz.innerText -= parseInt(this.parentElement.nextSibling.nextSibling.nextSibling.innerText);
+						summ_zakaz.innerText = zayavka.summ -= parseInt(this.parentElement.nextSibling.nextSibling.nextSibling.innerText);
 						this.parentElement.parentElement.parentElement.removeChild(this.parentElement.parentElement)
 						for (let i=0; i<popup_zakaz_zapchasti_viborka_body.children.length; i++) {
 							popup_zakaz_zapchasti_viborka_body.children[i].firstChild.firstChild.innerText = i+1 + ' ';
@@ -1216,7 +1231,8 @@ function click_on_day () {
 				document.querySelectorAll('.price_rabota, .price_zapchast').forEach(function (el, i) {
 					bufer += parseInt(el.innerText);
 				})
-				summ_zakaz.innerText = bufer;
+				summ_zakaz.innerText = zayavka.summ = bufer;
+				zayavka.partslist.push(this.parentElement.getAttribute('data-idpart'));
 			}
 
 			function create_new_zapchast (argument) {
@@ -1292,8 +1308,8 @@ function click_on_day () {
 				create_new_zapchast.appendChild(create_new_zapchast_save)
 
 				function save_new_PART () {
-					if (zayavka.carid == '') { return alert( 'Укажите автомобиль в окне заявки!' )}
-					let data_part = { name:create_new_zapchast_name.value, code:create_new_zapchast_code.value, carid: zayavka.carid, price:create_new_zapchast_price.value }
+					if (zayavka.car == '') { return alert( 'Укажите автомобиль в окне заявки!' )}
+					let data_part = { name:create_new_zapchast_name.value, code:create_new_zapchast_code.value, carid: zayavka.car, price:create_new_zapchast_price.value }
 					$.get('save-part', data_part, function(data) {
 						document.querySelector('.add_button').remove();
 					});
@@ -1319,7 +1335,7 @@ function click_on_day () {
 						this.parentElement.parentElement.style.color = '#ffffff';
 
 						setTimeout(()=>{
-							summ_zakaz.innerText -= parseInt(this.parentElement.nextSibling.nextSibling.nextSibling.innerText);
+							summ_zakaz.innerText = zayavka.summ -= parseInt(this.parentElement.nextSibling.nextSibling.nextSibling.innerText);
 							this.parentElement.parentElement.parentElement.removeChild(this.parentElement.parentElement)
 							for (let i=0; i<popup_zakaz_zapchasti_viborka_body.children.length; i++) {
 								popup_zakaz_zapchasti_viborka_body.children[i].firstChild.firstChild.innerText = i+1 + ' ';
@@ -1363,7 +1379,7 @@ function click_on_day () {
 					document.querySelectorAll('.price_rabota, .price_zapchast').forEach(function (el, i) {
 						bufer += parseInt(el.innerText);
 					})
-					summ_zakaz.innerText = bufer;
+					summ_zakaz.innerText = zayavka.summ = bufer;
 				}
 			}
 /************************************************************************************************************************
@@ -1385,7 +1401,7 @@ function click_on_day () {
 			    document.querySelectorAll('.price_rabota, .price_zapchast').forEach(function (el, i) {
 			    	bufer += parseInt(el.innerText);
 			    })
-			    summ_zakaz.innerText = bufer;
+			    summ_zakaz.innerText = zayavka.summ = bufer;
 			}
 /************************************************************************************************************************
 *										Выбор мастера для выполнения работ												*
@@ -1429,6 +1445,7 @@ function click_on_day () {
 		function open_list_masters (argument) {
 			this.parentElement.previousSibling.lastChild.value = this.innerText;
 			this.parentElement.style.display = 'none';
+			zayavka.implementer = this.getAttribute('data-idmaster');
 		}
 /************************************************************************************************************************
 *														Общая сумма														*
@@ -1512,13 +1529,9 @@ function click_on_day () {
 		
 		popup_zakaz_body.appendChild(popup_zakaz_vidi_rabot_list);
 		popup_zakaz_body.appendChild(popup_zakaz_zapchasti_list);
-		//popup_zakaz_body.appendChild(popup_zakaz_vidi_rabot_list);
-	/*let zag2 = document.createElement('h4');
-		zag2.style.marginTop = '.2em';
-		zag2.className = 'col-md-12';
-		zag2.innerText = 'Виды работ:';		
-		popup_zakaz_body.appendChild(zag2);*/
+
 		sauto.insert_clear_block(popup_zakaz_body, '10px');
+		
 		popup_zakaz_body.appendChild(container_tab_h_uslugi);
 		popup_zakaz_body.appendChild(container_tab_h_zapchasti);
 
@@ -1551,7 +1564,13 @@ function click_on_day () {
 				this.style.cursor = 'pointer';
 				console.log('Ready to save')
 			}
-		})
+		});
+
+		save_zayavka_button.addEventListener('mouseout', function () {
+			this.classList.remove('btn-warning');
+			this.classList.remove('disabled');
+			this.classList.remove('btn-success')
+		});
 
 		save_zayavka_button.addEventListener('click', save_incident)
 		function save_incident (argument) {
@@ -1705,7 +1724,18 @@ function check_mathes_span (parent) {
 
 var zayavka = 
 {
+	client:'',
+	car:'',
+	worklist:[],
+	partslist:[],
+	implementer:'',
+	place:'',
 	timestart:
+	{
+		hour:'',
+		minutes:''
+	},
+	timeplaneend:
 	{
 		hour:'',
 		minutes:''
@@ -1715,15 +1745,9 @@ var zayavka =
 		hour:'',
 		minutes:''
 	},
-	client:'',
-	phone:'',
-	car:'',
-	carid:'',
-	yearcar:'',
-	worklist:[],
-	partslist:[],
-	summ:'',
-	implementer:''
+	status:'1',
+	minets:0,
+	summ:''
 }
 
 
@@ -1732,17 +1756,17 @@ var zayavka =
 
 в инцидент пишем:
 ид заказа - автоинкремент
-ид человека
-ид машины
-состав ид вида работ
-состав ид запчастей
-ид мастера
+ид человека +
+ид машины +
+состав ид вида работ +
+состав ид запчастей +
+ид мастера +
 ид места (подъемника)
-время начала работ
+время начала работ +
 время завершения работ планируемое
 время завершения работ фактическое
 статус заказа
-стоимость заказа
+стоимость заказа + 
 
 
 
