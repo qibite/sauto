@@ -1496,14 +1496,31 @@ function click_on_day () {
 		
 		popup_zakaz_body.appendChild(popup_zakaz_cash);
 
-		let save_zayavka_button = document.createElement('button');
-		save_zayavka_button.id = 'save_zayavka';
-		save_zayavka_button.classList.add('btn');
-		save_zayavka_button.innerHTML = '<i class="fa fa-floppy-o" aria-hidden="true"></i> Сохранить';
+		let save_zayavka_button = sauto.create_new_button('save_zayavka', 'btn', 'save', 'Записать');
+
+		save_zayavka_button.addEventListener('mouseover', function () {
+			if 
+			( document.querySelector('#select_client .client_input_fio').value == '' || document.querySelector('#select_client_car .client_input_fio').value == '' || document.querySelector('#year_car').value == '' || document.querySelector('#phone_client').value == '' ||  document.querySelector('#viborka_rabot > tbody').children.length < 1 || document.querySelector('#master').value == '' ) 
+			{
+				this.classList.remove('btn-success')
+				this.classList.add('btn-warning');
+				this.classList.add('disabled');
+				this.style.cursor = 'no-drop';
+			}
+			else {
+				this.classList.remove('btn-warning');
+				this.classList.remove('disabled');
+				this.classList.add('btn-success')
+				this.style.cursor = 'pointer';
+				console.log('Ready to save')
+			}
+		})
 
 		save_zayavka_button.addEventListener('click', save_incident)
 		function save_incident (argument) {
-			console.log('Save form incident')
+			if (this.classList.contains('btn-warning')){
+				console.log('ffffff')
+			}
 		}
 
 		popup_zakaz_body.appendChild(save_zayavka_button);
