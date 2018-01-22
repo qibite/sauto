@@ -753,7 +753,26 @@ function click_on_day () {
 					 	var for_search_list_work_REGEXP = new RegExp(this.value, 'gi');
 					 	popup_zakaz_vidi_rabot_list.innerHTML = '';
 					}
-					else { return }
+					else {
+						list_of_works.childNodes.forEach(function(element, index) {
+							if (element.nodeName == '#text') {
+								return;
+				            }
+				            else {
+				            	let patt = element.innerText;
+				                if (patt.search(for_search_list_work_REGEXP) != -1) {
+				                	let s = document.createElement('span');
+				                 	s.innerText = element.innerText;
+				                 	s.setAttribute('data-price', element.getAttribute('data-price'));
+				                 	s.setAttribute('data-idwork', element.getAttribute('data-idwork'));
+				                   	s.insertBefore(add_rabota_icon.cloneNode(true), s.firstChild);
+				                    popup_zakaz_vidi_rabot_list.appendChild(s);
+				                   s.firstChild.addEventListener('click', add_work_in_tab)
+				                }
+				            }
+				        });
+				        return
+					}
 					list_of_works.childNodes.forEach(function(element, index) {
 						if (element.nodeName == '#text') {
 							return;
@@ -1082,7 +1101,25 @@ function click_on_day () {
 						popup_zakaz_zapchasti_list.innerHTML = '';
 					}
 
-					else { return }
+					else {
+						list_of_works_zapchast.childNodes.forEach(function(element, index) {
+			        	if (element.nodeName == '#text') { return }
+
+			        	else {
+			        		let patt = element.innerText;
+			        		if (patt.search(for_search_list_work_REGEXP) != -1) {
+			        			let s = document.createElement('span');
+			                 	s.innerText = element.innerText;
+			                 	s.setAttribute('data-price', element.getAttribute('data-price'));
+			                 	s.setAttribute('data-idcarpart', element.getAttribute('data-idcarpart'));
+			                   	s.insertBefore(add_zapchast_icon.cloneNode(true), s.firstChild);
+			                    popup_zakaz_zapchasti_list.appendChild(s);
+			                    s.firstChild.addEventListener('click', add_part_in_tab )
+			                }
+			            }
+			        });
+					return
+					}
 
 			        list_of_works_zapchast.childNodes.forEach(function(element, index) {
 			        	if (element.nodeName == '#text') { return }
@@ -1694,7 +1731,7 @@ var zayavka =
 /*
 
 в инцидент пишем:
-ид заказа
+ид заказа - автоинкремент
 ид человека
 ид машины
 состав ид вида работ
