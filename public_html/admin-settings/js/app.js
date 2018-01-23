@@ -1,6 +1,20 @@
 var raspisanie = document.getElementsByClassName('raspisanie');
 var month = document.querySelector('caption.month');
 var day = document.querySelectorAll('.day');
+var month_arr = new Array(
+	'Январь',
+	'Февраль',
+	'Март',
+	'Апрель',
+	'Май',
+	'Июнь',
+	'Июль',
+	'Август',
+	'Сентябрь',
+	'Октябрь',
+	'Ноябрь',
+	'Декабрь'
+	);
 
 function return_month(that_month) {
 	let name = that_month.innerText;
@@ -27,10 +41,20 @@ var toogle_window;
 function click_on_day () {
 	toogle_window = 'incident_window';
 	let data = new Date()
+	zayavka.timestart.year = zayavka.timeplaneend.year = zayavka.timeend.year = data.getFullYear();
 	let that_day = this;
 	let clear_div = document.createElement('div');
 		clear_div.style.clear = 'both';
 		clear_div.style.height = '1em';
+
+
+	month_arr.findIndex(function(el, indx, arr){
+		if (el.toLowerCase() == month.innerText.toLowerCase()) {
+			console.log(arr[indx]);
+			zayavka.timestart.month = indx;
+			return
+		}
+	})
 /************************************************************************************************************************
 *													ФОН НОВОГО ОКНА ЗАКАЗА												*
 ************************************************************************************************************************/
@@ -52,6 +76,7 @@ function click_on_day () {
 *												ЗАГОЛОВОК НОВОГО ОКНА ЗАКАЗА											*
 ************************************************************************************************************************/
 		popup_zakaz_body.innerHTML = popup_zakaz_body.innerHTML+'<h3><i class="fa fa-info-circle" aria-hidden="true"></i> Запись на ' + that_day.firstChild.innerText + ' '+ return_month(month) +'</h3>';
+		zayavka.timestart.date = that_day.firstChild.innerText;
 		//sauto.insert_hr(popup_zakaz_body)
 /************************************************************************************************************************
 *									УСТАНОВКА НАЗНАЧЕНОГО ВРЕМЕНИ НОВОГО ОКНА ЗАКАЗА									*
@@ -832,6 +857,16 @@ function click_on_day () {
 					this.parentElement.parentElement.style.color = '#ffffff';
 					setTimeout(()=>{
 						zayavka.minets -= parseInt(this.parentElement.nextSibling.nextSibling.nextSibling.getAttribute('data-timeplane'));
+						{
+							let zapis = new Date(zayavka.timestart.year, zayavka.timestart.month, zayavka.timestart.date, zayavka.timestart.hour, zayavka.timestart.minutes);
+							console.log(zapis)
+							let planeEND = new Date (zapis.setMinutes(zapis.getMinutes()+zayavka.minets));
+							zayavka.timeplaneend.month = planeEND.getMonth();
+							zayavka.timeplaneend.date = planeEND.getDate();
+							zayavka.timeplaneend.hour = planeEND.getHours();
+							zayavka.timeplaneend.minutes = planeEND.getMinutes();
+							summ_hours.innerText = planeEND.getDate() + '.' + planeEND.getMonth()+1 + '.' + planeEND.getFullYear() + ' ' + planeEND.getHours() + ':' + planeEND.getMinutes();
+						}
 						summ_zakaz.innerText = zayavka.summ -= parseInt(this.parentElement.nextSibling.nextSibling.nextSibling.innerText);
 						this.parentElement.parentElement.parentElement.removeChild(this.parentElement.parentElement)
 						for (let i=0; i<popup_zakaz_vidi_rabot_viborka_body.children.length; i++) {
@@ -866,6 +901,17 @@ function click_on_day () {
 				tr_rabota.appendChild(td_price_rabota);
 
 				zayavka.minets += parseInt(this.parentElement.getAttribute('data-timeplane'));
+				{
+					let zapis = new Date(zayavka.timestart.year, zayavka.timestart.month, zayavka.timestart.date, zayavka.timestart.hour, zayavka.timestart.minutes);
+					console.log(zapis)
+					let planeEND = new Date (zapis.setMinutes(zapis.getMinutes()+zayavka.minets));
+					zayavka.timeplaneend.month = planeEND.getMonth();
+					zayavka.timeplaneend.date = planeEND.getDate();
+					zayavka.timeplaneend.hour = planeEND.getHours();
+					zayavka.timeplaneend.minutes = planeEND.getMinutes();
+					summ_hours.innerText = planeEND.getDate() + '.' + planeEND.getMonth()+1 + '.' + planeEND.getFullYear() + ' ' + planeEND.getHours() + ':' + planeEND.getMinutes();
+				}
+
 
 				popup_zakaz_vidi_rabot_viborka_body.appendChild(tr_rabota);
 
@@ -885,13 +931,14 @@ function click_on_day () {
 			}
 
 			function create_new_work (argument) {
+				if (zayavka.car == '') { return alert( 'Укажите автомобиль!' )}
 				toogle_window = 'new_work_window';
 
 				let create_new_work = document.createElement('div');
 				create_new_work.className = 'create_new';
 				popup_zakaz_body.classList.add('HIDE_ON_TIME');
 				popup_zakaz.appendChild(create_new_work)
-				create_new_work.innerHTML = '<h3><i class="fa fa-info" aria-hidden="true"></i> Добавление услуги, вида работ</h3>';
+				create_new_work.innerHTML = '<h3><i class="fa fa-info" aria-hidden="true"></i> Добавление услуги, вида работ для '+ document.querySelector('#auto_firm option[value="'+ zayavka.car +'"]').innerText +'</h3>';
 
 				sauto.insert_hr(create_new_work);
 
@@ -914,7 +961,7 @@ function click_on_day () {
 				let create_new_work_price = sauto.create_input('text', 'auto_model','new_work_model', 'col-md-12 input mBottomInp', 'Стоимость без пробелов')
 					create_new_work_name.value = popup_zakaz_vidi_rabot_search.value;
 
-				let create_new_work_code = sauto.create_input('number', 'auto_code','new_work_code', 'col-md-3 col-md-offset-9 input mBottomInp', 'Код')
+				let create_new_work_code = sauto.create_input('number', 'auto_code','new_work_code', 'col-md-6 col-md-offset-4 input mBottomInp', 'Время предоставления мин.')
 
 				create_new_work_name_inpblock.appendChild(create_new_work_name)
 				create_new_work_name_inpblock.appendChild(create_new_work_price)
@@ -956,7 +1003,7 @@ function click_on_day () {
 				create_new_work.appendChild(create_new_work_save)
 
 				function save_new_WORK () {
-					let data_work = { name:create_new_work_name.value, code:create_new_work_code.value, raiting:100, price:create_new_work_price.value }
+					let data_work = { name:create_new_work_name.value, code:0, raiting:100, price:create_new_work_price.value, time:create_new_work_code.value }
 					$.get('save-work', data_work, function(data) {
 						document.querySelector('.add_button').remove();
 					});
@@ -1007,6 +1054,19 @@ function click_on_day () {
 					td_price_rabota.className = 'price_rabota';
 					td_price_rabota.innerText = create_new_work_price.value + ' руб';
 					td_price_rabota.setAttribute('data-price', create_new_work_price.value);
+					td_price_rabota.setAttribute('data-timeplane', create_new_work_code.value);
+
+					zayavka.minets += parseInt(create_new_work_code.value);
+					{
+						let zapis = new Date(zayavka.timestart.year, zayavka.timestart.month, zayavka.timestart.date, zayavka.timestart.hour, zayavka.timestart.minutes);
+						console.log(zapis)
+						let planeEND = new Date (zapis.setMinutes(zapis.getMinutes()+zayavka.minets));
+						zayavka.timeplaneend.month = planeEND.getMonth();
+						zayavka.timeplaneend.date = planeEND.getDate();
+						zayavka.timeplaneend.hour = planeEND.getHours();
+						zayavka.timeplaneend.minutes = planeEND.getMinutes();
+						summ_hours.innerText = planeEND.getDate() + '.' + planeEND.getMonth()+1 + '.' + planeEND.getFullYear() + ' ' + planeEND.getHours() + ':' + planeEND.getMinutes();
+					}
 
 					tr_rabota.appendChild(td_id_rabota);
 					tr_rabota.appendChild(td_name_rabota);
@@ -1236,13 +1296,14 @@ function click_on_day () {
 			}
 
 			function create_new_zapchast (argument) {
+				if (zayavka.car == '') { return alert( 'Укажите автомобиль!' )}
 				toogle_window = 'new_zapchast_window';
 
 				let create_new_zapchast = document.createElement('div');
 				create_new_zapchast.className = 'create_new';
 				popup_zakaz_body.classList.add('HIDE_ON_TIME');
 				popup_zakaz.appendChild(create_new_zapchast)
-				create_new_zapchast.innerHTML = '<h3><i class="fa fa-info" aria-hidden="true"></i> Добавление товара, запчасти</h3>';						
+				create_new_zapchast.innerHTML = '<h3><i class="fa fa-info" aria-hidden="true"></i> Добавление товара, запчасти для '+ document.querySelector('#auto_firm option[value="'+ zayavka.car +'"]').innerText +'</h3>';						
 				
 				sauto.insert_hr(create_new_zapchast);
 				
@@ -1454,6 +1515,10 @@ function click_on_day () {
 		popup_zakaz_cash.className = 'col-md-12 popup_zakaz_cash';
 		popup_zakaz_cash.innerHTML = 'Стоимость заказа - <span id="summ_zakaz">0</span> руб.';
 
+	let popup_zakaz_hours = document.createElement('div');
+		popup_zakaz_hours.className = 'col-md-12 popup_zakaz_hours';
+		popup_zakaz_hours.innerHTML = 'Плановое завершение <span id="summ_hours"></span>';
+
 
 
 
@@ -1531,7 +1596,7 @@ function click_on_day () {
 		popup_zakaz_body.appendChild(popup_zakaz_zapchasti_list);
 
 		sauto.insert_clear_block(popup_zakaz_body, '10px');
-		
+
 		popup_zakaz_body.appendChild(container_tab_h_uslugi);
 		popup_zakaz_body.appendChild(container_tab_h_zapchasti);
 
@@ -1545,6 +1610,7 @@ function click_on_day () {
 
 		
 		popup_zakaz_body.appendChild(popup_zakaz_cash);
+		popup_zakaz_body.appendChild(popup_zakaz_hours);
 
 		let save_zayavka_button = sauto.create_new_button('save_zayavka', 'btn', 'save', 'Записать');
 
@@ -1562,7 +1628,7 @@ function click_on_day () {
 				this.classList.remove('disabled');
 				this.classList.add('btn-success')
 				this.style.cursor = 'pointer';
-				console.log('Ready to save')
+				//console.log('Ready to save')
 			}
 		});
 
@@ -1577,28 +1643,34 @@ function click_on_day () {
 			if (this.classList.contains('btn-warning')){
 				console.log('ffffff')
 			}
+			else {
+				let rab_den = 480;
+				let obed = 60 /* ОБЕД ТОЖЕ В НАСТРОЙКАХ В БАЗЕ ДЕРЖАТЬСЯ БУДЕТ */;
+				let zapis = new Date(zayavka.timestart.year, zayavka.timestart.month, zayavka.timestart.date, zayavka.timestart.hour, zayavka.timestart.minutes);
+				console.log('Время начала работ: '+zapis)
+
+				let endday = new Date(zayavka.timestart.year, zayavka.timestart.month, zayavka.timestart.date, 18 /* БУДЕТ БРАТЬСЯ ИЗ БАЗЫ С ТАБЛИЦЫ НАСТРОЕК */, 00 /* БУДЕТ БРАТЬСЯ ИЗ БАЗЫ С ТАБЛИЦЫ НАСТРОЕК */);
+				let ot_nachala_zap_do_konca_dnya_M = (endday - zapis)/1000/60-obed;
+				console.log('Оставшееся время от начала работ до конца рабочего дня: '+ot_nachala_zap_do_konca_dnya_M)
+
+				let raznica_vremeni_zayavki_i_RD = ot_nachala_zap_do_konca_dnya_M - zayavka.minets;
+				console.log('Разница времени исполнения заказа и фактически оставшегося времени до конца рабочего дня: '+raznica_vremeni_zayavki_i_RD)
+
+
+
+				let planeEND = new Date (zapis.setMinutes(zapis.getMinutes()+zayavka.minets));
+				console.log(planeEND)
+				zayavka.timeplaneend.month = planeEND.getMonth();
+				zayavka.timeplaneend.date = planeEND.getDate();
+				zayavka.timeplaneend.hour = planeEND.getHours();
+				zayavka.timeplaneend.minutes = planeEND.getMinutes();
+				summ_hours.innerText = planeEND.getDate() + '.' + planeEND.getMonth()+1 + '.' + planeEND.getFullYear() + ' ' + planeEND.getHours() + ':' + planeEND.getMinutes();
+			}
 		}
 
 		popup_zakaz_body.appendChild(save_zayavka_button);
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-	/*let popup_zakaz_button = document.createElement('button');
-		popup_zakaz_button.className = 'btn popup_zakaz_button';
-		popup_zakaz_button.innerText = 'Создать';
-		popup_zakaz_body.appendChild(popup_zakaz_button);*/
 
 
 
@@ -1732,16 +1804,25 @@ var zayavka =
 	place:'',
 	timestart:
 	{
+		year:'',
+		month:'',
+		date:'',
 		hour:'',
 		minutes:''
 	},
 	timeplaneend:
 	{
+		year:'',
+		month:'',
+		date:'',
 		hour:'',
 		minutes:''
 	},
 	timeend:
 	{
+		year:'',
+		month:'',
+		date:'',
 		hour:'',
 		minutes:''
 	},
@@ -1765,7 +1846,7 @@ var zayavka =
 время начала работ +
 время завершения работ планируемое
 время завершения работ фактическое
-статус заказа
+статус заказа +
 стоимость заказа + 
 
 

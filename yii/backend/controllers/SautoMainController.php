@@ -71,6 +71,7 @@ class SautoMainController extends Controller
         $Work->code = $_GET['code'];
         $Work->raiting = $_GET['raiting'];
         $Work->price = $_GET['price'];
+        $Work->time = $_GET['time'];
         $Work->save();
         return 'NewWork is save! Work add';
     }

@@ -267,7 +267,7 @@ h3
     margin-top: 3px;
 }
 
-.popup_zakaz_cash
+.popup_zakaz_cash, .popup_zakaz_hours
 {
     margin-top: 1em;
     text-align: right;
