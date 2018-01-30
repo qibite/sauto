@@ -9,6 +9,7 @@ use backend\models\NewClient;
 use backend\models\NewWork;
 use backend\models\Personal;
 use backend\models\Parts;
+use backend\models\Settings;
 /**
  * Site controller
  */
@@ -95,5 +96,28 @@ class SautoMainController extends Controller
             array_push( $obj_masters, array( 'id' => $master->id, 'master' => $master->fio ) );
         }
         return json_encode($obj_masters);
+    }
+
+    public function actionGetSettings()
+    {
+        $allsetts = array();
+        $setts = Settings::find()->all();
+        foreach ($setts as $set) {
+            array_push(
+                $allsetts, 
+                array(
+                    'start_day_h' => $set->start_day_h,
+                    'start_day_m' => $set->start_day_m,
+                    'start_obed_h' => $set->start_obed_h,
+                    'start_obed_m' => $set->start_obed_m,
+                    'end_obed_h' => $set->end_obed_h,
+                    'end_obed_m' => $set->end_obed_m,
+                    'end_day_h' => $set->end_day_h,
+                    'end_day_m' => $set->end_day_m,
+                    'weekends' => $set->weekend
+                )
+            );
+        }
+        return json_encode($allsetts);
     }
 }

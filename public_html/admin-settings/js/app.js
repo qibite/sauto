@@ -352,11 +352,11 @@ function click_on_day () {
 							create_new_person_auto.value = this.innerText;
 							create_new_person_auto.setAttribute('data-carid', this.getAttribute('data-carid'))
 							this.parentElement.style.display = 'none';
-							console.log(this.getAttribute('data-carid'));
+							//console.log(this.getAttribute('data-carid'));
 						}
 
 						function search_client_auto_firm(vvod) {
-							console.log(this.value)
+							//console.log(this.value)
 							let list_container = document.querySelector('.list_auto_client');
 							if (list_container.children.length > 0) {
 								if (check_mathes_span(document.querySelector('.list_auto_client'))) {																	
@@ -660,7 +660,7 @@ function click_on_day () {
 								// Нажатие кнопки СОХРАНИТЬ
 								let data_car = { firm: create_new_firm_auto_name.value, model: create_new_firm_auto_model.value };
 								$.get('car', data_car, function(data, textStatus, xhr) {
-									console.log(data);
+									//console.log(data);
 								});
 								this.parentElement.remove();
 								sauto.success_window('Новый автомобиль');
@@ -857,16 +857,8 @@ function click_on_day () {
 					this.parentElement.parentElement.style.color = '#ffffff';
 					setTimeout(()=>{
 						zayavka.minets -= parseInt(this.parentElement.nextSibling.nextSibling.nextSibling.getAttribute('data-timeplane'));
-						{
-							let zapis = new Date(zayavka.timestart.year, zayavka.timestart.month, zayavka.timestart.date, zayavka.timestart.hour, zayavka.timestart.minutes);
-							console.log(zapis)
-							let planeEND = new Date (zapis.setMinutes(zapis.getMinutes()+zayavka.minets));
-							zayavka.timeplaneend.month = planeEND.getMonth();
-							zayavka.timeplaneend.date = planeEND.getDate();
-							zayavka.timeplaneend.hour = planeEND.getHours();
-							zayavka.timeplaneend.minutes = planeEND.getMinutes();
-							summ_hours.innerText = planeEND.getDate() + '.' + planeEND.getMonth()+1 + '.' + planeEND.getFullYear() + ' ' + planeEND.getHours() + ':' + planeEND.getMinutes();
-						}
+						calc_time();
+
 						summ_zakaz.innerText = zayavka.summ -= parseInt(this.parentElement.nextSibling.nextSibling.nextSibling.innerText);
 						this.parentElement.parentElement.parentElement.removeChild(this.parentElement.parentElement)
 						for (let i=0; i<popup_zakaz_vidi_rabot_viborka_body.children.length; i++) {
@@ -901,17 +893,7 @@ function click_on_day () {
 				tr_rabota.appendChild(td_price_rabota);
 
 				zayavka.minets += parseInt(this.parentElement.getAttribute('data-timeplane'));
-				{
-					let zapis = new Date(zayavka.timestart.year, zayavka.timestart.month, zayavka.timestart.date, zayavka.timestart.hour, zayavka.timestart.minutes);
-					console.log(zapis)
-					let planeEND = new Date (zapis.setMinutes(zapis.getMinutes()+zayavka.minets));
-					zayavka.timeplaneend.month = planeEND.getMonth();
-					zayavka.timeplaneend.date = planeEND.getDate();
-					zayavka.timeplaneend.hour = planeEND.getHours();
-					zayavka.timeplaneend.minutes = planeEND.getMinutes();
-					summ_hours.innerText = planeEND.getDate() + '.' + planeEND.getMonth()+1 + '.' + planeEND.getFullYear() + ' ' + planeEND.getHours() + ':' + planeEND.getMinutes();
-				}
-
+				calc_time();
 
 				popup_zakaz_vidi_rabot_viborka_body.appendChild(tr_rabota);
 
@@ -1057,17 +1039,8 @@ function click_on_day () {
 					td_price_rabota.setAttribute('data-timeplane', create_new_work_code.value);
 
 					zayavka.minets += parseInt(create_new_work_code.value);
-					{
-						let zapis = new Date(zayavka.timestart.year, zayavka.timestart.month, zayavka.timestart.date, zayavka.timestart.hour, zayavka.timestart.minutes);
-						console.log(zapis)
-						let planeEND = new Date (zapis.setMinutes(zapis.getMinutes()+zayavka.minets));
-						zayavka.timeplaneend.month = planeEND.getMonth();
-						zayavka.timeplaneend.date = planeEND.getDate();
-						zayavka.timeplaneend.hour = planeEND.getHours();
-						zayavka.timeplaneend.minutes = planeEND.getMinutes();
-						summ_hours.innerText = planeEND.getDate() + '.' + planeEND.getMonth()+1 + '.' + planeEND.getFullYear() + ' ' + planeEND.getHours() + ':' + planeEND.getMinutes();
-					}
-
+					calc_time();
+					
 					tr_rabota.appendChild(td_id_rabota);
 					tr_rabota.appendChild(td_name_rabota);
 					tr_rabota.appendChild(td_count_rabota);
@@ -1644,27 +1617,7 @@ function click_on_day () {
 				console.log('ffffff')
 			}
 			else {
-				let rab_den = 480;
-				let obed = 60 /* ОБЕД ТОЖЕ В НАСТРОЙКАХ В БАЗЕ ДЕРЖАТЬСЯ БУДЕТ */;
-				let zapis = new Date(zayavka.timestart.year, zayavka.timestart.month, zayavka.timestart.date, zayavka.timestart.hour, zayavka.timestart.minutes);
-				console.log('Время начала работ: '+zapis)
-
-				let endday = new Date(zayavka.timestart.year, zayavka.timestart.month, zayavka.timestart.date, 18 /* БУДЕТ БРАТЬСЯ ИЗ БАЗЫ С ТАБЛИЦЫ НАСТРОЕК */, 00 /* БУДЕТ БРАТЬСЯ ИЗ БАЗЫ С ТАБЛИЦЫ НАСТРОЕК */);
-				let ot_nachala_zap_do_konca_dnya_M = (endday - zapis)/1000/60-obed;
-				console.log('Оставшееся время от начала работ до конца рабочего дня: '+ot_nachala_zap_do_konca_dnya_M)
-
-				let raznica_vremeni_zayavki_i_RD = ot_nachala_zap_do_konca_dnya_M - zayavka.minets;
-				console.log('Разница времени исполнения заказа и фактически оставшегося времени до конца рабочего дня: '+raznica_vremeni_zayavki_i_RD)
-
-
-
-				let planeEND = new Date (zapis.setMinutes(zapis.getMinutes()+zayavka.minets));
-				console.log(planeEND)
-				zayavka.timeplaneend.month = planeEND.getMonth();
-				zayavka.timeplaneend.date = planeEND.getDate();
-				zayavka.timeplaneend.hour = planeEND.getHours();
-				zayavka.timeplaneend.minutes = planeEND.getMinutes();
-				summ_hours.innerText = planeEND.getDate() + '.' + planeEND.getMonth()+1 + '.' + planeEND.getFullYear() + ' ' + planeEND.getHours() + ':' + planeEND.getMinutes();
+				calc_time();
 			}
 		}
 
@@ -1672,9 +1625,71 @@ function click_on_day () {
 
 
 
+		function calc_time (argument) {
+			$.get('get-settings', function(data, textStatus, xhr) {
+				let settings_time = JSON.parse(data);
+
+				let weekends = settings_time[0].weekends;
+
+				let nachalo_raboty_H = settings_time[0].start_day_h;
+				let nachalo_raboty_M = settings_time[0].start_day_m;
+				let nach_raboty = new Date( zayavka.timestart.year, zayavka.timestart.month, zayavka.timestart.date, nachalo_raboty_H /* ИЗ БАЗЫ С ТАБЛИЦЫ НАСТРОЕК */, nachalo_raboty_M /* ИЗ БАЗЫ С ТАБЛИЦЫ НАСТРОЕК */ ); // Начало рабочего дня
+
+				let konec_raboty_H = settings_time[0].end_day_h;
+				let konec_raboty_M = settings_time[0].end_day_m;
+				let konec_raboty = new Date( zayavka.timestart.year, zayavka.timestart.month, zayavka.timestart.date, konec_raboty_H /* ИЗ БАЗЫ С ТАБЛИЦЫ НАСТРОЕК */, konec_raboty_M /* ИЗ БАЗЫ С ТАБЛИЦЫ НАСТРОЕК */ ); // Конец рабочего дня
 
 
+				let obed_start_H = settings_time[0].start_obed_h;
+				let obed_start_M = settings_time[0].start_obed_m;
+				let nach_obed = new Date( zayavka.timestart.year, zayavka.timestart.month, zayavka.timestart.date, obed_start_H /* ИЗ БАЗЫ С ТАБЛИЦЫ НАСТРОЕК */, obed_start_M /* ИЗ БАЗЫ С ТАБЛИЦЫ НАСТРОЕК */ ); // Начало обеда
 
+				let obed_end_H = settings_time[0].end_obed_h;
+				let obed_end_M =  settings_time[0].end_obed_m;
+				let konec_obed = new Date( zayavka.timestart.year, zayavka.timestart.month, zayavka.timestart.date, obed_end_H /* БАЗЫ С ТАБЛИЦЫ НАСТРОЕК */, obed_end_M /* ИЗ БАЗЫ С ТАБЛИЦЫ НАСТРОЕК */ ); // Конец обеда
+
+				let obed = (konec_obed - nach_obed) / 1000 / 60 /* Длительность обеда в минутах */;
+				let rab_den =  (konec_raboty - nach_raboty) / 1000 / 60 - obed /* Длительность рабочего дня без обеда в минутах */;
+				let do_obeda = (nach_obed - nach_raboty) / 1000 / 60 /* Длительность рабочего дня до обеда в минутах */;
+				let posle_obeda = (konec_raboty - konec_obed) / 1000 / 60 /* Длительность рабочего дня после обеда в минутах */;
+
+
+				let nerabochee_vremya =  ( ( nach_raboty.getDay() + 1 ) - konec_raboty )  / 1000 / 60;
+				/*console.log('Нерабочее время: '+nerabochee_vremya+' минут')
+				console.log('Рабочее время до обеда: '+do_obeda+' минут')
+				console.log('Рабочее время после обеда: '+posle_obeda+' минут')
+				console.log('Начало рабочего дня: '+nachalo_raboty_H+':'+nachalo_raboty_M)
+				console.log('Конец рабочего дня: '+konec_raboty_H+':'+konec_raboty_M)
+
+				console.log('Начало обеда: '+obed_start_H+':'+obed_start_M)
+				console.log('Конец обеда: '+obed_end_H+':'+obed_end_M)
+				console.log('Длительность обеда: '+obed+' минут')*/
+
+				let zapis = new Date( zayavka.timestart.year, zayavka.timestart.month, zayavka.timestart.date, zayavka.timestart.hour, zayavka.timestart.minutes );
+				let timer = new Date( zayavka.timestart.year, zayavka.timestart.month, zayavka.timestart.date, zayavka.timestart.hour, zayavka.timestart.minutes );
+				let otschet = new Date (timer.setMinutes(timer.getMinutes() + zayavka.minets));
+				//console.log('Время начала работ: '+zapis)
+					
+
+				
+				var calendar_brush;
+				this_day(zapis, otschet, obed_start_H, obed_start_M, obed_end_H, obed_end_M, konec_raboty_H, konec_raboty_M, obed, zayavka.minets, nachalo_raboty_H, nachalo_raboty_M, weekends, zayavka.days_work);
+				console.log(zayavka.days_work_timer)
+				
+			});
+		}
+
+		/*function this_day(a,c,b,m,n,p,q,r,h,d,e,f,k){var t=String(k),l=k.split(","),g=10>a.getDate()?"0"+a.getDate():a.getDate(),u=10>a.getMonth()?"0"+(a.getMonth()+1):a.getMonth(),v=a.getFullYear();g=g+"."+u+"."+v;for(u=0;u<l.length;u++)if(g==l[u])return console.warn(g+" \u0412\u042b\u0425\u041e\u0414\u041d\u041e\u0419 \u0414\u0415\u041d\u042c!"),k=new Date(a.setDate(a.getDate()+1)),this_day(k,c,b,m,n,p,q,r,h,d,e,f,t);console.log("----------------------------------------------------------------------------------------------------------------------------- ");console.log("Start iteration - "+a);console.log("Start day - "+e+":"+f);console.log("Timer_local - "+c);console.log("----------------------------------------------------------------------------------------------------------------------------- ");t=new Date(a.getFullYear(),a.getMonth(),a.getDate(),q,r);l=new Date(a.getFullYear(),a.getMonth(),a.getDate(),b,m);g=new Date(a.getFullYear(),a.getMonth(),a.getDate(),n,p);if(a<=l&&c<l)if(c=(t-a)/1E3/60-d-h,0>c)d=new Date(a.getFullYear(),a.getMonth(),a.getDate()+1,e,f),a=new Date(a.getFullYear(),a.getMonth(),a.getDate()+1,e,f),a=new Date(a.setMinutes(a.getMinutes()+Math.abs(c))),this_day(d,a,b,m,n,p,q,r,h,Math.abs(c),e,f,k);else return b=new Date(a.setMinutes(a.getMinutes()+d)),zayavka.timeplaneend.year=b.getFullYear(),zayavka.timeplaneend.month=10>b.getMonth()?"0"+(b.getMonth()+1):b.getMonth(),zayavka.timeplaneend.date=10>b.getDate()?"0"+b.getDate():b.getDate(),zayavka.timeplaneend.hour=10>b.getHours()?"0"+b.getHours():b.getHours(),zayavka.timeplaneend.minutes=10>b.getMinutes()?"0"+b.getMinutes():b.getMinutes(),summ_hours.innerText=zayavka.timeplaneend.date+"."+zayavka.timeplaneend.month+"."+zayavka.timeplaneend.year+" "+zayavka.timeplaneend.hour+":"+zayavka.timeplaneend.minutes;else if(a<=g&&a<g&&c>l)if(c=(t-a)/1E3/60-d-h,0>c)d=new Date(a.getFullYear(),a.getMonth(),a.getDate()+1,e,f),a=new Date(a.getFullYear(),a.getMonth(),a.getDate()+1,e,f),a=new Date(a.setMinutes(a.getMinutes()+Math.abs(c))),this_day(d,a,b,m,n,p,q,r,h,Math.abs(c),e,f,k);else return b=new Date(a.setMinutes(a.getMinutes()+d+h)),zayavka.timeplaneend.year=b.getFullYear(),zayavka.timeplaneend.month=10>b.getMonth()?"0"+(b.getMonth()+1):b.getMonth(),zayavka.timeplaneend.date=10>b.getDate()?"0"+b.getDate():b.getDate(),zayavka.timeplaneend.hour=10>b.getHours()?"0"+b.getHours():b.getHours(),zayavka.timeplaneend.minutes=10>b.getMinutes()?"0"+b.getMinutes():b.getMinutes(),summ_hours.innerText=zayavka.timeplaneend.date+"."+zayavka.timeplaneend.month+"."+zayavka.timeplaneend.year+" "+zayavka.timeplaneend.hour+":"+zayavka.timeplaneend.minutes;else if(a>=g)if(c=(t-a)/1E3/60-d,0>c)d=new Date(a.getFullYear(),a.getMonth(),a.getDate()+1,e,f),a=new Date(a.getFullYear(),a.getMonth(),a.getDate()+1,e,f),a=new Date(a.setMinutes(a.getMinutes()+Math.abs(c))),this_day(d,a,b,m,n,p,q,r,h,Math.abs(c),e,f,k);else return b=new Date(a.setMinutes(a.getMinutes()+d)),console.log(b),zayavka.timeplaneend.year=b.getFullYear(),zayavka.timeplaneend.month=10>b.getMonth()?"0"+(b.getMonth()+1):b.getMonth(),zayavka.timeplaneend.date=10>b.getDate()?"0"+b.getDate():b.getDate(),zayavka.timeplaneend.hour=10>b.getHours()?"0"+b.getHours():b.getHours(),zayavka.timeplaneend.minutes=10>b.getMinutes()?"0"+b.getMinutes():b.getMinutes(),summ_hours.innerText=zayavka.timeplaneend.date+"."+zayavka.timeplaneend.month+"."+zayavka.timeplaneend.year+" "+zayavka.timeplaneend.hour+":"+zayavka.timeplaneend.minutes};*/
+
+
+		function this_day(a,c,b,n,p,q,r,t,h,d,e,f,k,l){l=String(k);var m=k.split(","),g=10>a.getDate()?"0"+a.getDate():a.getDate(),u=10>a.getMonth()?"0"+(a.getMonth()+1):a.getMonth(),v=a.getFullYear();g=g+"."+u+"."+v;for(u=0;u<m.length;u++)if(g==m[u])return console.warn(g+" \u0412\u042b\u0425\u041e\u0414\u041d\u041e\u0419 \u0414\u0415\u041d\u042c!"),k=new Date(a.setDate(a.getDate()+1)),zayavka.days_work++,this_day(k,c,b,n,p,q,r,t,h,d,e,f,l,zayavka.days_work);console.log("----------------------------------------------------------------------------------------------------------------------------- ");
+console.log("Start iteration - "+a);console.log("Start day - "+e+":"+f);console.log("Timer_local - "+c);console.log("----------------------------------------------------------------------------------------------------------------------------- ");l=new Date(a.getFullYear(),a.getMonth(),a.getDate(),r,t);m=new Date(a.getFullYear(),a.getMonth(),a.getDate(),b,n);g=new Date(a.getFullYear(),a.getMonth(),a.getDate(),p,q);if(a<=m&&c<m)if(c=(l-a)/1E3/60-d-h,0>c)d=new Date(a.getFullYear(),a.getMonth(),a.getDate()+
+1,e,f),a=new Date(a.getFullYear(),a.getMonth(),a.getDate()+1,e,f),a=new Date(a.setMinutes(a.getMinutes()+Math.abs(c))),zayavka.days_work++,this_day(d,a,b,n,p,q,r,t,h,Math.abs(c),e,f,k,zayavka.days_work);else return b=new Date(a.setMinutes(a.getMinutes()+d)),zayavka.timeplaneend.year=b.getFullYear(),zayavka.timeplaneend.month=10>b.getMonth()?"0"+(b.getMonth()+1):b.getMonth(),zayavka.timeplaneend.date=10>b.getDate()?"0"+b.getDate():b.getDate(),zayavka.timeplaneend.hour=10>b.getHours()?"0"+b.getHours():
+b.getHours(),zayavka.timeplaneend.minutes=10>b.getMinutes()?"0"+b.getMinutes():b.getMinutes(),zayavka.days_work_timer=zayavka.days_work,zayavka.days_work=0,summ_hours.innerText=zayavka.timeplaneend.date+"."+zayavka.timeplaneend.month+"."+zayavka.timeplaneend.year+" "+zayavka.timeplaneend.hour+":"+zayavka.timeplaneend.minutes;else if(a<=g&&a<g&&c>m)if(c=(l-a)/1E3/60-d-h,0>c)d=new Date(a.getFullYear(),a.getMonth(),a.getDate()+1,e,f),a=new Date(a.getFullYear(),a.getMonth(),a.getDate()+1,e,f),a=new Date(a.setMinutes(a.getMinutes()+
+Math.abs(c))),zayavka.days_work++,this_day(d,a,b,n,p,q,r,t,h,Math.abs(c),e,f,k,zayavka.days_work);else return b=new Date(a.setMinutes(a.getMinutes()+d+h)),zayavka.timeplaneend.year=b.getFullYear(),zayavka.timeplaneend.month=10>b.getMonth()?"0"+(b.getMonth()+1):b.getMonth(),zayavka.timeplaneend.date=10>b.getDate()?"0"+b.getDate():b.getDate(),zayavka.timeplaneend.hour=10>b.getHours()?"0"+b.getHours():b.getHours(),zayavka.timeplaneend.minutes=10>b.getMinutes()?"0"+b.getMinutes():b.getMinutes(),zayavka.days_work_timer=
+zayavka.days_work,zayavka.days_work=0,summ_hours.innerText=zayavka.timeplaneend.date+"."+zayavka.timeplaneend.month+"."+zayavka.timeplaneend.year+" "+zayavka.timeplaneend.hour+":"+zayavka.timeplaneend.minutes;else if(a>=g)if(c=(l-a)/1E3/60-d,0>c)d=new Date(a.getFullYear(),a.getMonth(),a.getDate()+1,e,f),a=new Date(a.getFullYear(),a.getMonth(),a.getDate()+1,e,f),a=new Date(a.setMinutes(a.getMinutes()+Math.abs(c))),zayavka.days_work++,this_day(d,a,b,n,p,q,r,t,h,Math.abs(c),e,f,k,zayavka.days_work);
+else return b=new Date(a.setMinutes(a.getMinutes()+d)),console.log(b),zayavka.timeplaneend.year=b.getFullYear(),zayavka.timeplaneend.month=10>b.getMonth()?"0"+(b.getMonth()+1):b.getMonth(),zayavka.timeplaneend.date=10>b.getDate()?"0"+b.getDate():b.getDate(),zayavka.timeplaneend.hour=10>b.getHours()?"0"+b.getHours():b.getHours(),zayavka.timeplaneend.minutes=10>b.getMinutes()?"0"+b.getMinutes():b.getMinutes(),zayavka.days_work_timer=zayavka.days_work,zayavka.days_work=0,summ_hours.innerText=zayavka.timeplaneend.date+
+"."+zayavka.timeplaneend.month+"."+zayavka.timeplaneend.year+" "+zayavka.timeplaneend.hour+":"+zayavka.timeplaneend.minutes};
 
 
 
@@ -1826,6 +1841,8 @@ var zayavka =
 		hour:'',
 		minutes:''
 	},
+	days_work_timer:0,
+	days_work:0,
 	status:'1',
 	minets:0,
 	summ:''
@@ -1846,9 +1863,55 @@ var zayavka =
 время начала работ +
 время завершения работ планируемое
 время завершения работ фактическое
+сколько часов выполняется заказ 
 статус заказа +
 стоимость заказа + 
 
 
 
 */
+
+
+
+
+
+
+					/*
+
+					if (zapis <= nach_obed && otschet > nach_obed) {
+						let ot_nachala_zap_do_konca_dnya_M = (konec_raboty - zapis)/1000/60;
+						console.log('Оставшееся время от начала работ до конца рабочего дня с учетом обеда: '+ot_nachala_zap_do_konca_dnya_M)
+
+						let raznica_vremeni_zayavki_i_RD = ot_nachala_zap_do_konca_dnya_M - zayavka.minets - obed;
+						console.log('Нужно мминут для выполнения услуг: '+zayavka.minets)
+						console.log('Разница времени исполнения заказа и фактически оставшегося времени до конца рабочего дня: '+raznica_vremeni_zayavki_i_RD)
+						if (raznica_vremeni_zayavki_i_RD >= 0)
+						{
+							let planeEND = new Date (zapis.setMinutes(zapis.getMinutes()+zayavka.minets));
+							console.log(planeEND)
+						}
+						else
+						{
+
+						}
+					}
+
+					else {
+						let ot_nachala_zap_do_konca_dnya_M = (konec_raboty - zapis)/1000/60;
+						console.log('Оставшееся время от начала работ до конца рабочего дня без учёта обеда: '+ot_nachala_zap_do_konca_dnya_M)
+
+						let raznica_vremeni_zayavki_i_RD = ot_nachala_zap_do_konca_dnya_M - zayavka.minets;
+						console.log('Нужно мминут для выполнения услуг: '+zayavka.minets)
+						console.log('Разница времени исполнения заказа и фактически оставшегося времени до конца рабочего дня: '+raznica_vremeni_zayavki_i_RD)
+					}
+
+					*/
+
+
+
+					
+					/*zayavka.timeplaneend.month = planeEND.getMonth();
+					zayavka.timeplaneend.date = planeEND.getDate();
+					zayavka.timeplaneend.hour = planeEND.getHours();
+					zayavka.timeplaneend.minutes = planeEND.getMinutes();
+					summ_hours.innerText = planeEND.getDate() + '.' + planeEND.getMonth()+1 + '.' + planeEND.getFullYear() + ' ' + planeEND.getHours() + ':' + planeEND.getMinutes();*/
