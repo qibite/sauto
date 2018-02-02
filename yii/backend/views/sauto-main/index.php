@@ -194,5 +194,5 @@ $this->title = 'Расписание работы автосервиса | sauto
 
 </div>
 <?php
-echo date('d.F.Y H:i');
+echo date('d.m.Y H:i');
 
