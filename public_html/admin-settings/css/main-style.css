@@ -420,7 +420,7 @@ input.mBottomInp[type="text"]
     margin: 5px;
 }
 
-.input_work
+.input_work, .input_part
 {
     width: 90px;
     text-align: center;

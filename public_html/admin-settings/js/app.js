@@ -687,735 +687,21 @@ function click_on_day () {
 /************************************************************************************************************************
 *												Поле ввода видов работ													*
 ************************************************************************************************************************/
-			let popup_zakaz_vidi_rabot = document.createElement('div');
-				popup_zakaz_vidi_rabot.className = 'col-md-4 popup_zakaz_vidi_rabot';
-				popup_zakaz_vidi_rabot.style = 'margin-top:1em';
-			let popup_zakaz_vidi_rabot_label = document.createElement('label');
-				popup_zakaz_vidi_rabot_label.classList.add('col-md-12');
-				popup_zakaz_vidi_rabot_label.innerHTML = '<i class="fa fa-list-ol col-md-2" aria-hidden="true"></i>';
-				popup_zakaz_vidi_rabot_label.children[0].style.cursor = 'pointer';
-			let popup_zakaz_vidi_rabot_search = sauto.create_input('text', 'vidi_rabot', 'vidi_rabot', 'col-md-10 vidi_rabot', 'Введите вид работы');
-				popup_zakaz_vidi_rabot_search.addEventListener('input', search_vidi_rabot)
-
-
-				popup_zakaz_vidi_rabot_label.appendChild(popup_zakaz_vidi_rabot_search);
-				popup_zakaz_vidi_rabot.appendChild(popup_zakaz_vidi_rabot_label);
-
-			let popup_zakaz_vidi_rabot_list = document.createElement('div');
-				popup_zakaz_vidi_rabot_list.id = 'list_rabot';
-				popup_zakaz_vidi_rabot_list.style.clear = 'both';
-				popup_zakaz_vidi_rabot_list.className = 'col-md-6';
-				popup_zakaz_vidi_rabot_list.style.backgroundColor = '#ССС';
-
-
-			let add_rabota_icon = document.createElement('i');
-				add_rabota_icon.className = 'fa fa-plus-circle add_this_work';
-				add_rabota_icon.setAttribute('aria-hidden', 'true');
-
-			let del_rabota_icon = document.createElement('i');
-				del_rabota_icon.className = 'fa fa-trash-o del_this_hr';
-				del_rabota_icon.setAttribute('aria-hidden', 'true');
-
-
-			let popup_zakaz_vidi_rabot_viborka = document.createElement('table');
-				popup_zakaz_vidi_rabot_viborka.id = 'viborka_rabot';
-				popup_zakaz_vidi_rabot_viborka.className = 'col-md-12';
-				popup_zakaz_vidi_rabot_viborka.style.backgroundColor = '#ССС';
-			let	popup_zakaz_vidi_rabot_viborka_head = document.createElement('thead');
-				popup_zakaz_vidi_rabot_viborka_head.innerHTML = '<tr class="vidi_rabot_th"><th style="width:50px">#</th><th style="width:64%">Наименование работ</th><th style="width:90px">Кол-во</th><th>Стоимость</th></tr>';
-				//popup_zakaz_vidi_rabot_viborka.appendChild(popup_zakaz_vidi_rabot_viborka_head);
-			let	popup_zakaz_vidi_rabot_viborka_body = document.createElement('tbody');
-			let conteiner_tbody = document.createElement('div');
-				conteiner_tbody.className = 'col-md-6 tablecontainer';
-				conteiner_tbody.id = 'tbodycontainer';
-				popup_zakaz_vidi_rabot_viborka.appendChild(popup_zakaz_vidi_rabot_viborka_body);
-				conteiner_tbody.appendChild(popup_zakaz_vidi_rabot_viborka);
-
-			//var s;
-
-
-			let	list_of_works = document.querySelector('#works');
-				list_of_works.childNodes.forEach(function (element, index) 
-				{
-					if (element.nodeName == '#text') {
-				        return;
-				    } 
-				    else 
-				    {
-				    	s = document.createElement('span');
-				    	s.innerText = element.innerText;			            
-			            s.setAttribute('data-price', element.getAttribute('data-price'));
-			            s.setAttribute('data-idwork', element.getAttribute('data-idwork'));
-			            s.setAttribute('data-timeplane', element.getAttribute('data-timeplane'));
-			            s.insertBefore(add_rabota_icon.cloneNode(true), s.firstChild);
-			            popup_zakaz_vidi_rabot_list.appendChild(s);
-			            s.firstChild.addEventListener('click', add_work_in_tab)
-			            //return s;
-			        }
-			    });
-
-				popup_zakaz_vidi_rabot_label.children[0].addEventListener('click', function () {
-					if (popup_zakaz_vidi_rabot_list.innerHTML != '') {return}
-					list_of_works.childNodes.forEach(function (element, index) {
-				        if (element.nodeName == '#text') {
-				            return;
-				        } else {
-				             let s = document.createElement('span');
-			                 	s.innerText = element.innerText;
-			                 	s.setAttribute('data-price', element.getAttribute('data-price'));
-			                 	s.setAttribute('data-idwork', element.getAttribute('data-idwork'));
-			            		s.setAttribute('data-timeplane', element.getAttribute('data-timeplane'));
-			                   	s.insertBefore(add_rabota_icon.cloneNode(true), s.firstChild);
-			                popup_zakaz_vidi_rabot_list.appendChild(s);
-			                   	s.firstChild.addEventListener('click', add_work_in_tab)
-				            }
-			    	});
-				})
-				
-
-			function search_vidi_rabot() {
-				if (this.value.search(/[а-яА-ЯёЁ]||[\s]/) != -1) {
-					let del = document.querySelector('.add_button');
-					if (del) { del.remove() }
-
-					if (this.value != '') {
-					 	var for_search_list_work_REGEXP = new RegExp(this.value, 'gi');
-					 	popup_zakaz_vidi_rabot_list.innerHTML = '';
-					}
-					else {
-						list_of_works.childNodes.forEach(function(element, index) {
-							if (element.nodeName == '#text') {
-								return;
-				            }
-				            else {
-				            	let patt = element.innerText;
-				                if (patt.search(for_search_list_work_REGEXP) != -1) {
-				                	let s = document.createElement('span');
-				                 	s.innerText = element.innerText;
-				                 	s.setAttribute('data-price', element.getAttribute('data-price'));
-				                 	s.setAttribute('data-idwork', element.getAttribute('data-idwork'));
-				                 	s.setAttribute('data-timeplane', element.getAttribute('data-timeplane'));
-				                   	s.insertBefore(add_rabota_icon.cloneNode(true), s.firstChild);
-				                    popup_zakaz_vidi_rabot_list.appendChild(s);
-				                   s.firstChild.addEventListener('click', add_work_in_tab)
-				                }
-				            }
-				        });
-				        return
-					}
-					list_of_works.childNodes.forEach(function(element, index) {
-						if (element.nodeName == '#text') {
-							return;
-			            }
-			            else {
-			            	let patt = element.innerText;
-			                if (patt.search(for_search_list_work_REGEXP) != -1) {
-			                	let s = document.createElement('span');
-			                 	s.innerText = element.innerText;
-			                 	s.setAttribute('data-price', element.getAttribute('data-price'));
-			                 	s.setAttribute('data-idwork', element.getAttribute('data-idwork'));
-			                 	s.setAttribute('data-timeplane', element.getAttribute('data-timeplane'));
-			                   	s.insertBefore(add_rabota_icon.cloneNode(true), s.firstChild);
-			                    popup_zakaz_vidi_rabot_list.appendChild(s);
-			                   s.firstChild.addEventListener('click', add_work_in_tab)
-			                }
-			            }
-			        });
-			    }
-			    if (this.value != '') {
-			    	for (let i=0; i<list_of_works.length; i++)
-			    	{
-			    		if (popup_zakaz_vidi_rabot_list.innerHTML != '') {
-			    			console.log('Yes')
-			    			return;
-			    		}
-			    		else {
-			    			let new_work_add = document.createElement('span');
-							new_work_add.className = 'btn-success add_button col-md-6 col-md-offset-2';
-							new_work_add.innerHTML = 'Добавить услугу <i class="fa fa-plus-circle" aria-hidden="true"></i>';
-							popup_zakaz_vidi_rabot.appendChild(new_work_add);
-							new_work_add.addEventListener('click', create_new_work)
-			    			return;
-			    		}
-			    	}
-			    }
-			}
-
-			function add_work_in_tab () {
-				let tr_rabota = document.createElement('tr');
-				tr_rabota.addEventListener('mouseover', show_del_td);
-				tr_rabota.addEventListener('mouseout', hide_del_td);
-				let td_id_rabota = document.createElement('td');
-				td_id_rabota.className = 'id';
-				td_id_rabota.innerHTML = '<span>' + (popup_zakaz_vidi_rabot_viborka_body.children.length+1) + ' </span>';
-
-				td_id_rabota.appendChild(del_rabota_icon.cloneNode(true)).addEventListener('click', function () {
-					if (tbodycontainer.offsetHeight < 200) {
-						tbodycontainer.style.overflow = 'hidden';
-					}
-					this.parentElement.parentElement.style.backgroundColor = '#ff9999';
-					this.parentElement.parentElement.style.color = '#ffffff';
-					setTimeout(()=>{
-						zayavka.minets -= parseInt(this.parentElement.nextSibling.nextSibling.nextSibling.getAttribute('data-timeplane'));
-						calc_time();
-
-						summ_zakaz.innerText = zayavka.summ -= parseInt(this.parentElement.nextSibling.nextSibling.nextSibling.innerText);
-						this.parentElement.parentElement.parentElement.removeChild(this.parentElement.parentElement)
-						for (let i=0; i<popup_zakaz_vidi_rabot_viborka_body.children.length; i++) {
-							popup_zakaz_vidi_rabot_viborka_body.children[i].firstChild.firstChild.innerText = i+1 + ' ';
-						}
-					}, 300)
-				});
-
-				let td_name_rabota = document.createElement('td');
-				td_name_rabota.className = 'name_s';
-				td_name_rabota.innerText = this.parentElement.innerText;
-
-				let td_count_rabota = document.createElement('td');
-				td_count_rabota.className = 'td_count';
-
-				let td_input_rabota = document.createElement('input');
-				td_input_rabota.type = 'number';
-				td_input_rabota.className = 'input_work';
-				td_input_rabota.value = 1;
-				td_input_rabota.setAttribute('min', '1');
-				td_input_rabota.addEventListener('input', mathPRICE)
-				td_count_rabota.appendChild(td_input_rabota);
-
-				let td_price_rabota = document.createElement('td');
-				td_price_rabota.className = 'price_rabota';
-				td_price_rabota.innerText = this.parentElement.getAttribute('data-price') + ' руб';
-				td_price_rabota.setAttribute('data-price', this.parentElement.getAttribute('data-price'));
-				td_price_rabota.setAttribute('data-timeplane', this.parentElement.getAttribute('data-timeplane'));
-				tr_rabota.appendChild(td_id_rabota);
-				tr_rabota.appendChild(td_name_rabota);
-				tr_rabota.appendChild(td_count_rabota);
-				tr_rabota.appendChild(td_price_rabota);
-
-				zayavka.minets += parseInt(this.parentElement.getAttribute('data-timeplane'));
-				calc_time();
-
-				popup_zakaz_vidi_rabot_viborka_body.appendChild(tr_rabota);
-
-				this.parentElement.remove()
-
-				if (tbodycontainer.offsetHeight > 240) {
-					tbodycontainer.style.overflowY = 'auto';
-					tbodycontainer.scrollTop = 1000;
-				}
-
-				let bufer = 0;
-				document.querySelectorAll('.price_rabota, .price_zapchast').forEach(function (el, i) {
-					bufer += parseInt(el.innerText);
-				});
-				summ_zakaz.innerText = zayavka.summ = bufer;
-				zayavka.worklist.push(this.parentElement.getAttribute('data-idwork'));
-			}
-
-			function create_new_work (argument) {
-				if (zayavka.car == '') { return alert( 'Укажите автомобиль!' )}
-				toogle_window = 'new_work_window';
-
-				let create_new_work = document.createElement('div');
-				create_new_work.className = 'create_new';
-				popup_zakaz_body.classList.add('HIDE_ON_TIME');
-				popup_zakaz.appendChild(create_new_work)
-				create_new_work.innerHTML = '<h3><i class="fa fa-info" aria-hidden="true"></i> Добавление услуги, вида работ для '+ document.querySelector('#auto_firm option[value="'+ zayavka.car +'"]').innerText +'</h3>';
-
-				sauto.insert_hr(create_new_work);
-
-				sauto.create_close_button(create_new_work, 'second'); // Добавляем кнопочку закрыть
-
-				sauto.insert_clear_block(create_new_work);
-				
-				let icon_new_work = document.createElement('div');
-				icon_new_work.className = 'col-md-2';
-				icon_new_work.style.fontSize = '6em';
-				icon_new_work.innerHTML = '<i class="fa fa-cogs" aria-hidden="true"></i>';
-				create_new_work.appendChild(icon_new_work);
-				
-				let create_new_work_name_inpblock = document.createElement('div');
-				create_new_work_name_inpblock.className = 'col-md-8';
-				create_new_work.appendChild(create_new_work_name_inpblock);
-				
-				let create_new_work_name = sauto.create_input('text', 'work_name','new_work_name', 'col-md-12 input mBottomInp', 'Введите наименование')
-				
-				let create_new_work_price = sauto.create_input('text', 'auto_model','new_work_model', 'col-md-12 input mBottomInp', 'Стоимость без пробелов')
-					create_new_work_name.value = popup_zakaz_vidi_rabot_search.value;
-
-				let create_new_work_code = sauto.create_input('number', 'auto_code','new_work_code', 'col-md-6 col-md-offset-4 input mBottomInp', 'Время предоставления мин.')
-
-				create_new_work_name_inpblock.appendChild(create_new_work_name)
-				create_new_work_name_inpblock.appendChild(create_new_work_price)
-				create_new_work_name_inpblock.appendChild(create_new_work_code)
-
-
-
-				sauto.insert_clear_block(create_new_work);
-				
-				sauto.insert_hr(create_new_work);
-
-				sauto.insert_clear_block(create_new_work);
-
-				let create_new_work_save = document.createElement('button');
-				create_new_work_save.classList = 'btn';
-				create_new_work_save.id = 'create_new_work_save';				
-				create_new_work_save.addEventListener('mouseover', function () {
-					if (create_new_work_name.value != '' && create_new_work_price.value != '') {
-						this.classList.add('btn-success')
-						this.style.cursor = 'pointer';
-						this.addEventListener('mouseout', function () {this.classList.remove('btn-success');this.removeEventListener('click', save_new_WORK);})
-						this.addEventListener('click', save_new_WORK);
-					}
-					else {
-						this.classList.add('btn-warning')
-						this.classList.add('disabled')
-						this.style.cursor = 'no-drop';
-						let err = document.createElement('span');
-						err.classList = 'err';
-						err.innerHTML = '<strong style="color:red">Заполните поле:</strong>';
-						create_new_work_name.value == '' ? err.children[0].innerText = err.innerText + ' -наименование-' : false;										
-						create_new_work_price.value == '' ? err.children[0].innerText = err.innerText + ' -стоимость- ' : false;
-						create_new_work.appendChild(err);
-						this.addEventListener('mouseout', function () {err.remove();this.classList.remove('btn-warning');this.classList.remove('disabled')})
-					}
-				})
-							
-				create_new_work_save.innerHTML = '<i class="fa fa-floppy-o" aria-hidden="true"></i> Сохранить';
-				create_new_work.appendChild(create_new_work_save)
-
-				function save_new_WORK () {
-					let data_work = { name:create_new_work_name.value, code:0, raiting:100, price:create_new_work_price.value, time:create_new_work_code.value }
-					$.get('save-work', data_work, function(data) {
-						document.querySelector('.add_button').remove();
-					});
-
-					this.parentElement.remove();
-					sauto.success_window('Новая услуга, товар');
-					popup_zakaz_body.classList.remove('HIDE_ON_TIME');
-					toogle_window = 'incident_window';
-
-					let tr_rabota = document.createElement('tr');
-					tr_rabota.addEventListener('mouseover', show_del_td);
-					tr_rabota.addEventListener('mouseout', hide_del_td);
-
-					let td_id_rabota = document.createElement('td');
-					td_id_rabota.className = 'id';
-					td_id_rabota.innerHTML = '<span>' + (popup_zakaz_vidi_rabot_viborka_body.children.length+1) + ' </span>';
-					td_id_rabota.appendChild(del_rabota_icon.cloneNode(true)).addEventListener('click', function () {
-						if (tbodycontainer.offsetHeight < 200) {
-							tbodycontainer.style.overflow = 'hidden';
-						}
-						this.parentElement.parentElement.style.backgroundColor = '#ff9999';
-						this.parentElement.parentElement.style.color = '#ffffff';
-						setTimeout(()=>{
-							summ_zakaz.innerText = zayavka.summ -= parseInt(this.parentElement.nextSibling.nextSibling.nextSibling.innerText);
-							this.parentElement.parentElement.parentElement.removeChild(this.parentElement.parentElement)
-							for (let i=0; i<popup_zakaz_vidi_rabot_viborka_body.children.length; i++) {
-								popup_zakaz_vidi_rabot_viborka_body.children[i].firstChild.firstChild.innerText = i+1 + ' ';
-							}
-						}, 300)
-					});
-
-					let td_name_rabota = document.createElement('td');
-					td_name_rabota.className = 'name_s';
-					td_name_rabota.innerText = create_new_work_name.value;
-
-					let td_count_rabota = document.createElement('td');
-					td_count_rabota.className = 'td_count';
-
-					let td_input_rabota = document.createElement('input');
-					td_input_rabota.type = 'number';
-					td_input_rabota.className = 'input_work';
-					td_input_rabota.value = 1;
-					td_input_rabota.setAttribute('min', '1');
-					td_input_rabota.addEventListener('input', mathPRICE)
-					td_count_rabota.appendChild(td_input_rabota);
-
-					let td_price_rabota = document.createElement('td');
-					td_price_rabota.className = 'price_rabota';
-					td_price_rabota.innerText = create_new_work_price.value + ' руб';
-					td_price_rabota.setAttribute('data-price', create_new_work_price.value);
-					td_price_rabota.setAttribute('data-timeplane', create_new_work_code.value);
-
-					zayavka.minets += parseInt(create_new_work_code.value);
-					calc_time();
-					
-					tr_rabota.appendChild(td_id_rabota);
-					tr_rabota.appendChild(td_name_rabota);
-					tr_rabota.appendChild(td_count_rabota);
-					tr_rabota.appendChild(td_price_rabota);
-
-					popup_zakaz_vidi_rabot_viborka_body.appendChild(tr_rabota);
-					if (tbodycontainer.offsetHeight > 240) {
-						tbodycontainer.style.overflowY = 'auto';
-						tbodycontainer.scrollTop = 1000;
-					}
-					let bufer = 0;
-					document.querySelectorAll('.price_rabota, .price_zapchast').forEach(function (el, i) {
-						bufer += parseInt(el.innerText);
-					});
-					summ_zakaz.innerText = zayavka.summ = bufer;
-				}
-			}
+var popup_zakaz_vidi_rabot=document.createElement("div");popup_zakaz_vidi_rabot.className="col-md-4 popup_zakaz_vidi_rabot";popup_zakaz_vidi_rabot.style="margin-top:1em";var popup_zakaz_vidi_rabot_label=document.createElement("label");popup_zakaz_vidi_rabot_label.classList.add("col-md-12");popup_zakaz_vidi_rabot_label.innerHTML='<i class="fa fa-list-ol col-md-2" aria-hidden="true"></i>';popup_zakaz_vidi_rabot_label.children[0].style.cursor="pointer";var popup_zakaz_vidi_rabot_search=sauto.create_input("text","vidi_rabot","vidi_rabot","col-md-10 vidi_rabot","\u0412\u0432\u0435\u0434\u0438\u0442\u0435 \u0432\u0438\u0434 \u0440\u0430\u0431\u043e\u0442\u044b");popup_zakaz_vidi_rabot_search.addEventListener("input",search_vidi_rabot);popup_zakaz_vidi_rabot_label.appendChild(popup_zakaz_vidi_rabot_search);popup_zakaz_vidi_rabot.appendChild(popup_zakaz_vidi_rabot_label);var popup_zakaz_vidi_rabot_list=document.createElement("div");popup_zakaz_vidi_rabot_list.id="list_rabot";popup_zakaz_vidi_rabot_list.style.clear="both";popup_zakaz_vidi_rabot_list.className="col-md-6";popup_zakaz_vidi_rabot_list.style.backgroundColor="#\u0421\u0421\u0421";var add_rabota_icon=document.createElement("i");add_rabota_icon.className="fa fa-plus-circle add_this_work";add_rabota_icon.setAttribute("aria-hidden","true");var del_rabota_icon=document.createElement("i");del_rabota_icon.className="fa fa-trash-o del_this_hr";del_rabota_icon.setAttribute("aria-hidden","true");var popup_zakaz_vidi_rabot_viborka=document.createElement("table");popup_zakaz_vidi_rabot_viborka.id="viborka_rabot";popup_zakaz_vidi_rabot_viborka.className="col-md-12";popup_zakaz_vidi_rabot_viborka.style.backgroundColor="#\u0421\u0421\u0421";var popup_zakaz_vidi_rabot_viborka_head=document.createElement("thead");popup_zakaz_vidi_rabot_viborka_head.innerHTML='<tr class="vidi_rabot_th"><th style="width:50px">#</th><th style="width:64%">\u041d\u0430\u0438\u043c\u0435\u043d\u043e\u0432\u0430\u043d\u0438\u0435 \u0440\u0430\u0431\u043e\u0442</th><th style="width:90px">\u041a\u043e\u043b-\u0432\u043e</th><th>\u0421\u0442\u043e\u0438\u043c\u043e\u0441\u0442\u044c</th></tr>';var popup_zakaz_vidi_rabot_viborka_body=document.createElement("tbody");var conteiner_tbody=document.createElement("div");conteiner_tbody.className="col-md-6 tablecontainer";conteiner_tbody.id="tbodycontainer";popup_zakaz_vidi_rabot_viborka.appendChild(popup_zakaz_vidi_rabot_viborka_body);conteiner_tbody.appendChild(popup_zakaz_vidi_rabot_viborka);var list_of_works=document.querySelector("#works");list_of_works.childNodes.forEach(function(element,index){if(element.nodeName=="#text")return;else{s=document.createElement("span");s.innerText=element.innerText;s.setAttribute("data-price",element.getAttribute("data-price"));s.setAttribute("data-idwork",element.getAttribute("data-idwork"));s.setAttribute("data-timeplane",element.getAttribute("data-timeplane"));s.insertBefore(add_rabota_icon.cloneNode(true),s.firstChild);popup_zakaz_vidi_rabot_list.appendChild(s);s.firstChild.addEventListener("click",add_work_in_tab)}});popup_zakaz_vidi_rabot_label.children[0].addEventListener("click",function(){if(popup_zakaz_vidi_rabot_list.innerHTML!="")return;list_of_works.childNodes.forEach(function(element,index){if(element.nodeName=="#text")return;else{var s$0=document.createElement("span");s$0.innerText=element.innerText;s$0.setAttribute("data-price",element.getAttribute("data-price"));s$0.setAttribute("data-idwork",element.getAttribute("data-idwork"));s$0.setAttribute("data-timeplane",element.getAttribute("data-timeplane"));s$0.insertBefore(add_rabota_icon.cloneNode(true),s$0.firstChild);popup_zakaz_vidi_rabot_list.appendChild(s$0);s$0.firstChild.addEventListener("click",add_work_in_tab)}})});
+function search_vidi_rabot(){if(this.value.search(/[\u0430-\u044f\u0410-\u042f\u0451\u0401]||[\s]/)!=-1){var del=document.querySelector(".add_button");if(del)del.remove();if(this.value!=""){var for_search_list_work_REGEXP=new RegExp(this.value,"gi");popup_zakaz_vidi_rabot_list.innerHTML=""}else{list_of_works.childNodes.forEach(function(element,index){if(element.nodeName=="#text")return;else{var patt=element.innerText;if(patt.search(for_search_list_work_REGEXP)!=-1){var s$1=document.createElement("span");s$1.innerText=element.innerText;s$1.setAttribute("data-price",element.getAttribute("data-price"));s$1.setAttribute("data-idwork",element.getAttribute("data-idwork"));s$1.setAttribute("data-timeplane",element.getAttribute("data-timeplane"));s$1.insertBefore(add_rabota_icon.cloneNode(true),s$1.firstChild);popup_zakaz_vidi_rabot_list.appendChild(s$1);s$1.firstChild.addEventListener("click",add_work_in_tab)}}});return}list_of_works.childNodes.forEach(function(element,index){if(element.nodeName=="#text")return;else{var patt=element.innerText;if(patt.search(for_search_list_work_REGEXP)!=-1){var s$2=document.createElement("span");s$2.innerText=element.innerText;s$2.setAttribute("data-price",element.getAttribute("data-price"));s$2.setAttribute("data-idwork",element.getAttribute("data-idwork"));s$2.setAttribute("data-timeplane",element.getAttribute("data-timeplane"));s$2.insertBefore(add_rabota_icon.cloneNode(true),s$2.firstChild);popup_zakaz_vidi_rabot_list.appendChild(s$2);s$2.firstChild.addEventListener("click",add_work_in_tab)}}})}if(this.value!="")for(var i=0;i<list_of_works.length;i++)if(popup_zakaz_vidi_rabot_list.innerHTML!=""){console.log("Yes");return}else{var new_work_add=document.createElement("span");new_work_add.className="btn-success add_button col-md-6 col-md-offset-2";new_work_add.innerHTML='\u0414\u043e\u0431\u0430\u0432\u0438\u0442\u044c \u0443\u0441\u043b\u0443\u0433\u0443 <i class="fa fa-plus-circle" aria-hidden="true"></i>';popup_zakaz_vidi_rabot.appendChild(new_work_add);new_work_add.addEventListener("click",create_new_work);return}}
+function add_work_in_tab(){var tr_rabota=document.createElement("tr");tr_rabota.addEventListener("mouseover",show_del_td);tr_rabota.addEventListener("mouseout",hide_del_td);var td_id_rabota=document.createElement("td");td_id_rabota.className="id";td_id_rabota.innerHTML="<span>"+(popup_zakaz_vidi_rabot_viborka_body.children.length+1)+" </span>";td_id_rabota.appendChild(del_rabota_icon.cloneNode(true)).addEventListener("click",function(){var $jscomp$this=this;if(tbodycontainer.offsetHeight<200)tbodycontainer.style.overflow="hidden";this.parentElement.parentElement.style.backgroundColor="#ff9999";this.parentElement.parentElement.style.color="#ffffff";setTimeout(function(){zayavka.minets-=parseInt($jscomp$this.parentElement.nextSibling.nextSibling.nextSibling.nextSibling.innerText);calc_time();summ_zakaz.innerText=zayavka.summ-=parseInt($jscomp$this.parentElement.nextSibling.nextSibling.nextSibling.innerText);$jscomp$this.parentElement.parentElement.parentElement.removeChild($jscomp$this.parentElement.parentElement);for(var i=0;i<popup_zakaz_vidi_rabot_viborka_body.children.length;i++)popup_zakaz_vidi_rabot_viborka_body.children[i].firstChild.firstChild.innerText=i+1+" "},300)});var td_name_rabota=document.createElement("td");td_name_rabota.className="name_s";td_name_rabota.innerText=this.parentElement.innerText;var td_count_rabota=document.createElement("td");td_count_rabota.className="td_count";var td_input_rabota=document.createElement("input");td_input_rabota.type="number";td_input_rabota.className="input_work";td_input_rabota.value=1;td_input_rabota.setAttribute("min","1");td_input_rabota.addEventListener("input",mathPRICE);td_count_rabota.appendChild(td_input_rabota);var td_price_rabota=document.createElement("td");td_price_rabota.className="price_rabota";td_price_rabota.innerText=this.parentElement.getAttribute("data-price")+" \u0440\u0443\u0431";td_price_rabota.setAttribute("data-price",this.parentElement.getAttribute("data-price"));var td_time_rabota=document.createElement("td");td_time_rabota.className="time_rabota";td_time_rabota.innerText=this.parentElement.getAttribute("data-timeplane")+" \u043c\u0438\u043d.";td_time_rabota.setAttribute("data-timeplane",this.parentElement.getAttribute("data-timeplane"));tr_rabota.appendChild(td_id_rabota);tr_rabota.appendChild(td_name_rabota);tr_rabota.appendChild(td_count_rabota);tr_rabota.appendChild(td_price_rabota);tr_rabota.appendChild(td_time_rabota);popup_zakaz_vidi_rabot_viborka_body.appendChild(tr_rabota);this.parentElement.remove();if(tbodycontainer.offsetHeight>240){tbodycontainer.style.overflowY="auto";tbodycontainer.scrollTop=1E3}var bufer=time_bufer=0;document.querySelectorAll(".price_rabota, .price_zapchast").forEach(function(el,i){bufer+=parseInt(el.innerText)});document.querySelectorAll(".time_rabota").forEach(function(el,i){time_bufer+=parseInt(el.innerText)});summ_zakaz.innerText=zayavka.summ=bufer;zayavka.minets=time_bufer;calc_time();zayavka.worklist.push(this.parentElement.getAttribute("data-idwork"))}
+function create_new_work(argument){if(zayavka.car=="")return alert("\u0423\u043a\u0430\u0436\u0438\u0442\u0435 \u0430\u0432\u0442\u043e\u043c\u043e\u0431\u0438\u043b\u044c!");toogle_window="new_work_window";var create_new_work=document.createElement("div");create_new_work.className="create_new";popup_zakaz_body.classList.add("HIDE_ON_TIME");popup_zakaz.appendChild(create_new_work);create_new_work.innerHTML='<h3><i class="fa fa-info" aria-hidden="true"></i> \u0414\u043e\u0431\u0430\u0432\u043b\u0435\u043d\u0438\u0435 \u0443\u0441\u043b\u0443\u0433\u0438, \u0432\u0438\u0434\u0430 \u0440\u0430\u0431\u043e\u0442 \u0434\u043b\u044f '+document.querySelector('#auto_firm option[value="'+zayavka.car+'"]').innerText+"</h3>";sauto.insert_hr(create_new_work);sauto.create_close_button(create_new_work,"second");sauto.insert_clear_block(create_new_work);var icon_new_work=document.createElement("div");icon_new_work.className="col-md-2";icon_new_work.style.fontSize="6em";icon_new_work.innerHTML='<i class="fa fa-cogs" aria-hidden="true"></i>';create_new_work.appendChild(icon_new_work);var create_new_work_name_inpblock=document.createElement("div");create_new_work_name_inpblock.className="col-md-8";create_new_work.appendChild(create_new_work_name_inpblock);var create_new_work_name=sauto.create_input("text","work_name","new_work_name","col-md-12 input mBottomInp","\u0412\u0432\u0435\u0434\u0438\u0442\u0435 \u043d\u0430\u0438\u043c\u0435\u043d\u043e\u0432\u0430\u043d\u0438\u0435");var create_new_work_price=sauto.create_input("text","auto_model","new_work_model","col-md-12 input mBottomInp","\u0421\u0442\u043e\u0438\u043c\u043e\u0441\u0442\u044c \u0431\u0435\u0437 \u043f\u0440\u043e\u0431\u0435\u043b\u043e\u0432");create_new_work_name.value=popup_zakaz_vidi_rabot_search.value;var create_new_work_code=sauto.create_input("number","auto_code","new_work_code","col-md-6 col-md-offset-4 input mBottomInp","\u0412\u0440\u0435\u043c\u044f \u043f\u0440\u0435\u0434\u043e\u0441\u0442\u0430\u0432\u043b\u0435\u043d\u0438\u044f \u043c\u0438\u043d.");create_new_work_name_inpblock.appendChild(create_new_work_name);create_new_work_name_inpblock.appendChild(create_new_work_price);create_new_work_name_inpblock.appendChild(create_new_work_code);sauto.insert_clear_block(create_new_work);sauto.insert_hr(create_new_work);sauto.insert_clear_block(create_new_work);var create_new_work_save=document.createElement("button");create_new_work_save.classList="btn";create_new_work_save.id="create_new_work_save";create_new_work_save.addEventListener("mouseover",function(){if(create_new_work_name.value!=""&&create_new_work_price.value!=""){this.classList.add("btn-success");this.style.cursor="pointer";this.addEventListener("mouseout",function(){this.classList.remove("btn-success");this.removeEventListener("click",save_new_WORK)});this.addEventListener("click",save_new_WORK)}else{this.classList.add("btn-warning");this.classList.add("disabled");this.style.cursor="no-drop";var err=document.createElement("span");err.classList="err";err.innerHTML='<strong style="color:red">\u0417\u0430\u043f\u043e\u043b\u043d\u0438\u0442\u0435 \u043f\u043e\u043b\u0435:</strong>';create_new_work_name.value==""?err.children[0].innerText=err.innerText+" -\u043d\u0430\u0438\u043c\u0435\u043d\u043e\u0432\u0430\u043d\u0438\u0435-":false;create_new_work_price.value==""?err.children[0].innerText=err.innerText+" -\u0441\u0442\u043e\u0438\u043c\u043e\u0441\u0442\u044c- ":false;create_new_work.appendChild(err);this.addEventListener("mouseout",function(){err.remove();this.classList.remove("btn-warning");this.classList.remove("disabled")})}});create_new_work_save.innerHTML='<i class="fa fa-floppy-o" aria-hidden="true"></i> \u0421\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c';create_new_work.appendChild(create_new_work_save);function save_new_WORK(){var data_work={name:create_new_work_name.value,code:0,raiting:100,price:create_new_work_price.value,time:create_new_work_code.value};$.get("save-work",data_work,function(data){document.querySelector(".add_button").remove()});this.parentElement.remove();sauto.success_window("\u041d\u043e\u0432\u0430\u044f \u0443\u0441\u043b\u0443\u0433\u0430, \u0442\u043e\u0432\u0430\u0440");popup_zakaz_body.classList.remove("HIDE_ON_TIME");toogle_window="incident_window";var tr_rabota=document.createElement("tr");tr_rabota.addEventListener("mouseover",show_del_td);tr_rabota.addEventListener("mouseout",hide_del_td);var td_id_rabota=document.createElement("td");td_id_rabota.className="id";td_id_rabota.innerHTML="<span>"+(popup_zakaz_vidi_rabot_viborka_body.children.length+1)+" </span>";td_id_rabota.appendChild(del_rabota_icon.cloneNode(true)).addEventListener("click",function(){var $jscomp$this=this;if(tbodycontainer.offsetHeight<200)tbodycontainer.style.overflow="hidden";this.parentElement.parentElement.style.backgroundColor="#ff9999";this.parentElement.parentElement.style.color="#ffffff";setTimeout(function(){zayavka.minets-=parseInt($jscomp$this.parentElement.nextSibling.nextSibling.nextSibling.nextSibling.innerText);calc_time();summ_zakaz.innerText=zayavka.summ-=parseInt($jscomp$this.parentElement.nextSibling.nextSibling.nextSibling.innerText);$jscomp$this.parentElement.parentElement.parentElement.removeChild($jscomp$this.parentElement.parentElement);for(var i=0;i<popup_zakaz_vidi_rabot_viborka_body.children.length;i++)popup_zakaz_vidi_rabot_viborka_body.children[i].firstChild.firstChild.innerText=i+1+" "},300)});var td_name_rabota=document.createElement("td");td_name_rabota.className="name_s";td_name_rabota.innerText=create_new_work_name.value;var td_count_rabota=document.createElement("td");td_count_rabota.className="td_count";var td_input_rabota=document.createElement("input");td_input_rabota.type="number";td_input_rabota.className="input_work";td_input_rabota.value=1;td_input_rabota.setAttribute("min","1");td_input_rabota.addEventListener("input",mathPRICE);td_count_rabota.appendChild(td_input_rabota);var td_price_rabota=document.createElement("td");td_price_rabota.className="price_rabota";td_price_rabota.innerText=create_new_work_price.value+" \u0440\u0443\u0431";td_price_rabota.setAttribute("data-price",create_new_work_price.value);var td_time_rabota=document.createElement("td");td_time_rabota.className="time_rabota";td_time_rabota.innerText=create_new_work_code.value+" \u043c\u0438\u043d.";td_time_rabota.setAttribute("data-timeplane",create_new_work_code.value);tr_rabota.appendChild(td_id_rabota);tr_rabota.appendChild(td_name_rabota);tr_rabota.appendChild(td_count_rabota);tr_rabota.appendChild(td_price_rabota);tr_rabota.appendChild(td_time_rabota);popup_zakaz_vidi_rabot_viborka_body.appendChild(tr_rabota);if(tbodycontainer.offsetHeight>240){tbodycontainer.style.overflowY="auto";tbodycontainer.scrollTop=1E3}var bufer=time_bufer=0;document.querySelectorAll(".price_rabota, .price_zapchast").forEach(function(el,i){bufer+=parseInt(el.innerText)});document.querySelectorAll(".time_rabota").forEach(function(el,i){time_bufer+=parseInt(el.innerText)});summ_zakaz.innerText=zayavka.summ=bufer;zayavka.minets=time_bufer;calc_time()}};
 /************************************************************************************************************************
 *														Запчасти														*
 ************************************************************************************************************************/
-			let popup_zakaz_zapchasti = document.createElement('div');
-				popup_zakaz_zapchasti.className = 'col-md-4 popup_zakaz_zapchasti';
-				popup_zakaz_zapchasti.style = 'margin-top:1em';
-			let popup_zakaz_zapchasti_label = document.createElement('label');
-				popup_zakaz_zapchasti_label.classList.add('col-md-12');
-				popup_zakaz_zapchasti_label.innerHTML = '<i class="fa fa-cogs col-md-2" aria-hidden="true"></i>';
-				popup_zakaz_zapchasti_label.children[0].style.cursor = 'pointer';
-			let popup_zakaz_zapchasti_search = sauto.create_input('text', 'zapchasti', 'zapchasti', 'col-md-10 zapchasti', 'Наименование запчасти');
-				popup_zakaz_zapchasti_search.addEventListener('input', search_zapchasti)
-
-				popup_zakaz_zapchasti_label.appendChild(popup_zakaz_zapchasti_search);
-				popup_zakaz_zapchasti.appendChild(popup_zakaz_zapchasti_label);
-
-			let popup_zakaz_zapchasti_list = document.createElement('div');
-				popup_zakaz_zapchasti_list.id = 'list_parts';
-				popup_zakaz_zapchasti_list.className = 'col-md-6';
-				popup_zakaz_zapchasti_list.style.backgroundColor = '#ССС';
-
-			let add_zapchast_icon = document.createElement('i');
-				add_zapchast_icon.className = 'fa fa-plus-circle add_this_work';
-				add_zapchast_icon.setAttribute('aria-hidden', 'true');
-
-			let del_zapchast_icon = document.createElement('i');
-				del_zapchast_icon.className = 'fa fa-trash-o del_this_hr';
-				del_zapchast_icon.setAttribute('aria-hidden', 'true');
-
-
-			let popup_zakaz_zapchasti_viborka = document.createElement('table');
-				popup_zakaz_zapchasti_viborka.id = 'viborka_zapchastei';
-				popup_zakaz_zapchasti_viborka.className = 'col-md-12';
-				popup_zakaz_zapchasti_viborka.style.backgroundColor = '#ССС';
-			let	popup_zakaz_zapchasti_viborka_body = document.createElement('tbody');
-			let conteiner_tbodyzapchast = document.createElement('div');
-				conteiner_tbodyzapchast.className = 'col-md-6 tablecontainer';
-				conteiner_tbodyzapchast.id = 'tbodyzapchastcontainer';
-				popup_zakaz_zapchasti_viborka.appendChild(popup_zakaz_zapchasti_viborka_body);
-				conteiner_tbodyzapchast.appendChild(popup_zakaz_zapchasti_viborka);
-
-
-			let	list_of_works_zapchast = document.querySelector('#zapchasti');
-				list_of_works_zapchast.childNodes.forEach(function (element, index) {
-					if (element.nodeName == '#text') { return }
-
-					else {
-						let s = document.createElement('span');
-						s.innerText = element.innerText;
-				       	s.setAttribute('data-price', element.getAttribute('data-price'));
-				       	s.setAttribute('data-idcarpart', element.getAttribute('data-idcarpart'));
-				       	s.setAttribute('data-idpart', element.getAttribute('data-idpart'));
-				       	s.insertBefore(add_zapchast_icon.cloneNode(true), s.firstChild);
-				       	popup_zakaz_zapchasti_list.appendChild(s);
-				       	s.firstChild.addEventListener( 'click', add_part_in_tab )
-				    }
-			    });
-
-				popup_zakaz_zapchasti_label.children[0].addEventListener('click', function () {
-					if (popup_zakaz_zapchasti_list.innerHTML != '') {return}
-
-					list_of_works_zapchast.childNodes.forEach(function (element, index) {
-				        if (element.nodeName == '#text') { return }
-
-				        else {
-				        	let s = document.createElement('span');
-				        	s.innerText = element.innerText;
-				        	s.setAttribute('data-price', element.getAttribute('data-price'));
-				        	s.setAttribute('data-idcarpart', element.getAttribute('data-idcarpart'));
-				        	s.setAttribute('data-idpart', element.getAttribute('data-idpart'));
-				        	s.insertBefore(add_zapchast_icon.cloneNode(true), s.firstChild);
-			                popup_zakaz_zapchasti_list.appendChild(s);
-			                s.firstChild.addEventListener('click', add_part_in_tab )
-			            }
-			        });
-				})
+	var popup_zakaz_zapchasti=document.createElement("div");popup_zakaz_zapchasti.className="col-md-4 popup_zakaz_zapchasti";popup_zakaz_zapchasti.style="margin-top:1em";var popup_zakaz_zapchasti_label=document.createElement("label");popup_zakaz_zapchasti_label.classList.add("col-md-12");popup_zakaz_zapchasti_label.innerHTML='<i class="fa fa-cogs col-md-2" aria-hidden="true"></i>';popup_zakaz_zapchasti_label.children[0].style.cursor="pointer";var popup_zakaz_zapchasti_search=sauto.create_input("text","zapchasti","zapchasti","col-md-10 zapchasti","\u041d\u0430\u0438\u043c\u0435\u043d\u043e\u0432\u0430\u043d\u0438\u0435 \u0437\u0430\u043f\u0447\u0430\u0441\u0442\u0438");popup_zakaz_zapchasti_search.addEventListener("input",search_zapchasti);popup_zakaz_zapchasti_label.appendChild(popup_zakaz_zapchasti_search);popup_zakaz_zapchasti.appendChild(popup_zakaz_zapchasti_label);var popup_zakaz_zapchasti_list=document.createElement("div");popup_zakaz_zapchasti_list.id="list_parts";popup_zakaz_zapchasti_list.className="col-md-6";popup_zakaz_zapchasti_list.style.backgroundColor="#\u0421\u0421\u0421";var add_zapchast_icon=document.createElement("i");add_zapchast_icon.className="fa fa-plus-circle add_this_work";add_zapchast_icon.setAttribute("aria-hidden","true");var del_zapchast_icon=document.createElement("i");del_zapchast_icon.className="fa fa-trash-o del_this_hr";del_zapchast_icon.setAttribute("aria-hidden","true");var popup_zakaz_zapchasti_viborka=document.createElement("table");popup_zakaz_zapchasti_viborka.id="viborka_zapchastei";popup_zakaz_zapchasti_viborka.className="col-md-12";popup_zakaz_zapchasti_viborka.style.backgroundColor="#\u0421\u0421\u0421";var popup_zakaz_zapchasti_viborka_body=document.createElement("tbody");var conteiner_tbodyzapchast=document.createElement("div");conteiner_tbodyzapchast.className="col-md-6 tablecontainer";conteiner_tbodyzapchast.id="tbodyzapchastcontainer";popup_zakaz_zapchasti_viborka.appendChild(popup_zakaz_zapchasti_viborka_body);conteiner_tbodyzapchast.appendChild(popup_zakaz_zapchasti_viborka);var list_of_works_zapchast=document.querySelector("#zapchasti");list_of_works_zapchast.childNodes.forEach(function(element,index){if(element.nodeName=="#text")return;else{var s=document.createElement("span");s.innerText=element.innerText;s.setAttribute("data-price",element.getAttribute("data-price"));s.setAttribute("data-idcarpart",element.getAttribute("data-idcarpart"));s.setAttribute("data-idpart",element.getAttribute("data-idpart"));s.insertBefore(add_zapchast_icon.cloneNode(true),s.firstChild);popup_zakaz_zapchasti_list.appendChild(s);s.firstChild.addEventListener("click",add_part_in_tab)}});popup_zakaz_zapchasti_label.children[0].addEventListener("click",function(){if(popup_zakaz_zapchasti_list.innerHTML!="")return;list_of_works_zapchast.childNodes.forEach(function(element,index){if(element.nodeName=="#text")return;else{var s=document.createElement("span");s.innerText=element.innerText;s.setAttribute("data-price",element.getAttribute("data-price"));s.setAttribute("data-idcarpart",element.getAttribute("data-idcarpart"));s.setAttribute("data-idpart",element.getAttribute("data-idpart"));s.insertBefore(add_zapchast_icon.cloneNode(true),s.firstChild);popup_zakaz_zapchasti_list.appendChild(s);s.firstChild.addEventListener("click",add_part_in_tab)}})});
 				
 
-			function search_zapchasti() {
-				if (this.value.search(/[а-яА-ЯёЁ]||[\s]/) != -1) {
-					let del = document.querySelector('.add_button');
+	function search_zapchasti(){if(this.value.search(/[\u0430-\u044f\u0410-\u042f\u0451\u0401]||[\s]/)!=-1){var del=document.querySelector(".add_button");if(del)del.remove();if(this.value!=""){var for_search_list_work_REGEXP=new RegExp(this.value,"gi");popup_zakaz_zapchasti_list.innerHTML=""}else{list_of_works_zapchast.childNodes.forEach(function(element,index){if(element.nodeName=="#text")return;else{var patt=element.innerText;if(patt.search(for_search_list_work_REGEXP)!=-1){var s=document.createElement("span");s.innerText=element.innerText;s.setAttribute("data-price",element.getAttribute("data-price"));s.setAttribute("data-idcarpart",element.getAttribute("data-idcarpart"));s.setAttribute("data-idpart",element.getAttribute("data-idpart"));s.insertBefore(add_zapchast_icon.cloneNode(true),s.firstChild);popup_zakaz_zapchasti_list.appendChild(s);s.firstChild.addEventListener("click",add_part_in_tab)}}});return}list_of_works_zapchast.childNodes.forEach(function(element,index){if(element.nodeName=="#text")return;else{var patt=element.innerText;if(patt.search(for_search_list_work_REGEXP)!=-1){var s=document.createElement("span");s.innerText=element.innerText;s.setAttribute("data-price",element.getAttribute("data-price"));s.setAttribute("data-idcarpart",element.getAttribute("data-idcarpart"));s.setAttribute("data-idpart",element.getAttribute("data-idpart"));s.insertBefore(add_zapchast_icon.cloneNode(true),s.firstChild);popup_zakaz_zapchasti_list.appendChild(s);s.firstChild.addEventListener("click",add_part_in_tab)}}})}if(this.value!="")for(var i=0;i<list_of_works_zapchast.length;i++)if(popup_zakaz_zapchasti_list.innerHTML!=""){console.log("Yes");return}else{var new_work_add=document.createElement("span");new_work_add.className="btn-success add_button col-md-6 col-md-offset-2";new_work_add.innerHTML='\u0414\u043e\u0431\u0430\u0432\u0438\u0442\u044c \u0443\u0441\u043b\u0443\u0433\u0443 <i class="fa fa-plus-circle" aria-hidden="true"></i>';popup_zakaz_zapchasti.appendChild(new_work_add);new_work_add.addEventListener("click",create_new_zapchast);return}}
 
-					if (del) { del.remove() }
+	function add_part_in_tab(){var tr_zapchast=document.createElement("tr");tr_zapchast.addEventListener("mouseover",show_del_td);tr_zapchast.addEventListener("mouseout",hide_del_td);var td_id_zapchast=document.createElement("td");td_id_zapchast.className="id";td_id_zapchast.innerHTML="<span>"+(popup_zakaz_zapchasti_viborka_body.children.length+1)+" </span>";td_id_zapchast.appendChild(del_zapchast_icon.cloneNode(true)).addEventListener("click",function(){var $jscomp$this=this;if(popup_zakaz_zapchasti_viborka.offsetHeight<200)tbodyzapchastcontainer.style.overflow="hidden";this.parentElement.parentElement.style.backgroundColor="#ff9999";this.parentElement.parentElement.style.color="#ffffff";setTimeout(function(){summ_zakaz.innerText=zayavka.summ-=parseInt($jscomp$this.parentElement.nextSibling.nextSibling.nextSibling.innerText);$jscomp$this.parentElement.parentElement.parentElement.removeChild($jscomp$this.parentElement.parentElement);for(var i=0;i<popup_zakaz_zapchasti_viborka_body.children.length;i++)popup_zakaz_zapchasti_viborka_body.children[i].firstChild.firstChild.innerText=i+1+" "},300)});var td_name_zapchast=document.createElement("td");td_name_zapchast.className="name_zapchast";td_name_zapchast.innerText=this.parentElement.innerText;var td_count_zapchast=document.createElement("td");td_count_zapchast.className="td_count";var td_input_zapchast=document.createElement("input");td_input_zapchast.type="number";td_input_zapchast.className="input_part";td_input_zapchast.value=1;td_input_zapchast.setAttribute("min","1");td_input_zapchast.addEventListener("input",mathPRICE);td_count_zapchast.appendChild(td_input_zapchast);var td_price_zapchast=document.createElement("td");td_price_zapchast.className="price_zapchast";td_price_zapchast.innerText=this.parentElement.getAttribute("data-price")+" \u0440\u0443\u0431";td_price_zapchast.setAttribute("data-price",this.parentElement.getAttribute("data-price"));tr_zapchast.appendChild(td_id_zapchast);tr_zapchast.appendChild(td_name_zapchast);tr_zapchast.appendChild(td_count_zapchast);tr_zapchast.appendChild(td_price_zapchast);popup_zakaz_zapchasti_viborka_body.appendChild(tr_zapchast);this.parentElement.parentElement.removeChild(this.parentElement);if(tbodyzapchastcontainer.offsetHeight>240){tbodyzapchastcontainer.style.overflowY="auto";tbodyzapchastcontainer.scrollTop=1E3}var bufer=0;document.querySelectorAll(".price_rabota, .price_zapchast").forEach(function(el,i){bufer+=parseInt(el.innerText)});summ_zakaz.innerText=zayavka.summ=bufer;zayavka.partslist.push(this.parentElement.getAttribute("data-idpart"))};
 
-					if (this.value != '') {
-						var for_search_list_work_REGEXP = new RegExp(this.value, 'gi');
-						popup_zakaz_zapchasti_list.innerHTML = '';
-					}
-
-					else {
-						list_of_works_zapchast.childNodes.forEach(function(element, index) {
-			        	if (element.nodeName == '#text') { return }
-
-			        	else {
-			        		let patt = element.innerText;
-			        		if (patt.search(for_search_list_work_REGEXP) != -1) {
-			        			let s = document.createElement('span');
-			                 	s.innerText = element.innerText;
-			                 	s.setAttribute('data-price', element.getAttribute('data-price'));
-			                 	s.setAttribute('data-idcarpart', element.getAttribute('data-idcarpart'));
-			                 	s.setAttribute('data-idpart', element.getAttribute('data-idpart'));
-			                   	s.insertBefore(add_zapchast_icon.cloneNode(true), s.firstChild);
-			                    popup_zakaz_zapchasti_list.appendChild(s);
-			                    s.firstChild.addEventListener('click', add_part_in_tab )
-			                }
-			            }
-			        });
-					return
-					}
-
-			        list_of_works_zapchast.childNodes.forEach(function(element, index) {
-			        	if (element.nodeName == '#text') { return }
-
-			        	else {
-			        		let patt = element.innerText;
-
-			        		if (patt.search(for_search_list_work_REGEXP) != -1) {
-			        			let s = document.createElement('span');
-			                 	s.innerText = element.innerText;
-			                 	s.setAttribute('data-price', element.getAttribute('data-price'));
-			                 	s.setAttribute('data-idcarpart', element.getAttribute('data-idcarpart'));
-			                 	s.setAttribute('data-idpart', element.getAttribute('data-idpart'));
-			                   	s.insertBefore(add_zapchast_icon.cloneNode(true), s.firstChild);
-			                    popup_zakaz_zapchasti_list.appendChild(s);
-			                    s.firstChild.addEventListener('click', add_part_in_tab )
-			                }
-			            }
-			        });
-			    }
-			    if (this.value != '') {
-			    	for (let i=0; i<list_of_works_zapchast.length; i++)
-			    	{
-			    		if (popup_zakaz_zapchasti_list.innerHTML != '') {
-			    			console.log('Yes')
-			    			return;
-			    		}
-			    		else {
-			    			let new_work_add = document.createElement('span');
-							new_work_add.className = 'btn-success add_button col-md-6 col-md-offset-2';
-							new_work_add.innerHTML = 'Добавить услугу <i class="fa fa-plus-circle" aria-hidden="true"></i>';
-							popup_zakaz_zapchasti.appendChild(new_work_add);
-							new_work_add.addEventListener('click', create_new_zapchast)
-			    			return;
-			    		}
-			    	}
-			    }
-			}
-
-			function add_part_in_tab () {
-				let tr_zapchast = document.createElement('tr');
-				tr_zapchast.addEventListener('mouseover', show_del_td);
-				tr_zapchast.addEventListener('mouseout', hide_del_td);
-
-				let td_id_zapchast = document.createElement('td');
-				td_id_zapchast.className = 'id';
-				td_id_zapchast.innerHTML = '<span>' + (popup_zakaz_zapchasti_viborka_body.children.length+1) + ' </span>';
-				td_id_zapchast.appendChild(del_zapchast_icon.cloneNode(true)).addEventListener('click', function () {
-					if (popup_zakaz_zapchasti_viborka.offsetHeight < 200) {
-						tbodyzapchastcontainer.style.overflow = 'hidden';
-					}
-					this.parentElement.parentElement.style.backgroundColor = '#ff9999';
-					this.parentElement.parentElement.style.color = '#ffffff';
-					setTimeout(()=>{
-						summ_zakaz.innerText = zayavka.summ -= parseInt(this.parentElement.nextSibling.nextSibling.nextSibling.innerText);
-						this.parentElement.parentElement.parentElement.removeChild(this.parentElement.parentElement)
-						for (let i=0; i<popup_zakaz_zapchasti_viborka_body.children.length; i++) {
-							popup_zakaz_zapchasti_viborka_body.children[i].firstChild.firstChild.innerText = i+1 + ' ';
-						}
-					}, 300);
-				});
-
-				let td_name_zapchast = document.createElement('td');
-				td_name_zapchast.className = 'name_zapchast';
-				td_name_zapchast.innerText = this.parentElement.innerText;
-
-				let td_count_zapchast = document.createElement('td');
-				td_count_zapchast.className = 'td_count';
-
-				let td_input_zapchast = document.createElement('input');
-				td_input_zapchast.type = 'number';
-				td_input_zapchast.className = 'input_work';
-				td_input_zapchast.value = 1;
-				td_input_zapchast.setAttribute('min', '1');
-				td_input_zapchast.addEventListener('input', mathPRICE)
-				td_count_zapchast.appendChild(td_input_zapchast);
-
-				let td_price_zapchast = document.createElement('td');
-				td_price_zapchast.className = 'price_zapchast';
-				td_price_zapchast.innerText = this.parentElement.getAttribute('data-price') + ' руб';
-				td_price_zapchast.setAttribute('data-price', this.parentElement.getAttribute('data-price'));
-				tr_zapchast.appendChild(td_id_zapchast);
-				tr_zapchast.appendChild(td_name_zapchast);
-				tr_zapchast.appendChild(td_count_zapchast);
-				tr_zapchast.appendChild(td_price_zapchast);
-
-				popup_zakaz_zapchasti_viborka_body.appendChild(tr_zapchast);
-
-				this.parentElement.parentElement.removeChild(this.parentElement)
-				if (tbodyzapchastcontainer.offsetHeight > 240) {
-					tbodyzapchastcontainer.style.overflowY = 'auto';
-					tbodyzapchastcontainer.scrollTop = 1000;
-				}
-				let bufer = 0;
-				document.querySelectorAll('.price_rabota, .price_zapchast').forEach(function (el, i) {
-					bufer += parseInt(el.innerText);
-				})
-				summ_zakaz.innerText = zayavka.summ = bufer;
-				zayavka.partslist.push(this.parentElement.getAttribute('data-idpart'));
-			}
-
-			function create_new_zapchast (argument) {
-				if (zayavka.car == '') { return alert( 'Укажите автомобиль!' )}
-				toogle_window = 'new_zapchast_window';
-
-				let create_new_zapchast = document.createElement('div');
-				create_new_zapchast.className = 'create_new';
-				popup_zakaz_body.classList.add('HIDE_ON_TIME');
-				popup_zakaz.appendChild(create_new_zapchast)
-				create_new_zapchast.innerHTML = '<h3><i class="fa fa-info" aria-hidden="true"></i> Добавление товара, запчасти для '+ document.querySelector('#auto_firm option[value="'+ zayavka.car +'"]').innerText +'</h3>';						
-				
-				sauto.insert_hr(create_new_zapchast);
-				
-				sauto.create_close_button(create_new_zapchast, 'second'); // Добавляем кнопочку закрыть
-			
-				sauto.insert_clear_block(create_new_zapchast);
-				
-				let icon_new_zapchast = document.createElement('div');
-				icon_new_zapchast.className = 'col-md-2';
-				icon_new_zapchast.style.fontSize = '6em';
-				icon_new_zapchast.innerHTML = '<i class="fa fa-cogs" aria-hidden="true"></i>';
-				create_new_zapchast.appendChild(icon_new_zapchast);
-				
-				let create_new_zapchast_name_inpblock = document.createElement('div');
-				create_new_zapchast_name_inpblock.className = 'col-md-8';
-				create_new_zapchast.appendChild(create_new_zapchast_name_inpblock);
-				
-				let create_new_zapchast_name = sauto.create_input('text', 'work_name','new_zapchast_name', 'col-md-12 input mBottomInp', 'Введите наименование')
-				
-				let create_new_zapchast_price = sauto.create_input('text', 'auto_model','new_zapchast_model', 'col-md-12 input mBottomInp', 'Стоимость без пробелов')
-				create_new_zapchast_name.value = popup_zakaz_zapchasti_search.value;
-
-				let create_new_zapchast_code = sauto.create_input('number', 'auto_code','new_zapchast_code', 'col-md-3 col-md-offset-9 input mBottomInp', 'Код')
-
-				create_new_zapchast_name_inpblock.appendChild(create_new_zapchast_name)
-				
-				create_new_zapchast_name_inpblock.appendChild(create_new_zapchast_price)
-				
-				create_new_zapchast_name_inpblock.appendChild(create_new_zapchast_code)
-				
-				sauto.insert_clear_block(create_new_zapchast);
-				
-				sauto.insert_hr(create_new_zapchast);
-
-				sauto.insert_clear_block(create_new_zapchast);
-
-				let create_new_zapchast_save = document.createElement('button');
-				create_new_zapchast_save.classList = 'btn';
-				create_new_zapchast_save.id = 'create_new_zapchast_save';
-				create_new_zapchast_save.addEventListener('mouseover', function () {
-					if (create_new_zapchast_name.value != '' && create_new_zapchast_price.value != '') {
-						this.classList.add('btn-success')
-						this.style.cursor = 'pointer';
-						this.addEventListener('mouseout', function () {this.classList.remove('btn-success');this.removeEventListener( 'click', save_new_PART )})
-						this.addEventListener( 'click', save_new_PART );
-					}
-					else {
-						this.classList.add('btn-warning')
-						this.classList.add('disabled')
-						this.style.cursor = 'no-drop';
-
-						let err = document.createElement('span');
-						err.classList = 'err';
-						err.innerHTML = '<strong style="color:red">Заполните поле:</strong>';
-						create_new_zapchast_name.value == '' ? err.children[0].innerText = err.innerText + ' -наименование-' : false;
-						create_new_zapchast_price.value == '' ? err.children[0].innerText = err.innerText + ' -стоимость- ' : false;
-						create_new_zapchast.appendChild(err);
-						this.addEventListener('mouseout', function () {err.remove();this.classList.remove('btn-warning');this.classList.remove('disabled')})
-					}
-				})
-							
-				create_new_zapchast_save.innerHTML = '<i class="fa fa-floppy-o" aria-hidden="true"></i> Сохранить';
-				create_new_zapchast.appendChild(create_new_zapchast_save)
-
-				function save_new_PART () {
-					if (zayavka.car == '') { return alert( 'Укажите автомобиль в окне заявки!' )}
-					let data_part = { name:create_new_zapchast_name.value, code:create_new_zapchast_code.value, carid: zayavka.car, price:create_new_zapchast_price.value }
-					$.get('save-part', data_part, function(data) {
-						document.querySelector('.add_button').remove();
-					});
-
-					this.parentElement.remove();
-					sauto.success_window('Новая услуга, товар');
-					popup_zakaz_body.classList.remove('HIDE_ON_TIME');
-					toogle_window = 'incident_window';
-
-					let tr_zapchast = document.createElement('tr');
-					tr_zapchast.addEventListener('mouseover', show_del_td);
-					tr_zapchast.addEventListener('mouseout', hide_del_td);
-
-					let td_id_zapchast = document.createElement('td');
-					td_id_zapchast.className = 'id';
-					td_id_zapchast.innerHTML = '<span>' + (popup_zakaz_zapchasti_viborka_body.children.length+1) + ' </span>';
-					td_id_zapchast.appendChild(del_zapchast_icon.cloneNode(true)).addEventListener('click', function () {
-						if (popup_zakaz_zapchasti_viborka.offsetHeight < 200) {
-							tbodyzapchastcontainer.style.overflow = 'hidden';
-						}
-
-						this.parentElement.parentElement.style.backgroundColor = '#ff9999';
-						this.parentElement.parentElement.style.color = '#ffffff';
-
-						setTimeout(()=>{
-							summ_zakaz.innerText = zayavka.summ -= parseInt(this.parentElement.nextSibling.nextSibling.nextSibling.innerText);
-							this.parentElement.parentElement.parentElement.removeChild(this.parentElement.parentElement)
-							for (let i=0; i<popup_zakaz_zapchasti_viborka_body.children.length; i++) {
-								popup_zakaz_zapchasti_viborka_body.children[i].firstChild.firstChild.innerText = i+1 + ' ';
-							}
-						}, 300);
-					});
-
-					let td_name_zapchast = document.createElement('td');
-					td_name_zapchast.className = 'name_zapchast';
-					td_name_zapchast.innerText = create_new_zapchast_name.value;
-
-					let td_count_zapchast = document.createElement('td');
-					td_count_zapchast.className = 'td_count';
-
-					let td_input_zapchast = document.createElement('input');
-					td_input_zapchast.type = 'number';
-					td_input_zapchast.className = 'input_work';
-					td_input_zapchast.value = 1;
-					td_input_zapchast.setAttribute('min', '1');
-					td_input_zapchast.addEventListener('input', mathPRICE)
-					td_count_zapchast.appendChild(td_input_zapchast);
-
-					let td_price_zapchast = document.createElement('td');
-					td_price_zapchast.className = 'price_zapchast';
-					td_price_zapchast.innerText = create_new_zapchast_price.value + ' руб';
-					td_price_zapchast.setAttribute('data-price', create_new_zapchast_price.value);
-
-					tr_zapchast.appendChild(td_id_zapchast);
-					tr_zapchast.appendChild(td_name_zapchast);
-					tr_zapchast.appendChild(td_count_zapchast);
-					tr_zapchast.appendChild(td_price_zapchast);
-
-					popup_zakaz_zapchasti_viborka_body.appendChild(tr_zapchast);
-
-					if (tbodyzapchastcontainer.offsetHeight > 240) {
-						tbodyzapchastcontainer.style.overflowY = 'auto';
-						tbodyzapchastcontainer.scrollTop = 1000;
-					}
-
-					let bufer = 0;
-					document.querySelectorAll('.price_rabota, .price_zapchast').forEach(function (el, i) {
-						bufer += parseInt(el.innerText);
-					})
-					summ_zakaz.innerText = zayavka.summ = bufer;
-				}
-			}
+	function create_new_zapchast(argument){if(zayavka.car=="")return alert("\u0423\u043a\u0430\u0436\u0438\u0442\u0435 \u0430\u0432\u0442\u043e\u043c\u043e\u0431\u0438\u043b\u044c!");toogle_window="new_zapchast_window";var create_new_zapchast=document.createElement("div");create_new_zapchast.className="create_new";popup_zakaz_body.classList.add("HIDE_ON_TIME");popup_zakaz.appendChild(create_new_zapchast);create_new_zapchast.innerHTML='<h3><i class="fa fa-info" aria-hidden="true"></i> \u0414\u043e\u0431\u0430\u0432\u043b\u0435\u043d\u0438\u0435 \u0442\u043e\u0432\u0430\u0440\u0430, \u0437\u0430\u043f\u0447\u0430\u0441\u0442\u0438 \u0434\u043b\u044f '+document.querySelector('#auto_firm option[value="'+zayavka.car+'"]').innerText+"</h3>";sauto.insert_hr(create_new_zapchast);sauto.create_close_button(create_new_zapchast,"second");sauto.insert_clear_block(create_new_zapchast);var icon_new_zapchast=document.createElement("div");icon_new_zapchast.className="col-md-2";icon_new_zapchast.style.fontSize="6em";icon_new_zapchast.innerHTML='<i class="fa fa-cogs" aria-hidden="true"></i>';create_new_zapchast.appendChild(icon_new_zapchast);var create_new_zapchast_name_inpblock=document.createElement("div");create_new_zapchast_name_inpblock.className="col-md-8";create_new_zapchast.appendChild(create_new_zapchast_name_inpblock);var create_new_zapchast_name=sauto.create_input("text","work_name","new_zapchast_name","col-md-12 input mBottomInp","\u0412\u0432\u0435\u0434\u0438\u0442\u0435 \u043d\u0430\u0438\u043c\u0435\u043d\u043e\u0432\u0430\u043d\u0438\u0435");var create_new_zapchast_price=sauto.create_input("text","auto_model","new_zapchast_model","col-md-12 input mBottomInp","\u0421\u0442\u043e\u0438\u043c\u043e\u0441\u0442\u044c \u0431\u0435\u0437 \u043f\u0440\u043e\u0431\u0435\u043b\u043e\u0432");create_new_zapchast_name.value=popup_zakaz_zapchasti_search.value;var create_new_zapchast_code=sauto.create_input("number","auto_code","new_zapchast_code","col-md-3 col-md-offset-9 input mBottomInp","\u041a\u043e\u0434");create_new_zapchast_name_inpblock.appendChild(create_new_zapchast_name);create_new_zapchast_name_inpblock.appendChild(create_new_zapchast_price);create_new_zapchast_name_inpblock.appendChild(create_new_zapchast_code);sauto.insert_clear_block(create_new_zapchast);sauto.insert_hr(create_new_zapchast);sauto.insert_clear_block(create_new_zapchast);var create_new_zapchast_save=document.createElement("button");create_new_zapchast_save.classList="btn";create_new_zapchast_save.id="create_new_zapchast_save";create_new_zapchast_save.addEventListener("mouseover",function(){if(create_new_zapchast_name.value!=""&&create_new_zapchast_price.value!=""){this.classList.add("btn-success");this.style.cursor="pointer";this.addEventListener("mouseout",function(){this.classList.remove("btn-success");this.removeEventListener("click",save_new_PART)});this.addEventListener("click",save_new_PART)}else{this.classList.add("btn-warning");this.classList.add("disabled");this.style.cursor="no-drop";var err=document.createElement("span");err.classList="err";err.innerHTML='<strong style="color:red">\u0417\u0430\u043f\u043e\u043b\u043d\u0438\u0442\u0435 \u043f\u043e\u043b\u0435:</strong>';create_new_zapchast_name.value==""?err.children[0].innerText=err.innerText+" -\u043d\u0430\u0438\u043c\u0435\u043d\u043e\u0432\u0430\u043d\u0438\u0435-":false;create_new_zapchast_price.value==""?err.children[0].innerText=err.innerText+" -\u0441\u0442\u043e\u0438\u043c\u043e\u0441\u0442\u044c- ":false;create_new_zapchast.appendChild(err);this.addEventListener("mouseout",function(){err.remove();this.classList.remove("btn-warning");this.classList.remove("disabled")})}});create_new_zapchast_save.innerHTML='<i class="fa fa-floppy-o" aria-hidden="true"></i> \u0421\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c';create_new_zapchast.appendChild(create_new_zapchast_save);function save_new_PART(){if(zayavka.car=="")return alert("\u0423\u043a\u0430\u0436\u0438\u0442\u0435 \u0430\u0432\u0442\u043e\u043c\u043e\u0431\u0438\u043b\u044c \u0432 \u043e\u043a\u043d\u0435 \u0437\u0430\u044f\u0432\u043a\u0438!");var data_part={name:create_new_zapchast_name.value,code:create_new_zapchast_code.value,carid:zayavka.car,price:create_new_zapchast_price.value};$.get("save-part",data_part,function(data){document.querySelector(".add_button").remove()});this.parentElement.remove();sauto.success_window("\u041d\u043e\u0432\u0430\u044f \u0443\u0441\u043b\u0443\u0433\u0430, \u0442\u043e\u0432\u0430\u0440");popup_zakaz_body.classList.remove("HIDE_ON_TIME");toogle_window="incident_window";var tr_zapchast=document.createElement("tr");tr_zapchast.addEventListener("mouseover",show_del_td);tr_zapchast.addEventListener("mouseout",hide_del_td);var td_id_zapchast=document.createElement("td");td_id_zapchast.className="id";td_id_zapchast.innerHTML="<span>"+(popup_zakaz_zapchasti_viborka_body.children.length+1)+" </span>";td_id_zapchast.appendChild(del_zapchast_icon.cloneNode(true)).addEventListener("click",function(){var $jscomp$this=this;if(popup_zakaz_zapchasti_viborka.offsetHeight<200)tbodyzapchastcontainer.style.overflow="hidden";this.parentElement.parentElement.style.backgroundColor="#ff9999";this.parentElement.parentElement.style.color="#ffffff";setTimeout(function(){summ_zakaz.innerText=zayavka.summ-=parseInt($jscomp$this.parentElement.nextSibling.nextSibling.nextSibling.innerText);$jscomp$this.parentElement.parentElement.parentElement.removeChild($jscomp$this.parentElement.parentElement);for(var i=0;i<popup_zakaz_zapchasti_viborka_body.children.length;i++)popup_zakaz_zapchasti_viborka_body.children[i].firstChild.firstChild.innerText=i+1+" "},300)});var td_name_zapchast=document.createElement("td");td_name_zapchast.className="name_zapchast";td_name_zapchast.innerText=create_new_zapchast_name.value;var td_count_zapchast=document.createElement("td");td_count_zapchast.className="td_count";var td_input_zapchast=document.createElement("input");td_input_zapchast.type="number";td_input_zapchast.className="input_part";td_input_zapchast.value=1;td_input_zapchast.setAttribute("min","1");td_input_zapchast.addEventListener("input",mathPRICE);td_count_zapchast.appendChild(td_input_zapchast);var td_price_zapchast=document.createElement("td");td_price_zapchast.className="price_zapchast";td_price_zapchast.innerText=create_new_zapchast_price.value+" \u0440\u0443\u0431";td_price_zapchast.setAttribute("data-price",create_new_zapchast_price.value);tr_zapchast.appendChild(td_id_zapchast);tr_zapchast.appendChild(td_name_zapchast);tr_zapchast.appendChild(td_count_zapchast);tr_zapchast.appendChild(td_price_zapchast);popup_zakaz_zapchasti_viborka_body.appendChild(tr_zapchast);if(tbodyzapchastcontainer.offsetHeight>240){tbodyzapchastcontainer.style.overflowY="auto";tbodyzapchastcontainer.scrollTop=1E3}var bufer=0;document.querySelectorAll(".price_rabota, .price_zapchast").forEach(function(el,i){bufer+=parseInt(el.innerText)});summ_zakaz.innerText=zayavka.summ=bufer}};
 /************************************************************************************************************************
 *									Функции для работы с таблицами услуг и запчастей									*
 ************************************************************************************************************************/
@@ -1429,13 +715,22 @@ function click_on_day () {
 				this.children[0].children[0].style.display = 'inline-block';
 			}
 
-			function mathPRICE (argument) {
+			function mathPRICE (cont) {				
 				this.parentElement.nextElementSibling.innerText = parseInt(this.parentElement.nextElementSibling.getAttribute('data-price')) * this.value + ' руб';
-			    let bufer = 0;
+				
+			    let bufer = time_bufer = 0;
 			    document.querySelectorAll('.price_rabota, .price_zapchast').forEach(function (el, i) {
 			    	bufer += parseInt(el.innerText);
-			    })
-			    summ_zakaz.innerText = zayavka.summ = bufer;
+			    })			    				
+				summ_zakaz.innerText = zayavka.summ = bufer;
+				if (cont.target.classList.contains('input_work')) {
+					this.parentElement.nextElementSibling.nextElementSibling.innerText = parseInt(this.parentElement.nextElementSibling.nextElementSibling.getAttribute('data-timeplane')) * this.value + ' мин';
+					document.querySelectorAll('.time_rabota').forEach(function (el, i) {
+						time_bufer += parseInt(el.innerText);
+					});
+					zayavka.minets = time_bufer;
+					calc_time();
+				}
 			}
 /************************************************************************************************************************
 *										Выбор мастера для выполнения работ												*
@@ -1553,7 +848,7 @@ function click_on_day () {
 		container_tab_h_uslugi.style.padding = '0'
 	let popup_zakaz_vidi_rabot_tab = document.createElement('table');
 		popup_zakaz_vidi_rabot_tab.style.width = '99.4%';
-		popup_zakaz_vidi_rabot_tab.innerHTML = '<thead><tr class="vidi_rabot_th"><th style="width:31px">#</th><th style="width:52.7%">Услуга</th><th style="width:60px">Кол-во</th><th style="width:70px">Стоимость</th></tr></thead>';
+		popup_zakaz_vidi_rabot_tab.innerHTML = '<thead><tr class="vidi_rabot_th"><th style="width:31px">#</th><th style="width:52.7%">Услуга</th><th style="width:60px">Кол-во</th><th style="width:70px">Стоимость</th><th style="width:70px">Время</th></tr></thead>';
 		container_tab_h_uslugi.appendChild(popup_zakaz_vidi_rabot_tab);
 
 
@@ -1617,7 +912,8 @@ function click_on_day () {
 				console.log('ffffff')
 			}
 			else {
-				calc_time();
+				//calc_time();
+				create_zayavka();
 			}
 		}
 
@@ -1676,24 +972,60 @@ function click_on_day () {
 				this_day(zapis, otschet, obed_start_H, obed_start_M, obed_end_H, obed_end_M, konec_raboty_H, konec_raboty_M, obed, zayavka.minets, nachalo_raboty_H, nachalo_raboty_M, weekends, zayavka.days_work);
 				console.log(zayavka.days_work_timer)
 				
+
+				
 			});
 		}
 
 		/*function this_day(a,c,b,m,n,p,q,r,h,d,e,f,k){var t=String(k),l=k.split(","),g=10>a.getDate()?"0"+a.getDate():a.getDate(),u=10>a.getMonth()?"0"+(a.getMonth()+1):a.getMonth(),v=a.getFullYear();g=g+"."+u+"."+v;for(u=0;u<l.length;u++)if(g==l[u])return console.warn(g+" \u0412\u042b\u0425\u041e\u0414\u041d\u041e\u0419 \u0414\u0415\u041d\u042c!"),k=new Date(a.setDate(a.getDate()+1)),this_day(k,c,b,m,n,p,q,r,h,d,e,f,t);console.log("----------------------------------------------------------------------------------------------------------------------------- ");console.log("Start iteration - "+a);console.log("Start day - "+e+":"+f);console.log("Timer_local - "+c);console.log("----------------------------------------------------------------------------------------------------------------------------- ");t=new Date(a.getFullYear(),a.getMonth(),a.getDate(),q,r);l=new Date(a.getFullYear(),a.getMonth(),a.getDate(),b,m);g=new Date(a.getFullYear(),a.getMonth(),a.getDate(),n,p);if(a<=l&&c<l)if(c=(t-a)/1E3/60-d-h,0>c)d=new Date(a.getFullYear(),a.getMonth(),a.getDate()+1,e,f),a=new Date(a.getFullYear(),a.getMonth(),a.getDate()+1,e,f),a=new Date(a.setMinutes(a.getMinutes()+Math.abs(c))),this_day(d,a,b,m,n,p,q,r,h,Math.abs(c),e,f,k);else return b=new Date(a.setMinutes(a.getMinutes()+d)),zayavka.timeplaneend.year=b.getFullYear(),zayavka.timeplaneend.month=10>b.getMonth()?"0"+(b.getMonth()+1):b.getMonth(),zayavka.timeplaneend.date=10>b.getDate()?"0"+b.getDate():b.getDate(),zayavka.timeplaneend.hour=10>b.getHours()?"0"+b.getHours():b.getHours(),zayavka.timeplaneend.minutes=10>b.getMinutes()?"0"+b.getMinutes():b.getMinutes(),summ_hours.innerText=zayavka.timeplaneend.date+"."+zayavka.timeplaneend.month+"."+zayavka.timeplaneend.year+" "+zayavka.timeplaneend.hour+":"+zayavka.timeplaneend.minutes;else if(a<=g&&a<g&&c>l)if(c=(t-a)/1E3/60-d-h,0>c)d=new Date(a.getFullYear(),a.getMonth(),a.getDate()+1,e,f),a=new Date(a.getFullYear(),a.getMonth(),a.getDate()+1,e,f),a=new Date(a.setMinutes(a.getMinutes()+Math.abs(c))),this_day(d,a,b,m,n,p,q,r,h,Math.abs(c),e,f,k);else return b=new Date(a.setMinutes(a.getMinutes()+d+h)),zayavka.timeplaneend.year=b.getFullYear(),zayavka.timeplaneend.month=10>b.getMonth()?"0"+(b.getMonth()+1):b.getMonth(),zayavka.timeplaneend.date=10>b.getDate()?"0"+b.getDate():b.getDate(),zayavka.timeplaneend.hour=10>b.getHours()?"0"+b.getHours():b.getHours(),zayavka.timeplaneend.minutes=10>b.getMinutes()?"0"+b.getMinutes():b.getMinutes(),summ_hours.innerText=zayavka.timeplaneend.date+"."+zayavka.timeplaneend.month+"."+zayavka.timeplaneend.year+" "+zayavka.timeplaneend.hour+":"+zayavka.timeplaneend.minutes;else if(a>=g)if(c=(t-a)/1E3/60-d,0>c)d=new Date(a.getFullYear(),a.getMonth(),a.getDate()+1,e,f),a=new Date(a.getFullYear(),a.getMonth(),a.getDate()+1,e,f),a=new Date(a.setMinutes(a.getMinutes()+Math.abs(c))),this_day(d,a,b,m,n,p,q,r,h,Math.abs(c),e,f,k);else return b=new Date(a.setMinutes(a.getMinutes()+d)),console.log(b),zayavka.timeplaneend.year=b.getFullYear(),zayavka.timeplaneend.month=10>b.getMonth()?"0"+(b.getMonth()+1):b.getMonth(),zayavka.timeplaneend.date=10>b.getDate()?"0"+b.getDate():b.getDate(),zayavka.timeplaneend.hour=10>b.getHours()?"0"+b.getHours():b.getHours(),zayavka.timeplaneend.minutes=10>b.getMinutes()?"0"+b.getMinutes():b.getMinutes(),summ_hours.innerText=zayavka.timeplaneend.date+"."+zayavka.timeplaneend.month+"."+zayavka.timeplaneend.year+" "+zayavka.timeplaneend.hour+":"+zayavka.timeplaneend.minutes};*/
 
 
-		function this_day(a,c,b,n,p,q,r,t,h,d,e,f,k,l){l=String(k);var m=k.split(","),g=10>a.getDate()?"0"+a.getDate():a.getDate(),u=10>a.getMonth()?"0"+(a.getMonth()+1):a.getMonth(),v=a.getFullYear();g=g+"."+u+"."+v;for(u=0;u<m.length;u++)if(g==m[u])return console.warn(g+" \u0412\u042b\u0425\u041e\u0414\u041d\u041e\u0419 \u0414\u0415\u041d\u042c!"),k=new Date(a.setDate(a.getDate()+1)),zayavka.days_work++,this_day(k,c,b,n,p,q,r,t,h,d,e,f,l,zayavka.days_work);console.log("----------------------------------------------------------------------------------------------------------------------------- ");
-console.log("Start iteration - "+a);console.log("Start day - "+e+":"+f);console.log("Timer_local - "+c);console.log("----------------------------------------------------------------------------------------------------------------------------- ");l=new Date(a.getFullYear(),a.getMonth(),a.getDate(),r,t);m=new Date(a.getFullYear(),a.getMonth(),a.getDate(),b,n);g=new Date(a.getFullYear(),a.getMonth(),a.getDate(),p,q);if(a<=m&&c<m)if(c=(l-a)/1E3/60-d-h,0>c)d=new Date(a.getFullYear(),a.getMonth(),a.getDate()+
-1,e,f),a=new Date(a.getFullYear(),a.getMonth(),a.getDate()+1,e,f),a=new Date(a.setMinutes(a.getMinutes()+Math.abs(c))),zayavka.days_work++,this_day(d,a,b,n,p,q,r,t,h,Math.abs(c),e,f,k,zayavka.days_work);else return b=new Date(a.setMinutes(a.getMinutes()+d)),zayavka.timeplaneend.year=b.getFullYear(),zayavka.timeplaneend.month=10>b.getMonth()?"0"+(b.getMonth()+1):b.getMonth(),zayavka.timeplaneend.date=10>b.getDate()?"0"+b.getDate():b.getDate(),zayavka.timeplaneend.hour=10>b.getHours()?"0"+b.getHours():
-b.getHours(),zayavka.timeplaneend.minutes=10>b.getMinutes()?"0"+b.getMinutes():b.getMinutes(),zayavka.days_work_timer=zayavka.days_work,zayavka.days_work=0,summ_hours.innerText=zayavka.timeplaneend.date+"."+zayavka.timeplaneend.month+"."+zayavka.timeplaneend.year+" "+zayavka.timeplaneend.hour+":"+zayavka.timeplaneend.minutes;else if(a<=g&&a<g&&c>m)if(c=(l-a)/1E3/60-d-h,0>c)d=new Date(a.getFullYear(),a.getMonth(),a.getDate()+1,e,f),a=new Date(a.getFullYear(),a.getMonth(),a.getDate()+1,e,f),a=new Date(a.setMinutes(a.getMinutes()+
-Math.abs(c))),zayavka.days_work++,this_day(d,a,b,n,p,q,r,t,h,Math.abs(c),e,f,k,zayavka.days_work);else return b=new Date(a.setMinutes(a.getMinutes()+d+h)),zayavka.timeplaneend.year=b.getFullYear(),zayavka.timeplaneend.month=10>b.getMonth()?"0"+(b.getMonth()+1):b.getMonth(),zayavka.timeplaneend.date=10>b.getDate()?"0"+b.getDate():b.getDate(),zayavka.timeplaneend.hour=10>b.getHours()?"0"+b.getHours():b.getHours(),zayavka.timeplaneend.minutes=10>b.getMinutes()?"0"+b.getMinutes():b.getMinutes(),zayavka.days_work_timer=
-zayavka.days_work,zayavka.days_work=0,summ_hours.innerText=zayavka.timeplaneend.date+"."+zayavka.timeplaneend.month+"."+zayavka.timeplaneend.year+" "+zayavka.timeplaneend.hour+":"+zayavka.timeplaneend.minutes;else if(a>=g)if(c=(l-a)/1E3/60-d,0>c)d=new Date(a.getFullYear(),a.getMonth(),a.getDate()+1,e,f),a=new Date(a.getFullYear(),a.getMonth(),a.getDate()+1,e,f),a=new Date(a.setMinutes(a.getMinutes()+Math.abs(c))),zayavka.days_work++,this_day(d,a,b,n,p,q,r,t,h,Math.abs(c),e,f,k,zayavka.days_work);
-else return b=new Date(a.setMinutes(a.getMinutes()+d)),console.log(b),zayavka.timeplaneend.year=b.getFullYear(),zayavka.timeplaneend.month=10>b.getMonth()?"0"+(b.getMonth()+1):b.getMonth(),zayavka.timeplaneend.date=10>b.getDate()?"0"+b.getDate():b.getDate(),zayavka.timeplaneend.hour=10>b.getHours()?"0"+b.getHours():b.getHours(),zayavka.timeplaneend.minutes=10>b.getMinutes()?"0"+b.getMinutes():b.getMinutes(),zayavka.days_work_timer=zayavka.days_work,zayavka.days_work=0,summ_hours.innerText=zayavka.timeplaneend.date+
-"."+zayavka.timeplaneend.month+"."+zayavka.timeplaneend.year+" "+zayavka.timeplaneend.hour+":"+zayavka.timeplaneend.minutes};
+		/*function this_day(a,c,b,n,p,q,r,t,h,d,e,f,k,l){l=String(k);var m=k.split(","),g=10>a.getDate()?"0"+a.getDate():a.getDate(),u=10>a.getMonth()?"0"+(a.getMonth()+1):a.getMonth(),v=a.getFullYear();g=g+"."+u+"."+v;for(u=0;u<m.length;u++)if(g==m[u])return console.warn(g+" \u0412\u042b\u0425\u041e\u0414\u041d\u041e\u0419 \u0414\u0415\u041d\u042c!"),k=new Date(a.setDate(a.getDate()+1)),zayavka.days_work++,this_day(k,c,b,n,p,q,r,t,h,d,e,f,l,zayavka.days_work);console.log("----------------------------------------------------------------------------------------------------------------------------- ");console.log("Start iteration - "+a);console.log("Start day - "+e+":"+f);console.log("Timer_local - "+c);console.log("----------------------------------------------------------------------------------------------------------------------------- ");l=new Date(a.getFullYear(),a.getMonth(),a.getDate(),r,t);m=new Date(a.getFullYear(),a.getMonth(),a.getDate(),b,n);g=new Date(a.getFullYear(),a.getMonth(),a.getDate(),p,q);if(a<=m&&c<m)if(c=(l-a)/1E3/60-d-h,0>c)d=new Date(a.getFullYear(),a.getMonth(),a.getDate()+1,e,f),a=new Date(a.getFullYear(),a.getMonth(),a.getDate()+1,e,f),a=new Date(a.setMinutes(a.getMinutes()+Math.abs(c))),zayavka.days_work++,this_day(d,a,b,n,p,q,r,t,h,Math.abs(c),e,f,k,zayavka.days_work);else return b=new Date(a.setMinutes(a.getMinutes()+d)),zayavka.timeplaneend.year=b.getFullYear(),zayavka.timeplaneend.month=10>b.getMonth()?"0"+(b.getMonth()):b.getMonth(),zayavka.timeplaneend.date=10>b.getDate()?"0"+b.getDate():b.getDate(),zayavka.timeplaneend.hour=10>b.getHours()?"0"+b.getHours():b.getHours(),zayavka.timeplaneend.minutes=10>b.getMinutes()?"0"+b.getMinutes():b.getMinutes(),zayavka.days_work_timer=zayavka.days_work,zayavka.days_work=0,summ_hours.innerText=zayavka.timeplaneend.date+"."+zayavka.timeplaneend.month+"."+zayavka.timeplaneend.year+" "+zayavka.timeplaneend.hour+":"+zayavka.timeplaneend.minutes;else if(a<=g&&a<g&&c>m)if(c=(l-a)/1E3/60-d-h,0>c)d=new Date(a.getFullYear(),a.getMonth(),a.getDate()+1,e,f),a=new Date(a.getFullYear(),a.getMonth(),a.getDate()+1,e,f),a=new Date(a.setMinutes(a.getMinutes()+Math.abs(c))),zayavka.days_work++,this_day(d,a,b,n,p,q,r,t,h,Math.abs(c),e,f,k,zayavka.days_work);else return b=new Date(a.setMinutes(a.getMinutes()+d+h)),zayavka.timeplaneend.year=b.getFullYear(),zayavka.timeplaneend.month=10>b.getMonth()?"0"+(b.getMonth()):b.getMonth(),zayavka.timeplaneend.date=10>b.getDate()?"0"+b.getDate():b.getDate(),zayavka.timeplaneend.hour=10>b.getHours()?"0"+b.getHours():b.getHours(),zayavka.timeplaneend.minutes=10>b.getMinutes()?"0"+b.getMinutes():b.getMinutes(),zayavka.days_work_timer=zayavka.days_work,zayavka.days_work=0,summ_hours.innerText=zayavka.timeplaneend.date+"."+zayavka.timeplaneend.month+"."+zayavka.timeplaneend.year+" "+zayavka.timeplaneend.hour+":"+zayavka.timeplaneend.minutes;else if(a>=g)if(c=(l-a)/1E3/60-d,0>c)d=new Date(a.getFullYear(),a.getMonth(),a.getDate()+1,e,f),a=new Date(a.getFullYear(),a.getMonth(),a.getDate()+1,e,f),a=new Date(a.setMinutes(a.getMinutes()+Math.abs(c))),zayavka.days_work++,this_day(d,a,b,n,p,q,r,t,h,Math.abs(c),e,f,k,zayavka.days_work);else return b=new Date(a.setMinutes(a.getMinutes()+d)),console.log(b),zayavka.timeplaneend.year=b.getFullYear(),zayavka.timeplaneend.month=10>b.getMonth()?"0"+(b.getMonth()):b.getMonth(),zayavka.timeplaneend.date=10>b.getDate()?"0"+b.getDate():b.getDate(),zayavka.timeplaneend.hour=10>b.getHours()?"0"+b.getHours():b.getHours(),zayavka.timeplaneend.minutes=10>b.getMinutes()?"0"+b.getMinutes():b.getMinutes(),zayavka.days_work_timer=zayavka.days_work,zayavka.days_work=0,summ_hours.innerText=zayavka.timeplaneend.date+"."+zayavka.timeplaneend.month+"."+zayavka.timeplaneend.year+" "+zayavka.timeplaneend.hour+":"+zayavka.timeplaneend.minutes};*/
+
+		/*function this_day(a,c,b,n,p,q,r,t,k,d,e,f,l,m){m=String(l);var h=l.split(","),g=10>a.getDate()?"0"+a.getDate():a.getDate(),u=10>a.getMonth()?"0"+(a.getMonth()+1):a.getMonth(),v=a.getFullYear();g=g+"."+u+"."+v;if(c<a)for(;c<a;)c.setDate(c.getDate()+1);for(u=0;u<h.length;u++)if(g==h[u])return console.warn(g+" \u0412\u042b\u0425\u041e\u0414\u041d\u041e\u0419 \u0414\u0415\u041d\u042c!"),l=new Date(a.setDate(a.getDate()+1)),zayavka.days_work++,this_day(l,c,b,n,p,q,r,t,k,d,e,f,m,zayavka.days_work);console.log("----------------------------------------------------------------------------------------------------------------------------- ");console.log("Start iteration - "+a);console.log("Start day - "+e+":"+f);console.log("Timer_local - "+c);console.log("----------------------------------------------------------------------------------------------------------------------------- ");m=new Date(a.getFullYear(),a.getMonth(),a.getDate(),r,t);h=new Date(a.getFullYear(),a.getMonth(),a.getDate(),b,n);g=new Date(a.getFullYear(),a.getMonth(),a.getDate(),p,q);if(a<=h&&c<h)if(console.warn(a+" <= "+h+" && "+c+" < "+h),c=(m-a)/1E3/60-d-k,0>c)d=new Date(a.getFullYear(),a.getMonth(),a.getDate()+1,e,f),a=new Date(a.getFullYear(),a.getMonth(),a.getDate()+1,e,f),a=new Date(a.setMinutes(a.getMinutes()+Math.abs(c))),zayavka.days_work++,this_day(d,a,b,n,p,q,r,t,k,Math.abs(c),e,f,l,zayavka.days_work);else return b=new Date(a.setMinutes(a.getMinutes()+d)),zayavka.timeplaneend.year=b.getFullYear(),zayavka.timeplaneend.month=10>b.getMonth()?"0"+b.getMonth():b.getMonth(),zayavka.timeplaneend.date=10>b.getDate()?"0"+b.getDate():b.getDate(),zayavka.timeplaneend.hour=10>b.getHours()?"0"+b.getHours():b.getHours(),zayavka.timeplaneend.minutes=10>b.getMinutes()?"0"+b.getMinutes():b.getMinutes(),zayavka.days_work_timer=zayavka.days_work,zayavka.days_work=0,summ_hours.innerText=zayavka.timeplaneend.date+"."+zayavka.timeplaneend.month+"."+zayavka.timeplaneend.year+" "+zayavka.timeplaneend.hour+":"+zayavka.timeplaneend.minutes;else if(a<=g&&a<g&&c>h)if(console.warn(a+" <= "+g+" && "+a+" < "+g+" && "+c+" > "+h),c=(m-a)/1E3/60-d-k,0>c)d=new Date(a.getFullYear(),a.getMonth(),a.getDate()+1,e,f),a=new Date(a.getFullYear(),a.getMonth(),a.getDate()+1,e,f),a=new Date(a.setMinutes(a.getMinutes()+Math.abs(c))),zayavka.days_work++,this_day(d,a,b,n,p,q,r,t,k,Math.abs(c),e,f,l,zayavka.days_work);else return b=new Date(a.setMinutes(a.getMinutes()+d+k)),zayavka.timeplaneend.year=b.getFullYear(),zayavka.timeplaneend.month=10>b.getMonth()?"0"+b.getMonth():b.getMonth(),zayavka.timeplaneend.date=10>b.getDate()?"0"+b.getDate():b.getDate(),zayavka.timeplaneend.hour=10>b.getHours()?"0"+b.getHours():b.getHours(),zayavka.timeplaneend.minutes=10>b.getMinutes()?"0"+b.getMinutes():b.getMinutes(),zayavka.days_work_timer=zayavka.days_work,zayavka.days_work=0,summ_hours.innerText=zayavka.timeplaneend.date+"."+zayavka.timeplaneend.month+"."+zayavka.timeplaneend.year+" "+zayavka.timeplaneend.hour+":"+zayavka.timeplaneend.minutes;else if(a>=g)if(console.warn(a+" >= "+g),c=(m-a)/1E3/60-d,0>c)d=new Date(a.getFullYear(),a.getMonth(),a.getDate()+1,e,f),a=new Date(a.getFullYear(),a.getMonth(),a.getDate()+1,e,f),a=new Date(a.setMinutes(a.getMinutes()+Math.abs(c))),zayavka.days_work++,this_day(d,a,b,n,p,q,r,t,k,Math.abs(c),e,f,l,zayavka.days_work);else return b=new Date(a.setMinutes(a.getMinutes()+d)),console.log(b),zayavka.timeplaneend.year=b.getFullYear(),zayavka.timeplaneend.month=10>b.getMonth()?"0"+b.getMonth():b.getMonth(),zayavka.timeplaneend.date=10>b.getDate()?"0"+b.getDate():b.getDate(),zayavka.timeplaneend.hour=10>b.getHours()?"0"+b.getHours():b.getHours(),zayavka.timeplaneend.minutes=10>b.getMinutes()?"0"+b.getMinutes():b.getMinutes(),zayavka.days_work_timer=zayavka.days_work,zayavka.days_work=0,summ_hours.innerText=zayavka.timeplaneend.date+"."+zayavka.timeplaneend.month+"."+zayavka.timeplaneend.year+" "+zayavka.timeplaneend.hour+":"+zayavka.timeplaneend.minutes};*/
+
+		function this_day(a,c,b,n,p,q,r,t,k,d,e,f,l,m){m=String(l);var h=l.split(","),g=10>a.getDate()?"0"+a.getDate():a.getDate(),u=10>a.getMonth()?"0"+(a.getMonth()+1):a.getMonth(),v=a.getFullYear();g=g+"."+u+"."+v;if(c<a)for(;c<a;)c.setDate(c.getDate()+1);for(u=0;u<h.length;u++)if(g==h[u])return console.warn(g+" \u0412\u042b\u0425\u041e\u0414\u041d\u041e\u0419 \u0414\u0415\u041d\u042c!"),l=new Date(a.setDate(a.getDate()+1)),zayavka.days_work++,this_day(l,c,b,n,p,q,r,t,k,d,e,f,m,zayavka.days_work);m=new Date(a.getFullYear(),a.getMonth(),a.getDate(),r,t);h=new Date(a.getFullYear(),a.getMonth(),a.getDate(),b,n);g=new Date(a.getFullYear(),a.getMonth(),a.getDate(),p,q);if(a<=h&&c<h)if(c=(m-a)/1E3/60-d-k,0>c)d=new Date(a.getFullYear(),a.getMonth(),a.getDate()+1,e,f),a=new Date(a.getFullYear(),a.getMonth(),a.getDate()+1,e,f),a=new Date(a.setMinutes(a.getMinutes()+Math.abs(c))),zayavka.days_work++,this_day(d,a,b,n,p,q,r,t,k,Math.abs(c),e,f,l,zayavka.days_work);else return b=new Date(a.setMinutes(a.getMinutes()+d)),zayavka.timeplaneend.year=b.getFullYear(),zayavka.timeplaneend.month=10>b.getMonth()?"0"+b.getMonth():b.getMonth(),zayavka.timeplaneend.date=10>b.getDate()?"0"+b.getDate():b.getDate(),zayavka.timeplaneend.hour=10>b.getHours()?"0"+b.getHours():b.getHours(),zayavka.timeplaneend.minutes=10>b.getMinutes()?"0"+b.getMinutes():b.getMinutes(),zayavka.days_work_timer=zayavka.days_work,zayavka.days_work=0,summ_hours.innerText=zayavka.timeplaneend.date+"."+zayavka.timeplaneend.month+"."+zayavka.timeplaneend.year+" "+zayavka.timeplaneend.hour+":"+zayavka.timeplaneend.minutes;else if(a<=g&&a<g&&c>=h)if(c=(m-a)/1E3/60-d-k,0>c)d=new Date(a.getFullYear(),a.getMonth(),a.getDate()+1,e,f),a=new Date(a.getFullYear(),a.getMonth(),a.getDate()+1,e,f),a=new Date(a.setMinutes(a.getMinutes()+Math.abs(c))),zayavka.days_work++,this_day(d,a,b,n,p,q,r,t,k,Math.abs(c),e,f,l,zayavka.days_work);else return b=new Date(a.setMinutes(a.getMinutes()+d+k)),zayavka.timeplaneend.year=b.getFullYear(),zayavka.timeplaneend.month=10>b.getMonth()?"0"+b.getMonth():b.getMonth(),zayavka.timeplaneend.date=10>b.getDate()?"0"+b.getDate():b.getDate(),zayavka.timeplaneend.hour=10>b.getHours()?"0"+b.getHours():b.getHours(),zayavka.timeplaneend.minutes=10>b.getMinutes()?"0"+b.getMinutes():b.getMinutes(),zayavka.days_work_timer=zayavka.days_work,zayavka.days_work=0,summ_hours.innerText=zayavka.timeplaneend.date+"."+zayavka.timeplaneend.month+"."+zayavka.timeplaneend.year+" "+zayavka.timeplaneend.hour+":"+zayavka.timeplaneend.minutes;else if(a>=g)if(c=(m-a)/1E3/60-d,0>c)d=new Date(a.getFullYear(),a.getMonth(),a.getDate()+1,e,f),a=new Date(a.getFullYear(),a.getMonth(),a.getDate()+1,e,f),a=new Date(a.setMinutes(a.getMinutes()+Math.abs(c))),zayavka.days_work++,this_day(d,a,b,n,p,q,r,t,k,Math.abs(c),e,f,l,zayavka.days_work);else return b=new Date(a.setMinutes(a.getMinutes()+d)),zayavka.timeplaneend.year=b.getFullYear(),zayavka.timeplaneend.month=10>b.getMonth()?"0"+b.getMonth():b.getMonth(),zayavka.timeplaneend.date=10>b.getDate()?"0"+b.getDate():b.getDate(),zayavka.timeplaneend.hour=10>b.getHours()?"0"+b.getHours():b.getHours(),zayavka.timeplaneend.minutes=10>b.getMinutes()?"0"+b.getMinutes():b.getMinutes(),zayavka.days_work_timer=zayavka.days_work,zayavka.days_work=0,summ_hours.innerText=zayavka.timeplaneend.date+"."+zayavka.timeplaneend.month+"."+zayavka.timeplaneend.year+" "+zayavka.timeplaneend.hour+":"+zayavka.timeplaneend.minutes};
+
+		function create_zayavka (argument) {
+			let order_data = { 
+				id_client: zayavka.client,
+				id_car: zayavka.car,
+				works: zayavka.worklist,
+				parts: zayavka.partslist,
+				master: zayavka.implementer,
+				time_to_start: zayavka.timestart.year+'-'+zayavka.timestart.month+'-'+zayavka.timestart.date+' '+zayavka.timestart.hour+':'+zayavka.timestart.minutes+':00',
+				time_to_end_plane: zayavka.timeplaneend.year+'-'+zayavka.timeplaneend.month+'-'+zayavka.timeplaneend.date+' '+zayavka.timeplaneend.hour+':'+zayavka.timeplaneend.minutes+':00',
+				time_t_end_real: '',
+				work_time: zayavka.minets,
+				status: 1,
+				price: zayavka.summ
+			};
+			$.get('save-incident', order_data, function(data) {
+				console.warn('Суток: ' + data);
+			});
+		}
+
+	
+/*
+
+в инцидент пишем:
+ид заказа - автоинкремент
+ид человека +
+ид машины +
+состав ид вида работ +
+состав ид запчастей +
+ид мастера +
+ид места (подъемника)
+время начала работ +
+время завершения работ планируемое
+время завершения работ фактическое
+сколько часов выполняется заказ 
+статус заказа +
+стоимость заказа + 
 
 
 
-
+*/
 
 
 
@@ -1849,27 +1181,7 @@ var zayavka =
 }
 
 
-	
-/*
 
-в инцидент пишем:
-ид заказа - автоинкремент
-ид человека +
-ид машины +
-состав ид вида работ +
-состав ид запчастей +
-ид мастера +
-ид места (подъемника)
-время начала работ +
-время завершения работ планируемое
-время завершения работ фактическое
-сколько часов выполняется заказ 
-статус заказа +
-стоимость заказа + 
-
-
-
-*/
 
 
 

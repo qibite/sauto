@@ -10,6 +10,7 @@ use backend\models\NewWork;
 use backend\models\Personal;
 use backend\models\Parts;
 use backend\models\Settings;
+use backend\models\Incident;
 /**
  * Site controller
  */
@@ -119,5 +120,25 @@ class SautoMainController extends Controller
             );
         }
         return json_encode($allsetts);
+    }
+
+    public function actionSaveIncident()
+    {
+        $part = new Incident();
+        $part->id_client = $_GET['id_client'];
+        $part->id_car = $_GET['id_car'];
+        $part->works = json_encode($_GET['works']);
+        if (isset($_GET['parts'])) {
+            $part->parts = json_encode($_GET['parts']);
+        }
+        $part->master = $_GET['master'];
+        $part->time_to_start = $_GET['time_to_start'];
+        $part->time_to_end_plane = $_GET['time_to_end_plane'];
+        $part->time_t_end_real = $_GET['time_t_end_real'];
+        $part->work_time = $_GET['work_time'];
+        $part->status = $_GET['status'];
+        $part->price = $_GET['price'];
+        $part->save();
+        return 'Заказ сохранён успешно!';
     }
 }
