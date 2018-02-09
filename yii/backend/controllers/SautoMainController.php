@@ -23,7 +23,9 @@ class SautoMainController extends Controller
     	$clients = NewClient::find()->all();
         $works = NewWork::find()->orderBy('raiting DESC')->all();
         $parts = Parts::find()->all();
-        return $this->render('index', compact('car', 'clients', 'works', 'parts'));
+        $sett = Settings::find()->all();
+        $incident = Incident::find()->all();
+        return $this->render('index', compact('car', 'clients', 'works', 'parts', 'sett', 'incident'));
     }
 
     public function actionClient()

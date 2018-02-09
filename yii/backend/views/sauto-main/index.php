@@ -94,6 +94,11 @@ $this->title = 'Расписание работы автосервиса | sauto
             </tbody>
         </table>-->
         <?php
+
+        echo mktime(0,0,0,1,1,2018);;
+
+
+
         if (isset($_GET['date'])) echo "выбрана дата ".$_GET['date'];
         my_calendar(array(date("Y-m-d"))); 
         
@@ -112,16 +117,16 @@ $this->title = 'Расписание работы автосервиса | sauto
                 'Ноябрь',
                 'Декабрь'
             ];
-          if (isset($_GET['y'])) $y=$_GET['y'];
-          if (isset($_GET['m'])) $m=$_GET['m']; 
-          if (isset($_GET['date']) AND strstr($_GET['date'],"-")) list($y,$m)=explode("-",$_GET['date']);
-          if (!isset($y) OR $y < 1970 OR $y > 2037) $y=date("Y");
-          if (!isset($m) OR $m < 1 OR $m > 12) $m=date("m");
+          if (isset($_GET['y'])) $y=$_GET['y']; // ПОЛУЧАЕМ ГОД ИЗ ГЕТ ПАРАМЕТРА ЕСЛИ ОН ЕСТЬ
+          if (isset($_GET['m'])) $m=$_GET['m']; // ПОЛУЧАЕМ МЕСЯЦ ИЗ ГЕТ ПАРАМЕТРА ЕСЛИ ОН ЕСТЬ
+          if (isset($_GET['date']) AND strstr($_GET['date'],"-")) list($y,$m)=explode("-",$_GET['date']); //БЕРЕМ ДАТУ ИЗ ГЕТ ПАРАМЕТРА В ВИДЕ 2018-02-03, ЕСЛИ ОНА ЕСТЬ И ПРИСВАИВАЕМ ПЕРЕМЕННЫМ $y и $m
+          if (!isset($y) OR $y < 1970 OR $y > 2037) $y=date("Y"); //Если год не удалось получить указываем текущий
+          if (!isset($m) OR $m < 1 OR $m > 12) $m=date("m"); // Месяц так же текущий, если пусто в гет параметре
 
-          $month_stamp=mktime(0,0,0,$m,1,$y);
-          $day_count=date("t",$month_stamp);
-          $weekday=date("w",$month_stamp);
-          if ($weekday==0) $weekday=7;
+          $month_stamp=mktime(0,0,0,$m,1,$y); // Дата с 00 часа 00 минуты и 00 секнды месяц уже получили первый день месяца и год тоже получили
+          $day_count=date("t",$month_stamp); // получаем кол-во дней в месяце
+          $weekday=date("w",$month_stamp); // получаем день недели
+          if ($weekday==0) $weekday=7; // если воскресенье (0) то присваиваем 7
           $start=-($weekday-2);
           $last=($day_count+$weekday-1) % 7;
           if ($last==0) $end=$day_count; else $end=$day_count+7-$last;
@@ -129,7 +134,11 @@ $this->title = 'Расписание работы автосервиса | sauto
           $prev=date('?\m=m&\y=Y',mktime (0,0,0,$m-1,1,$y));  
           $next=date('?\m=m&\y=Y',mktime (0,0,0,$m+1,1,$y));
           $i=0;
-        ?> 
+
+          echo $month_stamp;
+          echo "<br>";
+          echo $weekday;
+        ?>
         <table id="calendar" class="col-md-10 table table-hover table-bordered table-inverse raspisanie">
             <caption class="month"><?= $month_names[$m-1]; ?></caption>
             <thead class="thead-inverse">
@@ -195,4 +204,6 @@ $this->title = 'Расписание работы автосервиса | sauto
 </div>
 <?php
 echo date('d.m.Y H:i');
-
+echo "<br>";
+echo date("Y");
+?>
